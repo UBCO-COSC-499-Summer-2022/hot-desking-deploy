@@ -13,4 +13,4 @@ steps:
     port: 22
     command_timeout: 2m
     script:
-      - echo "Hello World"
+      - docker run hello-world
