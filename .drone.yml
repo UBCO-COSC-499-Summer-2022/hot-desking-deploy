@@ -1,0 +1,16 @@
+kind: pipeline
+name: default
+
+steps:
+- name: ssh
+  image: appleboy/drone-ssh
+  settings:
+    host:
+      - s291.ok.ubc.ca
+    username: deploy
+    password:
+      from_secret: DEPLOY_PASSWORD
+    port: 22
+    command_timeout: 2m
+    script:
+      - echo "Hello World"
