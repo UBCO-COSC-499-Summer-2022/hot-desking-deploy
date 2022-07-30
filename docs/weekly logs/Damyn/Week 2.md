@@ -1,0 +1,14 @@
+# Weekly Log 2 
+- Helped write Design Document
+- Created system arcitecture design
+- Helped create ER diagram
+- Created data-flow-diagrams
+- Helped create UI mockups
+- Wrote technical specifications
+- Worked on presentation
+- Helped edit and format Design Document for draft submission 
+- Dockerized Laravel project and uploaded to repo
+- Created basic UI for the project based off UI Mockup
+- Created database migrations and seeder for Users table
+- Added user/admin authentication
+- Held multiple meeting's for both teams to help get setup using the project 
