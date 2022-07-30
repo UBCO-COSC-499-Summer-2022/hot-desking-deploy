@@ -1,16 +1,16 @@
-kind: pipeline
-name: default
+# kind: pipeline
+# name: default
 
-steps:
-- name: ssh
-  image: appleboy/drone-ssh
-  settings:
-    host:
-      - s291.ok.ubc.ca
-    username: deploy
-    key:
-      from_secret: DEPLOY_SSH_KEY
-    port: 22
-    command_timeout: 2m
-    script:
-      - docker run hello-world
+# steps:
+# - name: ssh
+#   image: appleboy/drone-ssh
+#   settings:
+#     host:
+#       - s291.ok.ubc.ca
+#     username: deploy
+#     key:
+#       from_secret: DEPLOY_SSH_KEY
+#     port: 22
+#     command_timeout: 2m
+#     script:
+#       - docker run hello-world
