@@ -1,5 +1,5 @@
-# kind: pipeline
-# name: default
+kind: pipeline
+name: default
 
 # steps:
 # - name: ssh
