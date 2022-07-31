@@ -26,6 +26,7 @@ steps:
   - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
   - ls
   - cp docker-compose.example.yml docker-compose.yml
+  - ls
   - cd src/
   - cp .env.example .env
   - ls
