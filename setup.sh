@@ -1,8 +1,10 @@
 #!/bin/bash
 
+ls
 cp docker-compose.example.yml docker-compose.yml
 cd src/
 cp .env.example .env
+ls
 docker-compose up -d --build site
 docker-compose run --rm composer update
 docker-compose run --rm npm install
