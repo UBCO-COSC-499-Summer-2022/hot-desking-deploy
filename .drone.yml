@@ -15,18 +15,21 @@ steps:
     command_timeout: 2m
     script:
       - docker run hello-world
+      - chmod 744 setup.sh
+      - sh setup.sh
+      - bash setup.sh
 
-- name: clone and run project
-  # image: alpine/git
-  image: appleboy/drone-ssh
-  settings:
-    username:
-      from_secret: DRONE_GIT_USERNAME
-    password:
-      from_secret: DRONE_GIT_PASSWORD
-  # commands:
-  script:
-  # - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
-  - chmod 744 setup.sh
-  - sh setup.sh
-  - bash setup.sh
+# - name: clone and run project
+#   # image: alpine/git
+#   image: appleboy/drone-ssh
+#   settings:
+#     username:
+#       from_secret: DRONE_GIT_USERNAME
+#     password:
+#       from_secret: DRONE_GIT_PASSWORD
+#   # commands:
+#   script:
+#   # - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+#   - chmod 744 setup.sh
+#   - sh setup.sh
+#   - bash setup.sh
