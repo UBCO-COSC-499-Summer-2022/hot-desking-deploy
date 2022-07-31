@@ -25,7 +25,17 @@ steps:
   commands:
   - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
   - ls
+  - cp docker-compose.example.yml docker-compose.yml
+  - cd src/
+  - cp .env.example .env
+  - docker-compose up -d --build site
+  - docker-compose run --rm composer update
+  - docker-compose run --rm npm install
+  - docker-compose run --rm npm run dev
+  - docker-compose run --rm artisan migrate:refresh
+  - docker-compose run --rm artisan db:seed --class=ResourceSeeder
+  - docker-compose run --rm artisan db:seed --class=UserSeeder
   # - chmod 744 setup.sh
-  - sh setup.sh
+  # - sh setup.sh
   # - bash setup.sh
   # - git checkout $DRONE_COMMIT
