@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ls
 cp docker-compose.example.yml docker-compose.yml
+ls
 cd src/
 cp .env.example .env
 ls
