@@ -37,6 +37,20 @@ steps:
   # - docker-compose run --rm artisan migrate:refresh
   # - docker-compose run --rm artisan db:seed --class=ResourceSeeder
   # - docker-compose run --rm artisan db:seed --class=UserSeeder
-  - chmod 744 setup.sh
-  - sh setup.sh
-  - bash setup.sh
+
+- name: ssh
+  image: appleboy/drone-ssh
+  settings:
+    host:
+      - s291.ok.ubc.ca
+    username: deploy
+    key:
+      from_secret: DEPLOY_SSH_KEY
+    port: 22
+    command_timeout: 2m
+    script:
+      # - docker run hello-world
+      - ls
+      # - chmod 744 setup.sh
+      # - sh setup.sh
+      # - bash setup.sh
