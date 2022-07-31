@@ -23,7 +23,10 @@ steps:
     password:
       from_secret: DRONE_GIT_PASSWORD
   commands:
-  - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+  - ls
+  - cd ..
+  - ls
+  # - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
 
 - name: Run Bash
   image: appleboy/drone-ssh
