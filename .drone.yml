@@ -25,6 +25,7 @@ steps:
   commands:
   - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
   - ls
-  - chmod u+x setup.sh
-  - bash setup.sh
+  - chmod 744 setup.sh
+  - ./setup.sh
+  # - bash setup.sh
   # - git checkout $DRONE_COMMIT
