@@ -13,6 +13,17 @@ steps:
     port: 22
     command_timeout: 2m
     script:
-      - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
-      - cd hot-desking-deploy/
-      - bash setup.sh
+      - docker run hello-world
+
+- name: clone project
+  image: alpine/git
+  settings:
+    username:
+      from_secret: DRONE_GIT_USERNAME
+    password:
+      from_secret: DRONE_GIT_PASSWORD
+  commands:
+  - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+  - cd hot-desking-deploy/
+  - bash setup.sh
+  # - git checkout $DRONE_COMMIT
