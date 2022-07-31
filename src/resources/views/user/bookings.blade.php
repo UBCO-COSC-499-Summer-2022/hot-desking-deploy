@@ -41,7 +41,7 @@
                                         <td colspan="2">{{date('F d, Y',strtotime($booking->pivot->book_time_start))}}</td>
                                         <td colspan="2">{{date('g:ia',strtotime($booking->pivot->book_time_start))}} - {{date('g:ia',strtotime($booking->pivot->book_time_end))}}</td>
                                         <td colspan="2">                           
-                                            <a href="{{route('viewBooking', $booking->pivot->id)}}" role="button" class="btn btn-info">
+                                            <a href="{{route('viewUserBooking', $booking->pivot->id)}}" role="button" class="btn btn-info">
                                                 <i class="bi bi-eye-fill text-white"></i>
                                             </a>
                                             <a href="{{route('modify')}}" role="button" class="btn btn-secondary">

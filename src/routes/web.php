@@ -187,7 +187,7 @@ Route::get('/cancelBooking/{booking_id}', [UserBookingsController::class, 'cance
 
 Route::get('/modify', [ModifyController::class, 'index'])->name('modify');
 
-Route::get('/viewBooking/{booking_id}', [ViewBookingController::class, 'index'])->name('viewBooking');
+Route::get('/viewUserBooking/{booking_id}', [ViewBookingController::class, 'index'])->name('viewUserBooking');
 
 Route::get('/viewDesk', [ViewDeskController::class, 'index'])->name('viewDesk');
 
