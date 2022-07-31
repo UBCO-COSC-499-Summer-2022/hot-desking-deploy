@@ -16,7 +16,6 @@ steps:
     script:
       - docker run hello-world
 
-steps:
 - name: test
   image: compose:1.29.2
   volumes:
