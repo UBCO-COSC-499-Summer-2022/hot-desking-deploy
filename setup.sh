@@ -5,6 +5,8 @@ ls
 cd src/
 cp .env.example .env
 ls
+cd ..
+ls
 docker-compose up -d --build site
 docker-compose run --rm composer update
 docker-compose run --rm npm install
