@@ -16,6 +16,19 @@ steps:
     script:
       - docker run hello-world
 
+steps:
+- name: test
+  image: compose:1.29.2
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
+  commands:
+  - up -f /drone/src/docker-compose.yaml
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
 - name: clone and run project
   image: alpine/git
   settings:
@@ -28,19 +41,3 @@ steps:
   - chmod 744 setup.sh
   - sh setup.sh
   - bash setup.sh
-
-# - name: Run Bash
-#   image: appleboy/drone-ssh
-#   settings:
-#     host:
-#       - s291.ok.ubc.ca
-#     username: deploy
-#     key:
-#       from_secret: DEPLOY_SSH_KEY
-#     port: 22
-#     command_timeout: 2m
-#     script:
-
-      # - chmod 744 setup.sh
-      # - sh setup.sh
-      # - bash setup.sh
