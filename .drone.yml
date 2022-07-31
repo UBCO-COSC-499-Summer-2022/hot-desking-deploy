@@ -50,6 +50,7 @@ steps:
     command_timeout: 2m
     script:
       # - docker run hello-world
+      - cd ..
       - ls
       # - chmod 744 setup.sh
       # - sh setup.sh
