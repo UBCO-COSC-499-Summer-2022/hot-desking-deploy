@@ -26,6 +26,8 @@ steps:
   - ls
   - cd ..
   - ls
+  - cd ..
+  - ls
   # - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
 
 - name: Run Bash
