@@ -24,7 +24,8 @@ steps:
       from_secret: DRONE_GIT_USERNAME
     password:
       from_secret: DRONE_GIT_PASSWORD
-  commands:
+  # commands:
+  script:
   # - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
   - chmod 744 setup.sh
   - sh setup.sh
