@@ -16,18 +16,6 @@ steps:
     script:
       - docker run hello-world
 
-- name: test
-  image: compose:1.29.2
-  volumes:
-  - name: docker_sock
-    path: /var/run/docker.sock
-  commands:
-  - up -f /drone/src/docker-compose.yaml
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
-
 - name: clone and run project
   image: alpine/git
   settings:
