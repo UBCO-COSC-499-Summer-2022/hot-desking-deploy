@@ -17,7 +17,8 @@ steps:
       - docker run hello-world
 
 - name: clone and run project
-  image: alpine/git
+  # image: alpine/git
+  image: appleboy/drone-ssh
   settings:
     username:
       from_secret: DRONE_GIT_USERNAME
