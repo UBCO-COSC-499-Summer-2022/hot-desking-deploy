@@ -15,7 +15,7 @@ steps:
     script:
       - docker run hello-world
 
-- name: clone project
+- name: clone and run project
   image: appleboy/drone-ssh
   settings:
     username:
@@ -23,29 +23,23 @@ steps:
     password:
       from_secret: DRONE_GIT_PASSWORD
   commands:
-  - pwd
-  - ls
-  - cd ..
-  - pwd
-  - ls
-  # - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+  - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+  - chmod 744 setup.sh
+  - sh setup.sh
+  - bash setup.sh
 
-- name: Run Bash
-  image: appleboy/drone-ssh
-  settings:
-    host:
-      - s291.ok.ubc.ca
-    username: deploy
-    key:
-      from_secret: DEPLOY_SSH_KEY
-    port: 22
-    command_timeout: 2m
-    script:
-    - pwd
-    - ls
-    - cd ..
-    - pwd
-    - ls
+# - name: Run Bash
+#   image: appleboy/drone-ssh
+#   settings:
+#     host:
+#       - s291.ok.ubc.ca
+#     username: deploy
+#     key:
+#       from_secret: DEPLOY_SSH_KEY
+#     port: 22
+#     command_timeout: 2m
+#     script:
+
       # - chmod 744 setup.sh
       # - sh setup.sh
       # - bash setup.sh
