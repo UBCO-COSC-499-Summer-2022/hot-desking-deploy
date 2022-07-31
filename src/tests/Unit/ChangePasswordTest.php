@@ -2,7 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User as ModelsUser;
+use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -49,7 +50,7 @@ class ResetsPasswordTest extends TestCase
      */
     public function testChangesAUsersPassword()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $token = Password::createToken($user);
 
