@@ -20,10 +20,17 @@
                             <label for="disabledTextInput" class="form-label">Email: {{$user->email}}</label>
                         </div>
                         <div class="mb-3">
-                            @if($user->is_admin == 1)
+                            @if($user->is_admin == TRUE)
                             <label for="disabledTextInput" class="form-label">Is Admin: Yes</label>
                             @else
                             <label for="disabledTextInput" class="form-label">Is Admin: No</label>
+                            @endIf
+                        </div>
+                        <div class="mb-3">
+                            @if($user->is_suspended == TRUE)
+                            <label for="disabledTextInput" class="form-label">Is Suspended: Yes</label>
+                            @else
+                            <label for="disabledTextInput" class="form-label">Is Suspended: No</label>
                             @endIf
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end"> <a href="{{route('userManager')}}"

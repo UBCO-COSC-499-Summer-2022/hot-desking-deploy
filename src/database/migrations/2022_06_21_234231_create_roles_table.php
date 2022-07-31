@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->char('role', 30);
+            $table->id('role_id');
+            $table->string('role', 30);
             $table->integer('num_monthly_bookings');
-            $table->integer('frequency');
+            $table->integer('max_booking_window');
+            $table->integer('max_booking_duration');
             $table->timestamps();
         });
     }

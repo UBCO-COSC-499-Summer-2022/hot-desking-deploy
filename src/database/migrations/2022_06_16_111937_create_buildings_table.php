@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('campus_id');
             $table->string('name');
-            $table->boolean('is_closed');
+            $table->boolean('is_closed')->default(FALSE);
             $table->foreign('campus_id')->references('id')->on('campuses')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

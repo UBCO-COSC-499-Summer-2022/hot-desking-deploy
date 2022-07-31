@@ -42,13 +42,15 @@ class RoleController extends Controller
         $this->validate($request, [
             'role' => 'required|max:30',
             'num_monthly_bookings' => 'required|integer',
-            'frequency' => 'required|integer',
+            'max_booking_window' => 'required|integer',
+            'max_booking_duration' => 'required|integer',
         ]);
 
         $role = new Roles;
         $role->role = $request->input('role');
         $role->num_monthly_bookings = $request->input('num_monthly_bookings');
-        $role->frequency = $request->input('frequency');
+        $role->max_booking_window = $request->input('max_booking_window');
+        $role->max_booking_duration = $request->input('max_booking_duration');
 
         if ($role->save()) {
             Session::flash('message', 'Successfully created role: ' . $role->role);
@@ -96,13 +98,15 @@ class RoleController extends Controller
         $this->validate($request, [
             'role' => 'required|max:30',
             'num_monthly_bookings' => 'required|integer',
-            'frequency' => 'required|integer',
+            'max_booking_window' => 'required|integer',
+            'max_booking_duration' => 'required|integer',
         ]);
 
         $role = Roles::find($id);
         $role->role = $request->input('role');
         $role->num_monthly_bookings = $request->input('num_monthly_bookings');
-        $role->frequency = $request->input('frequency');
+        $role->max_booking_window = $request->input('max_booking_window');
+        $role->max_booking_duration = $request->input('max_booking_duration');
 
         if ($role->save()) {
             Session::flash('message', 'Successfully updated role: ' . $role->role);
@@ -127,10 +131,13 @@ class RoleController extends Controller
         if (Roles::find($id)->exists()) {
             // Get Role
             $role = Roles::find($id);
-            if ($role->delete()) {
-                Session::flash('message', 'Successfully deleted role: ' . $role->role);
-                Session::flash('alert-class', 'alert-success');
-                return redirect()->route('rolesManager');
+            // if role id > 4 
+            if($role->role_id > 4) {
+                if ($role->delete()) {
+                    Session::flash('message', 'Successfully deleted role: ' . $role->role);
+                    Session::flash('alert-class', 'alert-success');
+                    return redirect()->route('rolesManager');
+                }
             }
         }
         Session::flash('message', 'Failed to delete role');

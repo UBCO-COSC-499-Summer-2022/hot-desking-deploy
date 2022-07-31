@@ -21,7 +21,7 @@ class BuildingsFactory extends Factory
             //
             'campus_id' => Campuses::factory()->create()->id,
             'name' => $this->faker->name(),
-            'is_closed' => $this->faker->boolean(50),
+            'is_closed' => FALSE,
         ];
     }
 }

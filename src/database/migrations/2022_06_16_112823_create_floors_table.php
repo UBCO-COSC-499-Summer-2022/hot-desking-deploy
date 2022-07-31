@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('floors', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('building_id');
-            $table->char('floor_num', 10);
-            $table->boolean('is_closed');
+            $table->integer('floor_num');
+            $table->boolean('is_closed')->default(FALSE);
             $table->foreign('building_id')->references('id')->on('buildings')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

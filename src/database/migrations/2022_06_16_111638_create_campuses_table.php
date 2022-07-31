@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('campuses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_closed')->default(TRUE);
+            $table->boolean('is_closed')->default(FALSE);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

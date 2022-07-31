@@ -4,13 +4,16 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +21,12 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'role_id',
+        'faculty_id'
     ];
 
     /**
@@ -42,11 +48,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function Desks() {
-        return $this->belongsToMany('App\Models\User','bookings','user_id','desk_id')->withPivot('name');
-    }
+    // public function Desks() {
+    //     return $this->belongsToMany('App\Models\User','bookings','user_id','desk_id')->withPivot('first_name');
+    // }
     
-    public function Roles() {
-        return $this->belongsTo('App\Models\Roles','roles','num_monthly_bookings','frequency')->withPivot('name');
+    public function role() {
+        return $this->belongsTo(Roles::class, 'role_id', 'role_id');
+    }
+
+    public function desks() {
+        return $this->belongsToMany(Desks::class,'bookings','user_id','desk_id')->withPivot('id', 'book_time_start', 'book_time_end');
     }
 }

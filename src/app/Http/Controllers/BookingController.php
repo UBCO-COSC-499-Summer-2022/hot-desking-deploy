@@ -52,7 +52,7 @@ class BookingController extends Controller
         $booking->book_time_end=$request->input('book_time_end');
         if($booking->save()){
             $user=User::find($booking->user_id);
-            Session::flash('message', 'Successfully created booking for user: ' .$user->name); 
+            Session::flash('message', 'Successfully created booking for user: ' .$user->first_name); 
             Session::flash('alert-class', 'alert-success');
             return redirect()->route('bookingsManager');
         }else{
@@ -109,7 +109,7 @@ class BookingController extends Controller
 
         if ($booking->save()) {
             $user=User::find($booking->user_id);
-            Session::flash('message', 'Successfully updated booking for: ' .$user->name); 
+            Session::flash('message', 'Successfully updated booking for: ' .$user->first_name); 
             Session::flash('alert-class', 'alert-success'); 
             return redirect()->route('bookingsManager');
         } else {

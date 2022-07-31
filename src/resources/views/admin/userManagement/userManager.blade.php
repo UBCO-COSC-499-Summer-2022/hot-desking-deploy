@@ -28,13 +28,16 @@
                     <thead>
                         <tr class="table-primary">
                             <th class="text-center">#</th>
-                            <th class="text-center">Name</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
                             <th class="text-center">Email</th>
                             <th class="text-center">Admin</th>
+                            <th class="text-center">Suspended</th>
+                            <th>Role</th>
                             <th>
                                 <div class="row">
+                                    <div class="col-md-1"></div>
                                     <div class="col-md-2"></div>
-                                    <div class="col-md-4"></div>
                                     Actions
                                 </div>
                             </th>
@@ -44,25 +47,34 @@
                         @foreach($users as $user)
                         <tr>
                             <td class="text-center align-middle">{{$user->id}}</td>
-                            <td class="text-center align-middle">{{$user->name}}</td>
+                            <td class="text-center align-middle">{{$user->first_name}}</td>
+                            <td class="text-center align-middle">{{$user->last_name}}</td>
                             <td class="text-center align-middle">{{$user->email}}</td>
                             @if($user->is_admin == TRUE)
                             <td class="text-center align-middle"><i class="bi bi-check-lg"></i></td>
                             @else
                             <td class="text-center align-middle"><i class="bi bi-x-lg"></i></td>
                             @endif
+                            @if($user->is_suspended == TRUE)
+                            <td class="text-center"><i class="bi bi-check"></i></td>
+                            @else
+                            <td class="text-center"><i class="bi bi-x-lg"></i></td>
+                            @endif
+                            <td>{{$user->role->role}}</td>
                             <td>
-                                <a role="button" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#deleteModal{{$user->id}}">
-                                    <i class="bi bi-trash3-fill"></i></a>
-                                <a role="button" class="btn btn-warning float-end mx-1" data-bs-toggle="modal" data-bs-target="#suspendModal{{$user->id}}">
-                                    <i class="bi bi-pause-circle-fill text-white"></i>
-                                </a>
-                                <a href="{{route('editUser',$user->id)}}" role="button" class="btn btn-secondary float-end ">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a href="{{route('viewUser',$user->id)}}" role="button" class="btn btn-info float-end mx-1">
+                                <a href="{{route('viewUser',$user->id)}}" role="button" class="btn btn-info">
                                     <i class="bi bi-eye-fill text-white"></i>
                                 </a>
+                                <a href="{{route('editUser',$user->id)}}" role="button" class="btn btn-secondary">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <!-- <a role="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#suspendModal{{$user->id}}">
+                                    <i class="bi bi-pause-circle-fill text-white"></i>
+                                </a> -->
+                                <a role="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal{{$user->id}}">
+                                    <i class="bi bi-trash3-fill"></i>
                             </td>
                             <div class="modal fade" id="deleteModal{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -89,7 +101,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal fade" id="suspendModal{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <!-- <div class="modal fade" id="suspendModal{{$user->id}}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -113,7 +126,7 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </tr>
                         @endforeach
                     </tbody>

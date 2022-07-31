@@ -20,7 +20,7 @@
                                 <select name="user_id" class="form-select @error('user_id') is-invalid @enderror">
                                     <option disabled selected>Select user</option>
                                     @foreach ($users as $user)
-                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                    <option value="{{$user->id}}">{{$user->first_name}}</option>
                                     @endforeach
                                 </select>
                                 @error('user_id')

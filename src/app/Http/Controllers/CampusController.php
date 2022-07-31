@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\WorkSpaceDeletedOrClosed;
 use App\Models\Campuses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -41,7 +42,7 @@ class CampusController extends Controller
         ]);
         $campus = new Campuses;
         $campus->name = $request->input('name');
-        if($request->has('is_closed')) {
+        if($request->has('is_closed') && ($request->input('is_closed') == TRUE)) {
             $campus->is_closed=TRUE;
         }else {
             $campus->is_closed=FALSE;
@@ -93,12 +94,27 @@ class CampusController extends Controller
         ]);
         $campus = Campuses::find($id);
         $campus->name = $request->input('name');
-        if($request->has('is_closed')) {
+        if($request->has('is_closed') && ($request->input('is_closed') == TRUE)) {
             $campus->is_closed=TRUE;
         }else {
             $campus->is_closed=FALSE;
         }
         if($campus->save()) {
+            if ($campus->is_closed) {
+                // loop through each building for this campus
+                foreach ($campus->buildings as $building) {
+                    // loop through each floor for this building
+                    foreach ($building->floors as $floor) {
+                        // loop through each room for this floor
+                        foreach ($floor->rooms as $room) {
+                            // loop through each desk for this room and fire event to notify effected users
+                            foreach ($room->desks as $desk) {
+                                event(new WorkSpaceDeletedOrClosed($desk));
+                            }
+                        }
+                    }
+                }
+            }
             Session::flash('message', 'Successfully updated campus: ' .$campus->name); 
             Session::flash('alert-class', 'alert-success');
             return redirect()->route('campusManager');
@@ -117,17 +133,32 @@ class CampusController extends Controller
      */
     public function destroy($id)
     {
-               if (Campuses::find($id)->exists()) {
-                $campus = Campuses::find($id);
-                if ($campus->delete()) {
-                    Session::flash('message', 'Successfully deleted campus: ' .$campus->name); 
-                    Session::flash('alert-class', 'alert-success'); 
-                    return redirect()->route('campusManager');
+        if (Campuses::find($id)->exists()) {
+            $campus = Campuses::find($id);
+            
+            // loop through each building for this campus
+            foreach ($campus->buildings as $building) {
+                // loop through each floor for this building
+                foreach ($building->floors as $floor) {
+                    // loop through each room for this floor
+                    foreach ($floor->rooms as $room) {
+                        // loop through each desk for this room and fire event to notify effected users
+                        foreach ($room->desks as $desk) {
+                            event(new WorkSpaceDeletedOrClosed($desk));
+                        }
+                    }
                 }
             }
-            Session::flash('message', 'Failed to delete campus'); 
-            Session::flash('alert-class', 'alert-danger'); 
-            return redirect()->route('campusManager');
+            if ($campus->delete()) {
+                Session::flash('message', 'Successfully deleted campus: ' .$campus->name); 
+                Session::flash('alert-class', 'alert-success'); 
+                return redirect()->route('campusManager');
+            }
+        }
+
+        Session::flash('message', 'Failed to delete campus'); 
+        Session::flash('alert-class', 'alert-danger'); 
+        return redirect()->route('campusManager');
     }
     
 }

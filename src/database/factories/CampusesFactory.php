@@ -18,7 +18,7 @@ class CampusesFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'is_closed' => $this->faker->boolean(50),
+            'is_closed' => FALSE,
         ];
     }
 }

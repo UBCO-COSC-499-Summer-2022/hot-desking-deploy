@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserIsSuspended;
 use App\Models\Users;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -38,23 +40,35 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|max:255', 
-            'email' => 'required|max:255',
-            'password' => 'required|min:8|max:255'
+            'first_name' => 'required|max:255', 
+            'last_name' => 'required|max:255', 
+            'email' => 'required|string|max:255|email|unique:users',
+            'password' => 'required|min:8|max:255',
+            'role_id' => 'required|integer|exists:roles,role_id',
+            'faculty_id' => 'required|integer|exists:faculties,faculty_id',
         ]);
         $user = new Users;
-        $user->name = $request->input('name');
+        $user->first_name = $request->input('first_name');
+        $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
+        $user->role_id = $request->input('role_id');
         $user->password = Hash::make($request->input('password'));
+        $user->faculty_id = $request->input('faculty_id');
 
-        if($request->has('is_admin')) {
+        if($request->has('is_admin') && ($request->input('is_admin') == TRUE)) {
             $user->is_admin=TRUE;
         }else {
             $user->is_admin=FALSE;
         }
 
+        if($request->has('is_suspended') && ($request->input('is_suspended') == TRUE)) {
+            $user->is_suspended=TRUE;
+        }else {
+            $user->is_suspended=FALSE;
+        }
+
         if($user->save()) {
-            Session::flash('message', 'Successfully created user: ' .$user->name); 
+            Session::flash('message', 'Successfully created user: ' .$user->first_name); 
             Session::flash('alert-class', 'alert-success');
             return redirect()->route('userManager');
         }else {
@@ -95,21 +109,37 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'name' => 'required|max:255', 
-            'email' => 'required|max:255',
+            'first_name' => 'required|max:255', 
+            'last_name' => 'required|max:255', 
+            'email' => 'required|string|max:255',
+            'role_id' => 'required|integer|exists:roles,role_id',
+            'faculty_id' => 'required|integer|exists:faculties,faculty_id',
         ]);
         $user = Users::find($id);
-        $user->name = $request->input('name');
+        $user->first_name = $request->input('first_name');
+        $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
+        $user->role_id = $request->input('role_id');
+        $user->faculty_id = $request->input('faculty_id');
 
-        if($request->has('is_admin')) {
+        if($request->has('is_admin') && ($request->input('is_admin') == TRUE)) {
             $user->is_admin=TRUE;
         }else {
             $user->is_admin=FALSE;
         }
 
+        if($request->has('is_suspended') && ($request->input('is_suspended') == TRUE)) {
+            $user->is_suspended=TRUE;
+        }else {
+            $user->is_suspended=FALSE;
+        }
+
+
         if($user->save()) {
-            Session::flash('message', 'Successfully updated user: ' .$user->name); 
+            if ($user->is_suspended) {
+                event(new UserIsSuspended($user));
+            }
+            Session::flash('message', 'Successfully updated user: ' .$user->first_name); 
             Session::flash('alert-class', 'alert-success');
             return redirect()->route('userManager');
         }else {
@@ -129,8 +159,9 @@ class UserController extends Controller
     {
         if (Users::find($id)->exists()) {
             $user = Users::find($id);
-            if ($user->delete()) {
-                Session::flash('message', 'Successfully deleted user: ' .$user->name); 
+            $user->deleted_at = Carbon::now('GMT-7');
+            if ($user->save()) {
+                Session::flash('message', 'Successfully deleted user: ' .$user->first_name); 
                 Session::flash('alert-class', 'alert-success'); 
                 return redirect()->route('userManager');
             }

@@ -8,12 +8,12 @@ class UsageStatisticsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'verified', 'isAdmin']);
+        $this->middleware(['auth', 'verified', 'isAdmin', 'isSuspended']);
     }
 
     public function index()
     {
 
-        return view('admin.usageStatistics'); //return view for Manager Policies
+        return view('admin.usageStatisticsManagement.usageStatistics'); //return view for Manager Policies
     }
 }

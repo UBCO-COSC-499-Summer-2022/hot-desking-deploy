@@ -18,10 +18,10 @@
                             <div class="mb-3">
                                 <label for="disabledTextInput" class="form-label">Booking User</label>
                                 <select name="user_id" class="form-select @error('user_id') is-invalid @enderror">
-                                    <option value='{{$booking->user_id}}' selected>{{$booking->name}}</option>
+                                    <option value='{{$booking->user_id}}' selected>{{$booking->first_name}}</option>
                                     @foreach ($users as $user)
                                     @if($user->id != $booking->user_id)
-                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                    <option value="{{$user->id}}">{{$user->first_name}}</option>
                                     @endif
                                     @endforeach
                                 </select>

@@ -9,7 +9,7 @@
                     {{ __('Edit Role') }}
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{route('roleUpdate',$role->id)}}">
+                    <form method="POST" action="{{route('roleUpdate',$role->role_id)}}">
                         @csrf
                         {{method_field('POST')}}
                         <fieldset>
@@ -21,7 +21,7 @@
                                     @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="nmb" class="form-label">number of monthly
+                                <label for="nmb" class="form-label">Number of monthly
                                     bookings</label>
                                 <input type="number" min="1" max="999" id="nmb" class="form-control @error('num_monthly_bookings') is-invalid @enderror"
                                     value="{{$role->num_monthly_bookings}}" name="num_monthly_bookings" required>
@@ -30,10 +30,18 @@
                                     @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="freq" class="form-label">Frequency of monthly bookings</label>
-                                <input type="number" min="1" max="999" id="freq" class="form-control @error('frequency') is-invalid @enderror"
-                                    value="{{$role->frequency}}" name="frequency" required>
-                                    @error('frequency')
+                                <label for="max_booking_window" class="form-label">How far in advance can a user make a booking (Days)</label>
+                                <input type="number" min="1" max="999" id="max_booking_window" class="form-control @error('max_booking_window') is-invalid @enderror"
+                                    value="{{$role->max_booking_window}}" name="max_booking_window" required>
+                                    @error('max_booking_window')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="max_booking_duration" class="form-label">Maximum length of a booking that a user can make (Hours)</label>
+                                <input type="number" min="1" max="999" id="max_booking_duration" class="form-control @error('max_booking_duration') is-invalid @enderror"
+                                    value="{{$role->max_booking_duration}}" name="max_booking_duration" required>
+                                    @error('max_booking_duration')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                             </div>

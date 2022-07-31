@@ -9,7 +9,7 @@ class RolesManagerController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'verified', 'isAdmin']);
+        $this->middleware(['auth', 'verified', 'isAdmin', 'isSuspended']);
     }
 
     /**

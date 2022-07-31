@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\WorkSpaceDeletedOrClosed;
 use App\Models\Floors;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -38,14 +39,14 @@ class FloorController extends Controller
     {
         $this->validate($request, [
             'building_id' => 'exists:buildings,id',
-            'floor_num' => 'required|max:10',
+            'floor_num' => 'required|integer',
         ]);
 
         $building_id = $request->input('building_id');
         $floor = new Floors;
         $floor->building_id = $building_id;
         $floor->floor_num = $request->input('floor_num');
-        if ($request->input('is_closed')) {
+        if ($request->has('is_closed') && ($request->input('is_closed') == TRUE)) {
             $floor->is_closed = TRUE;
         } else {
             $floor->is_closed = FALSE;
@@ -95,7 +96,7 @@ class FloorController extends Controller
     {
         $this->validate($request, [
             'building_id' => 'exists:buildings,id',
-            'floor_num' => 'required|max:10',
+            'floor_num' => 'required|integer',
         ]);
 
         $building_id = $request->input('building_id');
@@ -103,13 +104,22 @@ class FloorController extends Controller
 
         $floor->building_id = $building_id;
         $floor->floor_num = $request->input('floor_num');
-        if ($request->input('is_closed')) {
+        if ($request->has('is_closed') && ($request->input('is_closed') == TRUE)) {
             $floor->is_closed = TRUE;
         } else {
             $floor->is_closed = FALSE;
         }
 
         if ($floor->save()) {
+            if ($floor->is_closed) {
+                // loop through each room for this floor
+                foreach ($floor->rooms as $room) {
+                    // loop through each desk for this room and fire event to notify effected users
+                    foreach ($room->desks as $desk) {
+                        event(new WorkSpaceDeletedOrClosed($desk));
+                    }
+                }
+            }
             Session::flash('message', 'Successfully updated floor: ' . $floor->floor_num);
             Session::flash('alert-class', 'alert-success');
             return redirect()->route('floorManager', $building_id);
@@ -132,6 +142,15 @@ class FloorController extends Controller
         if (Floors::find($id)->exists()) {
             $floor = Floors::find($id);
             $building_id = $floor->building_id;
+
+            // loop through each room for this floor
+            foreach ($floor->rooms as $room) {
+                // loop through each desk for this room and fire event to notify effected users
+                foreach ($room->desks as $desk) {
+                    event(new WorkSpaceDeletedOrClosed($desk));
+                }
+            }
+
             if ($floor->delete()) {
                 Session::flash('message', 'Successfully deleted floor: ' . $floor->floor_num);
                 Session::flash('alert-class', 'alert-success');

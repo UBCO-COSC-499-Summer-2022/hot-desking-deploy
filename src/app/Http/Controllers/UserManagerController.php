@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Roles;
 use App\Models\User;
 
 class UserManagerController extends Controller
@@ -12,7 +14,7 @@ class UserManagerController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'verified', 'isAdmin']);
+        $this->middleware(['auth', 'verified', 'isAdmin', 'isSuspended']);
     }
 
     /**
@@ -35,12 +37,14 @@ class UserManagerController extends Controller
     public function editUser($user_id)
     {
         $user = User::find($user_id);
-        return view('admin.userManagement.editUser')->with('user',$user);
+        $roles = Roles::all();
+        return view('admin.userManagement.editUser')->with('user',$user)->with('roles',$roles);
     }
 
     public function addUser() 
     {
-        return view('admin.userManagement.addUser');
+        $roles = Roles::all();
+        return view('admin.userManagement.addUser')->with('roles',$roles);
     }
 
 }

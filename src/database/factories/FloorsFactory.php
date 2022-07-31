@@ -21,7 +21,7 @@ class FloorsFactory extends Factory
             //
             'building_id' => Buildings::factory()->create()->id,
             'floor_num' => $this->faker->randomNumber(1),
-            'is_closed' => $this->faker->boolean(50),
+            'is_closed' => FALSE,
         ];
     }
 }

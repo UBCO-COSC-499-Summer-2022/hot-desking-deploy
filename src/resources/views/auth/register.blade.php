@@ -12,12 +12,26 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <label for="first_name" class="col-md-4 col-form-label text-md-end">{{ __('First Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus>
 
-                                @error('name')
+                                @error('first_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="last_name" class="col-md-4 col-form-label text-md-end">{{ __('Last Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
+
+                                @error('last_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -58,6 +72,21 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="role_id" class="col-md-4 col-form-label text-md-end">Role</label>
+                            <div class="col-md-6">
+                                <select name="role_id" id="role_id" class="form-select @error('role_id') is-invalid @enderror" required>
+                                    <option disabled selected value="">Select a role</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{$role->role_id}}">{{$role->role}}</option>
+                                    @endforeach
+                                </select>
+                                @error('role_id')
+                                <div class="alert alert-danger">{{$message}}</div>
+                                @enderror
                             </div>
                         </div>
 

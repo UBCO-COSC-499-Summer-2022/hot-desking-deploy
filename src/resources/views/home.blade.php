@@ -14,7 +14,7 @@
                     </div>
                     @endif
 
-                    <p>Hello {{$user->name}} <i class="bi bi-emoji-smile"></i> You are now logged in! <i class="bi bi-hand-thumbs-up"></i></p>
+                    <p>Hello {{$user->first_name}} {{$user->last_name}} <i class="bi bi-emoji-smile"></i> You are now logged in! <i class="bi bi-hand-thumbs-up"></i></p>
                 </div>
             </div>
         </div>

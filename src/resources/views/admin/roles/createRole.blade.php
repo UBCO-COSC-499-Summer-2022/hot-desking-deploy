@@ -29,9 +29,16 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="disabledTextInput" class="form-label">Frequency of monthly bookings</label>
-                                <input type="number" min="1" max="999" id="disabledTextInput" placeholder="Input number" class="form-control @error('frequency') is-invalid @enderror" name="frequency" required>
-                                @error('frequency')
+                                <label for="disabledTextInput" class="form-label">How far in advance can a user make a booking (Days)</label>
+                                <input type="number" min="1" max="999" id="disabledTextInput" placeholder="Input number" class="form-control @error('max_booking_window') is-invalid @enderror" name="max_booking_window" required>
+                                @error('max_booking_window')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="disabledTextInput" class="form-label">Maximum length of a booking that a user can make (Hours)</label>
+                                <input type="number" min="1" max="999" id="disabledTextInput" placeholder="Input number" class="form-control @error('max_booking_duration') is-invalid @enderror" name="max_booking_duration" required>
+                                @error('max_booking_duration')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>

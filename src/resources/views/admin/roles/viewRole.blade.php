@@ -21,10 +21,13 @@
                                 {{$role->num_monthly_bookings}}</label>
                         </div>
                         <div class="mb-3">
-                            <label for="disabledTextInput" class="form-label">Frequency of bookings:
-                                {{$role->frequency}}</label>
+                            <label for="disabledTextInput" class="form-label">How far in advance can a user make a booking (Days):
+                                {{$role->max_booking_window}}</label>
                         </div>
-
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Maximum length of a booking that a user can make (Hours):
+                                {{$role->max_booking_duration}}</label>
+                        </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end"> <a href="{{route('rolesManager')}}"
                                 class="btn btn-primary" role="button">Go back</a>
                         </div>
