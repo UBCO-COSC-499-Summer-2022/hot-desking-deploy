@@ -2,13 +2,6 @@ kind: pipeline
 type: docker
 name: default
 
-# clone:
-#   disable: false
-
-# volumes:
-# - name: cache
-#   path: /hot-desk/
-
 steps:
 - name: ssh
   image: appleboy/drone-ssh
