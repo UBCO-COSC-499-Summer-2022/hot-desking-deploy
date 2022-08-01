@@ -5,9 +5,9 @@ name: default
 clone:
   disable: false
 
-volumes:
-- name: cache
-  path: /hot-desk/
+# volumes:
+# - name: cache
+#   path: /hot-desk/
 
 steps:
 - name: ssh
@@ -39,7 +39,7 @@ steps:
   image: plugins/docker
   volumes:
   - name: cache
-    path: /drone/src/
+    path: /drone/src/hot-desk/
   - commands:
     - ls
     - cd /hot-desk/
