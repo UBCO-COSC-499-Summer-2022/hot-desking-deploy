@@ -7,7 +7,7 @@ clone:
 
 volumes:
 - name: cache
-  path: /hot-desk/
+  path: /hot-desking-deploy/
 
 steps:
 - name: ssh
@@ -31,15 +31,15 @@ steps:
     password:
       from_secret: DRONE_GIT_PASSWORD
   commands:
-  - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git /hot-desk/
-  - ls /hot-desk/
+  - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+  - ls /hot-desking-deploy/
 
 - name: build
   privileged: true
   image: plugins/docker
   volumes:
   - name: cache
-    path: /drone/src/hot-desk/
+    path: /drone/src/hot-desking-deploy/
   - commands:
     - ls
     - cd /hot-desk/
