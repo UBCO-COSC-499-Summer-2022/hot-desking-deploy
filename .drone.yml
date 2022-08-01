@@ -7,7 +7,7 @@ clone:
 
 volumes:
 - name: cache
-  path: /hot-desking-deploy/
+  path: /drone/src/
 
 steps:
 - name: ssh
@@ -40,7 +40,7 @@ steps:
   image: plugins/docker
   volumes:
   - name: cache
-    path: /drone/src/hot-desking-deploy/
+    path: /drone/src/
   - commands:
     - ls
     - cd /hot-desk/
