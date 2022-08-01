@@ -2,6 +2,13 @@ kind: pipeline
 type: docker
 name: default
 
+clone:
+  disable: false
+
+volumes:
+- name: cache
+  path: /hot-desk/
+
 steps:
 - name: ssh
   image: appleboy/drone-ssh
@@ -16,26 +23,26 @@ steps:
     script:
       - docker run hello-world
 
-# - name: clone
-#   image: alpine/git
-#   settings:
-#     username:
-#       from_secret: DRONE_GIT_USERNAME
-#     password:
-#       from_secret: DRONE_GIT_PASSWORD
-#   commands:
-#   - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git /hot-desk/
-#   - ls /hot-desk/
+- name: clone and list
+  image: alpine/git
+  settings:
+    username:
+      from_secret: DRONE_GIT_USERNAME
+    password:
+      from_secret: DRONE_GIT_PASSWORD
+  commands:
+  - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git /hot-desk/
+  - ls /hot-desk/
 
-# - name: build
-#   privileged: true
-#   image: plugins/docker
-#   volumes:
-#   - name: cache
-#     path: /drone/src/hot-desk/
-#   - commands:
-#     - ls
-#     - cd /hot-desk/
-#     - chmod 744 setup.sh
-#     - sh setup.sh
-#     - bash setup.sh
+- name: build
+  privileged: true
+  image: plugins/docker
+  volumes:
+  - name: cache
+    path: /drone/src/hot-desk/
+  - commands:
+    - ls
+    - cd /hot-desk/
+    - chmod 744 setup.sh
+    - sh setup.sh
+    - bash setup.sh
