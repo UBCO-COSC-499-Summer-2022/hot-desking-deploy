@@ -32,7 +32,7 @@ steps:
       from_secret: DRONE_GIT_PASSWORD
   commands:
   - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git /hot-desking-deploy/
-  - ls /hot-desking-deploy/
+  - ls /hot-desking-deploy
 
 # - name: build
 #   privileged: true
