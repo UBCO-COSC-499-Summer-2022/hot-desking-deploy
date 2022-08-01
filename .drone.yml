@@ -5,9 +5,9 @@ name: default
 clone:
   disable: false
 
-volumes:
-- name: cache
-  path: /hot-desking-deploy/
+# volumes:
+# - name: cache
+#   path: /hot-desking-deploy/
 
 steps:
 - name: ssh
