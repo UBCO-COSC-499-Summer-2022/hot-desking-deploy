@@ -41,8 +41,10 @@ steps:
   - name: dockersock
     path: /var/run/docker.sock
   commands:
+    - pwd
     - ls
     - cd ..
+    - pwd
     - ls
     # - cd hot-desking-deploy/
     # - ls
