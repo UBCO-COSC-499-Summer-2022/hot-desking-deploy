@@ -62,5 +62,13 @@ steps:
 
 volumes:
     - name: docker_socket
+    settings:
+      host:
+        - s291.ok.ubc.ca
+      username: deploy
+      key:
+        from_secret: DEPLOY_SSH_KEY
+      port: 22
+      command_timeout: 2m
       host:
         path: /var/run/docker.sock
