@@ -11,8 +11,17 @@ clone:
 volumes:
 - name: dockersock
   temp: {}
+  
 workspace:
   path: /home/deploy
+
+services:
+- name: docker
+  image: docker:dind
+  privileged: true
+  volumes:
+  - name: dockersock
+    path: /var/run
 
 steps:
 - name: ssh
