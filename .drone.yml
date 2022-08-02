@@ -15,14 +15,6 @@ volumes:
 workspace:
   path: /home/deploy
 
-services:
-- name: docker
-  image: docker:dind
-  # privileged: true
-  volumes:
-  - name: dockersock
-    path: /var/run
-
 steps:
 - name: ssh
   image: appleboy/drone-ssh
@@ -60,7 +52,7 @@ steps:
   image: docker:dind
   volumes:
   - name: dockersock
-    path: /var/run
+    path: /var/run/docker.sock
   commands:
     - ls
     - cd hot-desking-deploy/
