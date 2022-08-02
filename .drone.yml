@@ -8,6 +8,9 @@ clone:
 # volumes:
 # - name: cache
 #   path: /drone/src/
+volumes:
+- name: dockersock
+  temp: {}
 workspace:
   path: /home/deploy
 
@@ -27,7 +30,6 @@ steps:
       - pwd
       - ls
       # - docker run hello-world
-      ######################################## try running here
 
 - name: clone and list
   image: alpine/git
@@ -46,7 +48,7 @@ steps:
   # - bash setup.sh
 
 - name: build
-  image: appleboy/drone-ssh
+  image: docker:dind
   commands:
     - ls
     - cd hot-desking-deploy/
