@@ -47,10 +47,20 @@ steps:
 
 - name: build
   image: docker:dind
+    volumes:
+  - name: dockersock
+    path: /var/run/docker.sock
   commands:
-    - ls
-    - cd hot-desking-deploy/
-    - ls
-    - chmod 744 setup.sh
-    - sh setup.sh
+  - docker ps -a
+  # commands:
+  #   - ls
+  #   - cd hot-desking-deploy/
+  #   - ls
+  #   - chmod 744 setup.sh
+  #   - sh setup.sh
     # - bash setup.sh
+
+volumes:
+- name: dockersock
+  host:
+    path: /var/run/docker.sock
