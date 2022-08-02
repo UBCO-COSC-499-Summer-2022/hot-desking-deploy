@@ -60,7 +60,7 @@ steps:
   #   - sh setup.sh
     # - bash setup.sh
 
-volumes:
-- name: dockersock
-  host:
-    path: /var/run/docker.sock
+# volumes:
+# - name: dockersock
+#   host:
+#     path: /var/run/docker.sock
