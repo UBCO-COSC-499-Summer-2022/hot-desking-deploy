@@ -49,7 +49,7 @@ steps:
   image: plugins/docker
   commands:
     - ls
-    # - cd /hot-desk/
-    # - chmod 744 setup.sh
-    # - sh setup.sh
+    - cd hot-desking-deploy/
+    - chmod 744 setup.sh
+    - sh setup.sh
     # - bash setup.sh
