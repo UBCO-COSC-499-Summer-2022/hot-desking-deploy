@@ -25,6 +25,7 @@ steps:
     script:
       # - docker version
       - pwd
+      - ls
       # - docker run hello-world
       ######################################## try running here
 
