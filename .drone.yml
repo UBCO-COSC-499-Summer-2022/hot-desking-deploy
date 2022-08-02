@@ -4,13 +4,6 @@ name: default
 
 clone:
   disable: true
-
-# volumes:
-# - name: cache
-#   path: /drone/src/
-volumes:
-- name: dockersock
-  temp: {}
   
 workspace:
   path: /home/deploy
@@ -42,11 +35,6 @@ steps:
   commands:
   - git clone -b merge-projects-test https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
   - pwd
-  - ls
-  # - docker version
-  # - chmod 744 setup.sh
-  # - sh setup.sh
-  # - bash setup.sh
 
 - name: build
   image: docker:dind
@@ -59,4 +47,3 @@ steps:
     - ls
     - chmod 744 setup.sh
     - sh setup.sh
-    # - bash setup.sh
