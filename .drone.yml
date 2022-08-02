@@ -46,7 +46,7 @@ steps:
   # - bash setup.sh
 
 - name: build
-  image: plugins/docker
+  image: drone/drone:latest
   commands:
     - ls
     - cd hot-desking-deploy/
