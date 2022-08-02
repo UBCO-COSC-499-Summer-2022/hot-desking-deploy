@@ -51,6 +51,6 @@ steps:
     - ls
     - cd hot-desking-deploy/
     - ls
-    # - chmod 744 setup.sh
-    # - sh setup.sh
+    - chmod 744 setup.sh
+    - sh setup.sh
     # - bash setup.sh
