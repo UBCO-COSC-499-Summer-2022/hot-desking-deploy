@@ -1,75 +1,49 @@
-# kind: pipeline
-# type: docker
-# name: default
-
-# clone:
-#   disable: true
-  
-# workspace:
-#   path: /home/deploy
-
-# steps:
-# - name: ssh
-#   image: appleboy/drone-ssh
-#   settings:
-#     host:
-#       - s291.ok.ubc.ca
-#     username: deploy
-#     key:
-#       from_secret: DEPLOY_SSH_KEY
-#     port: 22
-#     command_timeout: 2m
-#     script:
-#       # - docker version
-#       - pwd
-#       - ls
-#       # - docker run hello-world
-
-# - name: clone and list
-#   image: alpine/git
-#   settings:
-#     username:
-#       from_secret: DRONE_GIT_USERNAME
-#     password:
-#       from_secret: DRONE_GIT_PASSWORD
-#   commands:
-#   - git clone -b merge-projects-test https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
-#   - pwd
-
-# - name: build
-#   image: docker:dind
-#   volumes:
-#   - name: dockersock
-#     path: /var/run/docker.sock
-#   commands:
-#     - ls
-#     - cd hot-desking-deploy/
-#     - ls
-#     - chmod 744 setup.sh
-#     - sh setup.sh
 kind: pipeline
+type: docker
 name: default
 
+clone:
+  disable: true
+  
+workspace:
+  path: /home/deploy
+
 steps:
-    - name: build
-      image: docker
-      volumes:
-        - name: docker_socket
-          path: /var/run/docker.sock
-      commands:
-        - docker build -t my/tag .
-
-
-volumes:
-  - name: docker_socket
+- name: ssh
+  image: appleboy/drone-ssh
   settings:
     host:
       - s291.ok.ubc.ca
-      path: /var/run/docker.sock
     username: deploy
     key:
       from_secret: DEPLOY_SSH_KEY
     port: 22
     command_timeout: 2m
-    # host:
-    #   path: /var/run/docker.sock
+    script:
+      # - docker version
+      - pwd
+      - ls
+      # - docker run hello-world
+
+- name: clone and list
+  image: alpine/git
+  settings:
+    username:
+      from_secret: DRONE_GIT_USERNAME
+    password:
+      from_secret: DRONE_GIT_PASSWORD
+  commands:
+  - git clone -b merge-projects-test https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+  - pwd
+
+- name: build
+  image: docker:dind
+  volumes:
+  - name: dockersock
+    path: /var/run/docker.sock
+  commands:
+    - ls
+    - cd hot-desking-deploy/
+    - ls
+    - chmod 744 setup.sh
+    - sh setup.sh
