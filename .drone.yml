@@ -8,8 +8,8 @@ clone:
 # volumes:
 # - name: cache
 #   path: /drone/src/
-workspace:
-  path: /home/deploy
+# workspace:
+#   path: /home/deploy
 
 steps:
 - name: ssh
