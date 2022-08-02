@@ -50,6 +50,7 @@ steps:
     - pwd
     - ls
     - cd var
+    - ls
     # - cd hot-desking-deploy/
     # - ls
     # - chmod 744 setup.sh
