@@ -45,15 +45,11 @@ steps:
   # - sh setup.sh
   # - bash setup.sh
 
-# - name: build
-#   # privileged: true
-#   image: plugins/docker
-#   volumes:
-#   - name: cache
-#     path: /drone/src/
-#   - commands:
-#     - ls
-#     - cd /hot-desk/
-#     - chmod 744 setup.sh
-#     - sh setup.sh
-#     - bash setup.sh
+- name: build
+  image: plugins/docker
+  - commands:
+    - ls
+    # - cd /hot-desk/
+    # - chmod 744 setup.sh
+    # - sh setup.sh
+    # - bash setup.sh
