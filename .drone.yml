@@ -47,7 +47,7 @@ steps:
 
 - name: build
   image: plugins/docker
-  - commands:
+  commands:
     - ls
     # - cd /hot-desk/
     # - chmod 744 setup.sh
