@@ -2,8 +2,8 @@ kind: pipeline
 type: docker
 name: default
 
-clone:
-  disable: false
+# clone:
+#   disable: false
 
 # volumes:
 # - name: cache
@@ -29,17 +29,17 @@ steps:
       # - docker run hello-world
       ######################################## try running here
 
-# - name: clone and list
-#   image: alpine/git
-#   settings:
-#     username:
-#       from_secret: DRONE_GIT_USERNAME
-#     password:
-#       from_secret: DRONE_GIT_PASSWORD
-#   commands:
-#   - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
-#   - pwd
-#   - ls
+- name: clone and list
+  image: alpine/git
+  settings:
+    username:
+      from_secret: DRONE_GIT_USERNAME
+    password:
+      from_secret: DRONE_GIT_PASSWORD
+  commands:
+  - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+  - pwd
+  - ls
   # - docker version
   # - chmod 744 setup.sh
   # - sh setup.sh
