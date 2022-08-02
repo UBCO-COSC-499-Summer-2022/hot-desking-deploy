@@ -37,7 +37,7 @@ steps:
     password:
       from_secret: DRONE_GIT_PASSWORD
   commands:
-  - git clone https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+  - git clone git clone -b merge-projects-test https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
   - pwd
   - ls
   # - docker version
