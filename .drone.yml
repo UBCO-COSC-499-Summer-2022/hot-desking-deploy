@@ -20,7 +20,6 @@ steps:
     port: 22
     command_timeout: 2m
     script:
-      # - docker version
       - pwd
       - ls
       # - docker run hello-world
@@ -43,7 +42,9 @@ steps:
     path: /var/run/docker.sock
   commands:
     - ls
-    - cd hot-desking-deploy/
+    - cd ..
     - ls
-    - chmod 744 setup.sh
-    - sh setup.sh
+    # - cd hot-desking-deploy/
+    # - ls
+    # - chmod 744 setup.sh
+    # - sh setup.sh
