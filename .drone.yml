@@ -4,6 +4,11 @@ name: default
 
 clone:
   disable: true
+
+volumes:
+  - name: docker_socket
+    host:
+      path: /var/run/docker.sock
   
 workspace:
   path: /home/deploy
