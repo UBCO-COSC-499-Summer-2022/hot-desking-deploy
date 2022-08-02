@@ -52,7 +52,7 @@ steps:
     - cd var
     - ls
     - cd run
-    - ls
+    - ls docker.sock
     # - cd hot-desking-deploy/
     # - ls
     # - chmod 744 setup.sh
