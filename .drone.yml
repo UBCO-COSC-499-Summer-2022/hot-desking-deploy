@@ -19,6 +19,7 @@ steps:
       USERNAME:
         from_secret: GIT_USERNAME
     script:
+      - rmdir hot-desking-deploy
       - git clone -b merge-projects-test https://$USERNAME:$PASSWORD@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
       - ls
       - cd hot-desking-deploy
