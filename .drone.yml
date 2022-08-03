@@ -21,8 +21,10 @@ steps:
     script:
       # - rm -rf hot-desking-deploy
       - git clone -b merge-projects-test https://DamynFilipuzzi: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@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+      - ls
       # - git clone -b merge-projects-test https://$USERNAME:$PASSWORD@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
       - cd hot-desking-deploy
+      - ls
       # - docker run hello-world
       - chmod 744 setup.sh
       - sh setup.sh
