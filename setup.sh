@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd hot-desking-deploy
-cp docker-compose.example.yml docker-compose.yml
+cp docker-compose.mac.yml docker-compose.yml
 ls
 cd src/
 cp .env.example .env
