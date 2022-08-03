@@ -19,7 +19,7 @@ steps:
       USERNAME:
         from_secret: GIT_USERNAME
     script:
-      - git clone -b merge-projects-test https://$${USERNAME}:$${PASSWORD}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+      - git clone -b merge-projects-test https://DamynFilipuzzi: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@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
       # - docker run hello-world
 
 # - name: clone and list
