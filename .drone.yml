@@ -25,9 +25,10 @@ steps:
       # - git clone -b merge-projects-test https://$USERNAME:$PASSWORD@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
       - cd hot-desking-deploy
       - ls
-      # - docker run hello-world
-      - chmod 744 setup.sh
-      - sh setup.sh
+      - cd src
+      - ls
+      # - chmod 744 setup.sh
+      # - sh setup.sh
 
 # - name: clone and list
 #   image: alpine/git
