@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd hot-desking-deploy
 cp docker-compose.example.yml docker-compose.yml
 ls
 cd src/
