@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd hot-desking-deploy
+# cd hot-desking-deploy
 cp docker-compose.mac.yml docker-compose.yml
 ls
 cd src/
@@ -8,7 +8,7 @@ cp .env.example .env
 ls
 cd ..
 ls
-docker-compose kill -s SIGINT
+docker-compose down
 docker compose up -d --build site
 docker compose run --rm composer update
 docker compose run --rm npm install
