@@ -20,16 +20,12 @@ steps:
         from_secret: GIT_USERNAME
     script:
       # - rm -rf hot-desking-deploy
-      - git clone -b merge-projects-test https://DamynFilipuzzi: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@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
+      - git clone -b merge-projects-test https://DamynFilipuzzi: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@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desk/
       - ls
       # - git clone -b merge-projects-test https://$USERNAME:$PASSWORD@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
-      - cd hot-desking-deploy
-      - ls
-      - cd src
-      - sudo -S rm -rf node_modules
-      - ls
-      # - chmod 744 setup.sh
-      # - sh setup.sh
+      - cd hot-desk
+      - chmod 744 setup.sh
+      - sh setup.sh
 
 # - name: clone and list
 #   image: alpine/git
