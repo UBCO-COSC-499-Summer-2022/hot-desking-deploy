@@ -26,7 +26,7 @@ steps:
       - cd hot-desking-deploy
       - ls
       - cd src
-      - rm -rf node_modules
+      - sudo rm -rf node_modules
       - ls
       # - chmod 744 setup.sh
       # - sh setup.sh
