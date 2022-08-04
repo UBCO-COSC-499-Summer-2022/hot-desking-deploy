@@ -23,65 +23,36 @@ steps:
     command_timeout: 5m
     envs: [ something ]
     script:
-      # Set permission to directory used to remove files
-      # - sudo chown deploy hot-desking-deploy
-      # Terminate all docker containers 
-      - docker kill $(docker ps -q)
-      # Remove all non-running containers
-      - docker system prune -f
-      # List all docker containers 
-      - docker ps -a
-      # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
-      # - rm -rf hot-desking-deploy
-      # Clone Directory
-      - git clone -b merge-projects-test https://DamynFilipuzzi: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@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desking-test/
       - ls
-      - echo $${something}
-      # change directories 
-      - cd hot-desking-test/
-      # ensure all containers have been stopped
-      - docker compose down
-      # Run Bash File to setup project
-      - chmod 744 setup.sh
-      - sh setup.sh
+      - cd hot-desking-test
+      - ls
+      - cd src
+      # # Set permission to directory used to remove files
+      # # - sudo chown deploy hot-desking-deploy
+      # # Terminate all docker containers 
+      # - docker kill $(docker ps -q)
+      # # Remove all non-running containers
+      # - docker system prune -f
+      # # List all docker containers 
+      # - docker ps -a
+      # # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
+      # # - rm -rf hot-desking-deploy
+      # # Clone Directory
+      # - git clone -b merge-projects-test https://DamynFilipuzzi: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@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desking-test/
+      # - ls
+      # # change directories 
+      # - cd hot-desking-test/
+      # # ensure all containers have been stopped
+      # - docker compose down
+      # # Run Bash File to setup project
+      # - chmod 744 setup.sh
+      # - sh setup.sh
 
+
+      # - echo $something
       # - echo $${something}
       # - echo $user
       # - echo $${user}
 
       # - git clone -b merge-projects-test https://$${GIT_USERNAME}:$${GIT_PASSWORD}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desking/
       # - ls
-
-# - name: clone and list
-#   image: alpine/git
-#   settings:
-#     username:
-#       from_secret: DRONE_GIT_USERNAME
-#     password:
-#       from_secret: DRONE_GIT_PASSWORD
-#   commands:
-#   - git clone -b merge-projects-test https://github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git
-#   - pwd
-
-# - name: build
-#   image: docker
-#   volumes:
-#   - name: dockersock
-#     path: /var/run/docker.sock
-#   commands:
-#     - pwd
-#     - ls
-#     - cd ..
-#     - pwd
-#     - ls
-#     - cd ..
-#     - pwd
-#     - ls
-#     - cd var
-#     - ls
-#     - cd run
-#     - ls docker.sock
-    # - cd hot-desking-deploy/
-    # - ls
-    # - chmod 744 setup.sh
-    # - sh setup.sh
