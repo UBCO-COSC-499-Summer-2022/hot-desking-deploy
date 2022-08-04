@@ -25,7 +25,7 @@ steps:
     script:
       # - chown -R www-data: hot-desking-test
       # - ls
-      # - cd hot-desking-test
+      - cd hot-desking-test
       # - ls
       # - cd src
       # - ls
