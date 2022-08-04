@@ -1,8 +1,8 @@
 #!/bin/bash
 
-chown -R 1001:1001 ../hot-desking-test4
+chown -R 1001:1001 ../hot-desking-test5
 
-cp docker-compose.mac.yml docker-compose.yml
+cp docker-compose.server.yml docker-compose.yml
 ls
 cd src/
 cp .env.production .env
