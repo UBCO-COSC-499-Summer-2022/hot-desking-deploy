@@ -23,6 +23,7 @@ steps:
     command_timeout: 5m
     envs: [ something ]
     script:
+      - id 
       # - chown -R www-data: hot-desking-test
       # - ls
       # - cd hot-desking-test
