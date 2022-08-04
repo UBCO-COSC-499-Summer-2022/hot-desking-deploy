@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Faculty;
 use App\Models\Roles;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -76,6 +77,7 @@ class UserSeeder extends Seeder
             'email' => 'damyn@ubc.ca',
             'password' => Hash::make('password'), /*default local password is "password" */
             'is_admin' => TRUE,
+            'email_verified_at' => Carbon::now(),
             'faculty_id' => Faculty::factory()->create()->faculty_id
         ]);
 
@@ -87,6 +89,7 @@ class UserSeeder extends Seeder
             'role_id' => $role->role_id,
             'email' => 'damyn@gmail.com',
             'password' => Hash::make('password'), /*default local password is "password" */
+            'email_verified_at' => Carbon::now(),
             'faculty_id' => Faculty::factory()->create()->faculty_id
         ]);
     }

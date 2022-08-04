@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chown -R 1001:1001 ../hot-desking-test10
+chown -R 1001:1001 ../hot-desking-test11
 
 cp docker-compose.server.yml docker-compose.yml
 ls
