@@ -28,7 +28,7 @@ steps:
       # Terminate all docker containers 
       - docker kill $(docker ps -q)
       # Remove all non-running containers
-      - docker system prune
+      - docker system prune -f
       # List all docker containers 
       - docker ps -a
       # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
