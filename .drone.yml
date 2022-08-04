@@ -24,7 +24,7 @@ steps:
     envs: [ something ]
     script:
       # Set permission to directory
-      - sudo -S chown deploy hot-desking-deploy
+      - sudo -S $${DEPLOY_SSH_KEY} chown deploy hot-desking-deploy
       # Terminate all docker containers 
       - docker kill $(docker ps -q)
       # List all docker running containers 
