@@ -10,7 +10,7 @@ steps:
       from_secret: GIT_USERNAME
     pass:
       from_secret: GIT_PASSWORD
-    something: something
+    something: some
   settings:
     host:
       - s291.ok.ubc.ca
