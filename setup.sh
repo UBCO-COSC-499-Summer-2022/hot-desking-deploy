@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chown -R 1001:1001 ../hot-desking-test1
+chown -R 1001:1001 ../hot-desking-test4
 
 cp docker-compose.mac.yml docker-compose.yml
 ls
