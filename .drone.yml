@@ -5,7 +5,7 @@ name: default
 steps:
 - name: ssh
   image: appleboy/drone-ssh
-  
+
   environment:
     user:
       from_secret: GIT_USERNAME
@@ -21,14 +21,14 @@ steps:
       from_secret: DEPLOY_SSH_KEY
     port: 22
     command_timeout: 5m
-    envs: [ user ]
+    envs: [ WORK ]
     script:
       # - rm -rf hot-desking-deploy
       # - git clone -b merge-projects-test https://DamynFilipuzzi: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@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desk/
       # - echo $something
-      - echo ${{work}}
+      - echo $${WORK}
       # - echo $user
-      - echo $${user}
+      # - echo $${user}
       # - git clone -b merge-projects-test https://$${GIT_USERNAME}:$${GIT_PASSWORD}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desking/
       # - ls
 
