@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chown -R 1001:1001 ../hot-desking-test6
+chown -R 1001:1001 ../hot-desking-test7
 
 cp docker-compose.server.yml docker-compose.yml
 ls
@@ -14,8 +14,9 @@ docker compose up -d --build site
 docker compose run --rm composer update
 docker compose run --rm npm install
 docker compose run --rm npm run prod
-docker compose run --rm artisan migrate
-docker compose down
+# TODO REMOVE FORCE FLAG
+docker compose run --rm artisan migrate --force
+# docker compose down
 echo DONE
 
 # docker compose run --rm artisan db:seed --class=ResourceSeeder
