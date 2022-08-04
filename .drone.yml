@@ -23,12 +23,12 @@ steps:
     command_timeout: 5m
     envs: [ something ]
     script:
-      - chown hot-desking-test
-      - ls
-      - cd hot-desking-test
-      - ls
-      - cd src
-      - ls
+      # - chown -R www-data: hot-desking-test
+      # - ls
+      # - cd hot-desking-test
+      # - ls
+      # - cd src
+      # - ls
       # # Set permission to directory used to remove files
       # # - sudo chown deploy hot-desking-deploy
       # # Terminate all docker containers 
@@ -47,8 +47,8 @@ steps:
       # # ensure all containers have been stopped
       # - docker compose down
       # # Run Bash File to setup project
-      # - chmod 744 setup.sh
-      # - sh setup.sh
+      - chmod 744 setup.sh
+      - sh setup.sh
 
 
       # - echo $something
