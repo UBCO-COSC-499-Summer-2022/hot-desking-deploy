@@ -23,12 +23,15 @@ steps:
     command_timeout: 5m
     envs: [ something ]
     script:
+      - docker ps
       # - rm -rf hot-desking-deploy
       # - git clone -b merge-projects-test https://DamynFilipuzzi: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@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desk/
-      - echo $something
-      - echo $${something}
-      - echo $user
-      - echo $${user}
+
+      # - echo $something
+      # - echo $${something}
+      # - echo $user
+      # - echo $${user}
+      
       # - git clone -b merge-projects-test https://$${GIT_USERNAME}:$${GIT_PASSWORD}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desking/
       # - ls
 
