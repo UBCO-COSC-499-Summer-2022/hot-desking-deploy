@@ -15,6 +15,7 @@ docker compose run --rm composer update
 docker compose run --rm npm install
 docker compose run --rm npm run prod
 docker compose run --rm artisan migrate
+docker compose down
 echo DONE
 
 # docker compose run --rm artisan db:seed --class=ResourceSeeder
