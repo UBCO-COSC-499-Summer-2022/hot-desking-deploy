@@ -5,12 +5,14 @@ name: default
 steps:
 - name: ssh
   image: appleboy/drone-ssh
+  
   environment:
     user:
       from_secret: GIT_USERNAME
     pass:
       from_secret: GIT_PASSWORD
-    work: some
+    WORK: some
+
   settings:
     host:
       - s291.ok.ubc.ca
