@@ -27,7 +27,9 @@ steps:
       # - sudo chown deploy hot-desking-deploy
       # Terminate all docker containers 
       - docker kill $(docker ps -q)
-      # List all docker running containers 
+      # Remove all non-running containers
+      - docker system prune
+      # List all docker containers 
       - docker ps -a
       # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
       # - rm -rf hot-desking-deploy
