@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chown -R www-data: ../hot-desking-test1
+chown -R www-data:www-data ../hot-desking-test1
 
 cp docker-compose.mac.yml docker-compose.yml
 ls
