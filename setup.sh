@@ -3,7 +3,7 @@
 cp docker-compose.mac.yml docker-compose.yml
 ls
 cd src/
-cp .env.example .env
+cp .env.production .env
 ls
 cd ..
 ls
