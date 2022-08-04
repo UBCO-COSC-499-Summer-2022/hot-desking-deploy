@@ -27,6 +27,7 @@ steps:
       - cd hot-desking-test
       - ls
       - cd src
+      - ls
       # # Set permission to directory used to remove files
       # # - sudo chown deploy hot-desking-deploy
       # # Terminate all docker containers 
