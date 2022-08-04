@@ -23,6 +23,8 @@ steps:
     command_timeout: 5m
     envs: [ something ]
     script:
+      # Set permission to directory
+      - sudo chown deploy hot-desking-deploy
       # Terminate all docker containers 
       - docker kill $(docker ps -q)
       # List all docker running containers 
