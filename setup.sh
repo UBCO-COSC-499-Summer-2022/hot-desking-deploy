@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chown -R 1001:1001 ../hot-desking-test8
+chown -R 1001:1001 ../hot-desking-test9
 
 cp docker-compose.server.yml docker-compose.yml
 ls
@@ -16,6 +16,6 @@ docker compose run --rm npm install
 docker compose run --rm npm run prod
 # TODO REMOVE FORCE FLAG
 docker compose run --rm artisan migrate --force
-docker compose run --rm artisan db:seed --class=ResourceSeeder
-docker compose run --rm artisan db:seed --class=UserSeeder
+docker compose run --rm artisan db:seed --class=ResourceSeeder --force
+docker compose run --rm artisan db:seed --class=UserSeeder --force
 echo Server is LIVE
