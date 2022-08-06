@@ -23,12 +23,9 @@ steps:
     script:
       - id
       - ls
-      - cd test-pull3
       - docker kill $(docker ps -q)
       - docker system prune -f
-      - ls
-      - cd ..
-      # - rm -rf test-pull3
+      - rm -rf test-pull3
       - ls 
 
 
