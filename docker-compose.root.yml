@@ -19,7 +19,7 @@ services:
       - php
       - redis
       - pgsql
-      - mailhog
+      # - mailhog
     networks:
       - laravel
 
@@ -38,15 +38,8 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: pgsql
     volumes:
-      -
-        type: bind
-        source: /tmp/postgres-data
-        target: /var/lib/postgresql/data
-    # volumes: 
-      # - my_dbdata:/var/lib/postgresql/data
-    # volumes:
-    #   - 
-    #     ./postgres-data:/var/lib/postgresql/data
+      - 
+        ./postgres-data:/var/lib/postgresql/data
     networks:
       - laravel
 
@@ -112,11 +105,11 @@ services:
     networks:
       - laravel
 
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: mailhog
-    ports:
-      - 1025:1025
-      - 8025:8025
-    networks:
-      - laravel
+  # mailhog:
+  #   image: mailhog/mailhog:latest
+  #   container_name: mailhog
+  #   ports:
+  #     - 1025:1025
+  #     - 8025:8025
+  #   networks:
+  #     - laravel

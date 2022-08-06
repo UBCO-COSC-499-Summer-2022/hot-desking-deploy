@@ -38,13 +38,6 @@ services:
       POSTGRES_ROOT_PASSWORD: secret
       SERVICE_TAGS: dev
       SERVICE_NAME: pgsql
-    # volumes:
-    #   -
-    #     type: bind
-    #     source: /tmp/postgres-data
-    #     target: /var/lib/postgresql/data
-    # volumes: 
-      # - my_dbdata:/var/lib/postgresql/data
     volumes:
       - 
         ./postgres-data:/var/lib/postgresql/data
