@@ -22,30 +22,14 @@ steps:
     envs: [ PASS, USER ]
     script:
       - id
-      - cd test-pull3/
-      - docker compose down
-      - docker kill $(docker ps -q)
-      - docker system prune -f
-      - cd ..
-      - rm -rf test-pull3/
-      - ls 
-
-      # - chown -R www-data: hot-desking-test
-      # - ls
-      # - cd hot-desking-test
-      # - ls
-      # - cd src
-      # - ls
-
-      # - ls
-      # - cd hot-desking-test11/
-      # - docker-compose down
-      # - cd ..
+      - ls
+      # - cd test-pull3/
+      # - docker compose down
       # - docker kill $(docker ps -q)
       # - docker system prune -f
-      # - rm -rf hot-desking-test11
-      # - ls
-
+      # - cd ..
+      # - rm -rf test-pull3/
+      # - ls 
 
 
       # # Set permission to directory used to remove files
@@ -68,14 +52,3 @@ steps:
       # # Run Bash File to setup project
       # - chmod 744 setup.sh
       # - sh setup.sh
-
-
-
-
-      # - echo $something
-      # - echo $${something}
-      # - echo $user
-      # - echo $${user}
-
-      # - git clone -b merge-projects-test https://$${GIT_USERNAME}:$${GIT_PASSWORD}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git hot-desking/
-      # - ls
