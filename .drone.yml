@@ -24,12 +24,12 @@ steps:
       - id
       - ls
       - cd test-pull3
-      # - docker kill $(docker ps -q)
-      # - docker system prune -f
+      - docker kill $(docker ps -q)
+      - docker system prune -f
       - ls
       - cd ..
       # - rm -rf test-pull3
-      # - ls 
+      - ls 
 
 
       # # Set permission to directory used to remove files
