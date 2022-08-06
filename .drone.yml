@@ -25,6 +25,7 @@ steps:
       - id
 
       - echo $${SOMETHING}
+      - echo USER
       - echo $USER
       - echo $PASS
       - echo "$USER"
