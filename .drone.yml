@@ -22,6 +22,8 @@ steps:
     envs: [ PASS, USER ]
     script:
       - id
+      - rm -rf test-pull3/
+      - ls 
 
       # - chown -R www-data: hot-desking-test
       # - ls
@@ -41,26 +43,26 @@ steps:
 
 
 
-      # Set permission to directory used to remove files
-      # - sudo chown deploy hot-desking-deploy
-      # Terminate all docker containers 
-      - docker kill $(docker ps -q)
-      # Remove all non-running containers
-      - docker system prune -f
-      # List all docker containers 
-      - docker ps -a
-      # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
-      # - rm -rf hot-desking-deploy
-      # Clone Directory
-      - git clone -b merge-projects-test https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull3/
-      - ls
-      # change directories 
-      - cd test-pull3/
-      # ensure all containers have been stopped
-      - docker compose down
-      # Run Bash File to setup project
-      - chmod 744 setup.sh
-      - sh setup.sh
+      # # Set permission to directory used to remove files
+      # # - sudo chown deploy hot-desking-deploy
+      # # Terminate all docker containers 
+      # - docker kill $(docker ps -q)
+      # # Remove all non-running containers
+      # - docker system prune -f
+      # # List all docker containers 
+      # - docker ps -a
+      # # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
+      # # - rm -rf hot-desking-deploy
+      # # Clone Directory
+      # - git clone -b merge-projects-test https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull3/
+      # - ls
+      # # change directories 
+      # - cd test-pull3/
+      # # ensure all containers have been stopped
+      # - docker compose down
+      # # Run Bash File to setup project
+      # - chmod 744 setup.sh
+      # - sh setup.sh
 
 
 
