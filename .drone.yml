@@ -58,13 +58,16 @@ steps:
       - docker ps -a
       # change directories
       - cd test-pull3/
+
+
       # Clone Directory
-      - git pull https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git merge-projects-test
-      - ls
-      # change directories 
-      - cd test-pull3/
-      # ensure all containers have been stopped
-      - docker compose down
-      # Run Bash File to setup project
-      - chmod 744 setup.sh
-      - sh setup.sh
+      - git fetch merge-projects-test
+      # - git pull https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git merge-projects-test
+      # - ls
+
+
+      # # ensure all containers have been stopped
+      # - docker compose down
+      # # Run Bash File to setup project
+      # - chmod 744 setup.sh
+      # - sh setup.sh
