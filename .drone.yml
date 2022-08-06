@@ -58,11 +58,11 @@ steps:
       - chmod 744 run.sh
       - sh run.sh
       - docker compose run --rm artisan schedule:list
-    when:
-      branch:
-      - main
-      event:
-      - push
-      - pull_request
-      status:
-      - success
+      
+trigger:
+  branch:
+  - main
+  event:
+  - push
+  status:
+  - success
