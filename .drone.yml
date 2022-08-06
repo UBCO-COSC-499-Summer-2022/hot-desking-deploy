@@ -22,10 +22,10 @@ steps:
     envs: [ PASS, USER ]
     script:
       - id
-      - cd test-pull3/
-      - docker compose down
-      - docker kill $(docker ps -q)
-      - docker system prune -f
+      # - cd test-pull3/
+      # - docker compose down
+      # - docker kill $(docker ps -q)
+      # - docker system prune -f
       - rm -rf test-pull3/
       - ls 
 
