@@ -63,5 +63,6 @@ steps:
       - main
       event:
       - push
+      - pull_request
       status:
       - success
