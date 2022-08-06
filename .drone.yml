@@ -52,6 +52,7 @@ steps:
       - cd test-pull4/
       # fetch new changes Directory
       - git fetch
+      - git pull
       # - git pull https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git merge-projects-test
       # - ls
 
