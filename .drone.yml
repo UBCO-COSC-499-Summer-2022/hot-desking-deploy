@@ -23,13 +23,12 @@ steps:
     script:
       - id
       - ls
-      # - cd test-pull3/
-      # - docker compose down
-      # - docker kill $(docker ps -q)
-      # - docker system prune -f
-      # - cd ..
-      # - rm -rf test-pull3/
-      # - ls 
+      - cd test-pull3
+      - docker kill $(docker ps -q)
+      - docker system prune -f
+      - cd ..
+      - rm -rf test-pull3
+      - ls 
 
 
       # # Set permission to directory used to remove files
