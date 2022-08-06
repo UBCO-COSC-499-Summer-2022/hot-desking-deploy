@@ -21,12 +21,11 @@ steps:
     command_timeout: 5m
     envs: [ PASS, USER ]
     script:
-      - id
-      - ls
-      - docker kill $(docker ps -q)
-      - docker system prune -f
-      - rm -rf test-pull3
-      - ls 
+      # - ls
+      # - docker kill $(docker ps -q)
+      # - docker system prune -f
+      # - rm -rf test-pull3
+      # - ls 
 
 
       # # Set permission to directory used to remove files
@@ -49,3 +48,23 @@ steps:
       # # Run Bash File to setup project
       # - chmod 744 setup.sh
       # - sh setup.sh
+
+      # Pull new changes
+      # Terminate all docker containers 
+      - docker kill $(docker ps -q)
+      # Remove all non-running containers
+      - docker system prune -f
+      # List all docker containers 
+      - docker ps -a
+      # change directories
+      - cd test-pull3/
+      # Clone Directory
+      - git pull https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git merge-projects-test
+      - ls
+      # change directories 
+      - cd test-pull3/
+      # ensure all containers have been stopped
+      - docker compose down
+      # Run Bash File to setup project
+      - chmod 744 setup.sh
+      - sh setup.sh
