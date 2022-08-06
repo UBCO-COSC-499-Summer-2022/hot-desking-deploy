@@ -7,5 +7,4 @@ docker compose run --rm npm install
 docker compose run --rm npm run prod
 # TODO REMOVE FORCE FLAG
 docker compose run --rm artisan migrate --force
-docker compose run --rm artisan schedule:list
 echo Server is LIVE
