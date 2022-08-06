@@ -66,8 +66,8 @@ steps:
 
 
 
-      - echo $something
-      # - echo $${something}
+      # - echo $something
+      - echo $${something}
       # - echo $user
       # - echo $${user}
 
