@@ -28,7 +28,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm bg-primary">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color:#002145;">
             <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/') }}">
                     <img width="29" height="40" src="{{ asset('img/ubc-logo-2018-crest-white-rgb72.png') }}" alt="UBC crest logo" style="margin-right: 25px">
