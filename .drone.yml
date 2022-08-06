@@ -31,14 +31,14 @@ steps:
       # - cd src
       # - ls
 
-      - ls
-      - cd hot-desking-test11/
-      - docker-compose down
-      - cd ..
-      - docker kill $(docker ps -q)
-      - docker system prune -f
-      - rm -rf hot-desking-test11
-      - ls
+      # - ls
+      # - cd hot-desking-test11/
+      # - docker-compose down
+      # - cd ..
+      # - docker kill $(docker ps -q)
+      # - docker system prune -f
+      # - rm -rf hot-desking-test11
+      # - ls
 
 
 
@@ -66,7 +66,7 @@ steps:
 
 
 
-      # - echo $something
+      - echo $something
       # - echo $${something}
       # - echo $user
       # - echo $${user}
