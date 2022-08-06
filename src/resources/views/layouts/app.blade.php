@@ -23,12 +23,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/ubcColor.css') }}" rel="stylesheet">
 
 </head>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color:#002145;">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm bg-ubc">
             <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/') }}">
                     <img width="29" height="40" src="{{ asset('img/ubc-logo-2018-crest-white-rgb72.png') }}" alt="UBC crest logo" style="margin-right: 25px">

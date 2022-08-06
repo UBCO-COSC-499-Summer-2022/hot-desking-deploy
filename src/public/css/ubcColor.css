@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+:root {
+    --bs-ubc: #002145;
+    --bs-ubc-rgb: 0, 33, 69;
+}
+
+/* rtl:end:remove */
+.text-ubc {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-ubc-rgb), var(--bs-text-opacity)) !important;
+}
+
+.bg-ubc {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-ubc-rgb), var(--bs-bg-opacity)) !important;
+}

@@ -21,7 +21,7 @@ steps:
     command_timeout: 5m
     envs: [ PASS, USER ]
     script:
-      ## Pull fresh github
+      ################################# Pull fresh github #################################
       # - ls
       # # Set permission to directory used to remove files
       # # - sudo chown deploy hot-desking-deploy
@@ -42,7 +42,7 @@ steps:
       # - chmod 744 setup.sh
       # - sh setup.sh
 
-      ## Pull new changes
+      ################################# Pull new changes #################################
       # Terminate all docker containers 
       - docker kill $(docker ps -q)
       # Remove all non-running containers
@@ -54,9 +54,6 @@ steps:
       # fetch new changes Directory
       - git fetch
       - git pull
-      # - git pull https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git merge-projects-test
-      # - ls
-
       # Run Bash File to setup project
       - chmod 744 run.sh
       - sh run.sh
