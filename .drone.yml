@@ -24,7 +24,7 @@ steps:
     script:
       - id
 
-      - git clone -b merge-projects-test https://"$${USER}":"$${PASS}"@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull1/
+      - git clone -b merge-projects-test https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull1/
       - ls
       # - echo $${SOMETHING}
       # - echo USER
