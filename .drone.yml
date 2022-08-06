@@ -24,14 +24,16 @@ steps:
     script:
       - id
 
-      - echo $${SOMETHING}
-      - echo USER
-      - echo $USER
-      - echo $PASS
-      - echo "$USER"
-      - echo "$PASS"
-      - echo "$${USER}"
-      - echo "$${PASS}"
+      - git clone -b merge-projects-test https://"$${USER}":"$${PASS}"@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull/
+      - ls
+      # - echo $${SOMETHING}
+      # - echo USER
+      # - echo $USER
+      # - echo $PASS
+      # - echo "$USER"
+      # - echo "$PASS"
+      # - echo "$${USER}"
+      # - echo "$${PASS}"
 
       # - chown -R www-data: hot-desking-test
       # - ls
