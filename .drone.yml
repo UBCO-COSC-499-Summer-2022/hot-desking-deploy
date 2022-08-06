@@ -25,8 +25,12 @@ steps:
       - id
 
       - echo $${SOMETHING}
-      - echo $${USER}
-      - echo $${PASS}
+      - echo $USER
+      - echo $PASS
+      - echo "$USER"
+      - echo "$PASS"
+      - echo "$${USER}"
+      - echo "$${PASS}"
 
       # - chown -R www-data: hot-desking-test
       # - ls
