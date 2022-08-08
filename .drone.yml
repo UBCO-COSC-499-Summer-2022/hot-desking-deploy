@@ -45,34 +45,28 @@ steps:
       # - docker compose run --rm artisan schedule:list
 
       ################################# Pull new changes #################################
-      # # Terminate all docker containers 
-      # - docker kill $(docker ps -q)
-      # # Remove all non-running containers
-      # - docker system prune -f
-      # # List all docker containers 
-      # - docker ps -a
-      # # change directories
-      # - cd test-pull5/
-      # # fetch new changes Directory
-      # - git fetch
-      # - git pull
-      # # Run Bash File to setup project
-      # - chmod 744 run.sh
-      # - sh run.sh
-      # # clear cache/config
-      # - docker compose run --rm artisan cache:clear
-      # - docker compose run --rm artisan config:clear
-      # - docker compose run --rm artisan config:cache
-      # - docker compose run --rm artisan schedule:list
+      # Terminate all docker containers 
+      - docker kill $(docker ps -q)
+      # Remove all non-running containers
+      - docker system prune -f
+      # List all docker containers 
+      - docker ps -a
+      # change directories
+      - cd test-pull5/
+      # fetch new changes Directory
+      - git fetch
+      - git pull
+      # Run Bash File to setup project
+      - chmod 744 run.sh
+      - sh run.sh
+      # clear cache/config
+      - docker compose run --rm artisan cache:clear
+      - docker compose run --rm artisan config:clear
+      - docker compose run --rm artisan config:cache
+      - docker compose run --rm artisan schedule:list
 
       # # TO REMOVE TEST CRON SCHEDULER
       # - docker compose run --rm artisan db:seed --class=SchedulerSeeder --force
-
-      - cd test-pull5/
-      - cd src
-      - cd storage
-      - cd logs
-      - cd laravel.log
 
 trigger:
   branch:
