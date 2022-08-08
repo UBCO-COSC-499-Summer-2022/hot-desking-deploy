@@ -65,8 +65,8 @@ steps:
       - docker compose run --rm artisan config:cache
       - docker compose run --rm artisan schedule:list
 
-      # TO REMOVE TEST CRON SCHEDULER
-      - docker compose run --rm artisan db:seed --class=SchedulerSeeder --force
+      # # TO REMOVE TEST CRON SCHEDULER
+      # - docker compose run --rm artisan db:seed --class=SchedulerSeeder --force
 
 trigger:
   branch:
