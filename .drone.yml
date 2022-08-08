@@ -34,7 +34,7 @@ steps:
       # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
       # - rm -rf hot-desking-deploy
       # Clone Directory
-      - git clone -b merge-projects-test https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull5/
+      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull5/
       - ls
       # change directories 
       - cd test-pull5/
