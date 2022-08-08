@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 
-class UserSeeder extends Seeder
+class SchedulerSeeder extends Seeder
 {
     /**
      * Seed the application's database.
