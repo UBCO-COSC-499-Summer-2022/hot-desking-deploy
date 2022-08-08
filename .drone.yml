@@ -60,11 +60,10 @@ steps:
       # Run Bash File to setup project
       - chmod 744 run.sh
       - sh run.sh
-      # clear cache/config
-      - docker compose run --rm artisan cache:clear
-      - docker compose run --rm artisan config:clear
-      - docker compose run --rm artisan config:cache
+
       - docker compose run --rm artisan schedule:list
+
+      - docker compose run --rm artisan verify:bookings
 
       # # TO REMOVE TEST CRON SCHEDULER
       # - docker compose run --rm artisan db:seed --class=SchedulerSeeder --force
