@@ -57,8 +57,15 @@ steps:
       # Run Bash File to setup project
       - chmod 744 run.sh
       - sh run.sh
+      # clear cache/config
+      - docker-compose run --rm artisan cache:clear
+      - docker-compose run --rm artisan config:clear
+      - docker-compose run --rm artisan config:cache
+      # cron jobs
       - docker compose run --rm artisan schedule:list
-      
+      # add a single cron configuration entry to our server that runs the schedule:run command every minute.
+      - * * * * * docker compose run --rm artisan schedule:run >> /dev/null 2>&1
+
 trigger:
   branch:
   - main
