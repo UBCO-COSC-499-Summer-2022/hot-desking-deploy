@@ -61,8 +61,11 @@ steps:
       - docker compose run --rm artisan cache:clear
       - docker compose run --rm artisan config:clear
       - docker compose run --rm artisan config:cache
-      
+
       - docker compose run --rm artisan schedule:list
+
+      # check if server has cron 
+      - service cron status
 
 trigger:
   branch:

@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ClearOldBookings;
+use App\Console\Commands\MonthlyBookingsUsedReset;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
@@ -9,8 +11,8 @@ use Illuminate\Support\Facades\DB;
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        Commands\MonthlyBookingsUsedReset::class,
-        commands\ClearOldBookings::class,
+        MonthlyBookingsUsedReset::class,
+        ClearOldBookings::class,
     ];
 
     /**
