@@ -53,6 +53,7 @@ steps:
       - docker ps -a
       # change directories
       - cd test-pull5/
+      - pwd
       # fetch new changes Directory
       - git fetch
       - git pull
