@@ -72,7 +72,7 @@ steps:
       - cd src
       - cd storage
       - cd logs
-      - ls laravel.log
+      - cd laravel.log
 
 trigger:
   branch:
