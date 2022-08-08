@@ -63,13 +63,10 @@ steps:
       - docker compose run --rm artisan cache:clear
       - docker compose run --rm artisan config:clear
       - docker compose run --rm artisan config:cache
-
       - docker compose run --rm artisan schedule:list
 
-      # check if server has cron 
-      - service cron status
-      - apt-get install cron
-      - crontab -e
+      # TO REMOVE TEST CRON SCHEDULER
+      - docker compose run --rm artisan db:seed --class=SchedulerSeeder --force
 
 trigger:
   branch:
