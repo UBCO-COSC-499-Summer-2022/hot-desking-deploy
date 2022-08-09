@@ -1,31 +1,31 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\BookingsManagerController;
-use App\Http\Controllers\BookingStatisticsController;
-use App\Http\Controllers\BookingTimeStatisticsController;
-use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\CampusController;
-use App\Http\Controllers\DepartmentStatisticsController;
-use App\Http\Controllers\FloorController;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\DeskController;
-use App\Http\Controllers\FacultyStatisticsController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PoliciesController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\RolesManagerController;
-use App\Http\Controllers\PolicyManagerController;
-use App\Http\Controllers\ResourceController;
-use App\Http\Controllers\ResourceManagerController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UsageStatisticsController;
-use App\Http\Controllers\UserManagerController;
-use App\Http\Controllers\HighChartController;
-use App\Http\Controllers\ResourceStatisticsController;
-use App\Http\Controllers\RolesStatisticsController;
-use App\Http\Controllers\WorkspaceManagerController;
+use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\BookingsManagerController;
+use App\Http\Controllers\Admin\BookingStatisticsController;
+use App\Http\Controllers\Admin\BookingTimeStatisticsController;
+use App\Http\Controllers\Admin\BuildingController;
+use App\Http\Controllers\Admin\CampusController;
+use App\Http\Controllers\Admin\DepartmentStatisticsController;
+use App\Http\Controllers\Admin\FloorController;
+use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\DeskController;
+use App\Http\Controllers\Admin\FacultyStatisticsController;
+use App\Http\Controllers\Admin\PoliciesController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RolesManagerController;
+use App\Http\Controllers\Admin\PolicyManagerController;
+use App\Http\Controllers\Admin\ResourceController;
+use App\Http\Controllers\Admin\ResourceManagerController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UsageStatisticsController;
+use App\Http\Controllers\Admin\UserManagerController;
+use App\Http\Controllers\Admin\HighChartController;
+use App\Http\Controllers\Admin\ResourceStatisticsController;
+use App\Http\Controllers\Admin\RolesStatisticsController;
+use App\Http\Controllers\Admin\WorkspaceManagerController;
+use App\Http\Controllers\Admin\EmailLogsController;
 use App\Models\Buildings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +39,9 @@ use App\Http\Controllers\User\CalendarViewController;
 use App\Http\Controllers\User\FilterController;
 use App\Http\Controllers\User\ViewDeskController;
 use App\Http\Controllers\User\ChangePasswordController;
+use App\Http\Controllers\User\ChangeEmailController;
+////////////////////////////////// Shared /////////////////////////////////////////////
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -158,13 +161,17 @@ Route::get('/viewUser/{user_id}', [UserManagerController::class, 'viewUser'])->n
 Route::get('/editUser/{user_id}', [UserManagerController::class, 'editUser'])->name('editUser');
 Route::get('/addUser', [UserManagerController::class, 'addUser'])->name('addUser');
 
-Route::get('/viewBookingStatistics', [BookingStatisticsController::class, 'index'])->name('viewBookingStatistics');
 Route::get('/getYear/{year}', [BookingStatisticsController::class, 'getAjaxRequest']);
 Route::get('/viewResourcesStatistics', [ResourceStatisticsController::class, 'index'])->name('viewResourcesStatistics');
-Route::get('/viewFacultyStatistics', [FacultyStatisticsController::class, 'index'])->name('viewFacultyStatistics');
+Route::get('/getFilterResources', [ResourceStatisticsController::class, 'getFilterResources']);
+Route::get('/viewDepartmentStatistics', [DepartmentStatisticsController::class, 'index'])->name('viewDepartmentStatistics');
+Route::get('/getFilterDepartments', [DepartmentStatisticsController::class, 'getFilterDepartments']);
 Route::get('/viewRolesStatistics', [RolesStatisticsController::class, 'index'])->name('viewRolesStatistics');
+Route::get('/getFilterRoles', [RolesStatisticsController::class, 'getFilterRoles']);
 Route::get('/viewBookingTimeStatistics', [BookingTimeStatisticsController::class, 'index'])->name('viewBookingTimeStatistics');
+Route::get('/getFilterBookingTimes', [BookingTimeStatisticsController::class, 'getFilterBookingTimes']);
 
+Route::get('/emailLogs', [EmailLogsController::class, 'download'])->name('emailLogs');
 
 /////////////////////////////////// User-Side ////////////////////////////////////////
 
@@ -172,9 +179,8 @@ Route::get('search',function(){
     return view('search');
 });
 
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
-
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::post('/profileUpdate', [ProfileController::class, 'update'])->name('profileUpdate');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
@@ -202,3 +208,7 @@ Route::patch('calendar/update/{id}', [CalendarViewController::class, 'update'])-
 Route::get('/changePassword', [ChangePasswordController::class, 'showChangePasswordGet'])->name('changePasswordGet');
 
 Route::post('/changePassword', [ChangePasswordController::class, 'changePasswordPost'])->name('changePasswordPost');
+
+Route::get('/changeEmail', [ChangeEmailController::class, 'showChangeEmailGet'])->name('changeEmailGet');
+
+Route::post('/changeEmail', [ChangeEmailController::class, 'changeEmailPost'])->name('changeEmailPost');

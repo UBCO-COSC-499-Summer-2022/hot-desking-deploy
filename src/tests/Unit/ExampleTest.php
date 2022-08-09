@@ -16,4 +16,13 @@ class ExampleTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    public function test_database_stores_user()
+    {
+        $user = User::factory()->create();
+
+        $this->assertDatabaseHas('users', [
+            'email' => $user->email
+        ]);
+    }
 }

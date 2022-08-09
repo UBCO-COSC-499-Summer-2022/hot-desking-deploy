@@ -19,9 +19,7 @@ class FacultyFactory extends Factory
     public function definition()
     {
         return [
-            'campus_id' => Campuses::factory()->create()->id,
-            'faculty' =>  $this->faker->firstName(),
-            
+            'faculty' =>  $this->faker->firstName(),  
         ];
     }
 }

@@ -18,4 +18,8 @@ class Resources_Desks extends Pivot
         'resource_id',
         'desk_id',
     ];
+
+    public function resources() {
+        return $this->belongsTo(Resources::class, 'resource_id', 'resource_id');
+    }
 }

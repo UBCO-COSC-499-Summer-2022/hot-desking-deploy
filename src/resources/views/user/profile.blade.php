@@ -5,79 +5,101 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-
             <div class="card-header">
                     {{ __('Profile') }}
             </div>
-
             <div class="card-body">
-                    <!-- <div class="form-group row mb-3">
-                        <label for="first_name" class="col-md-3 col-form-label text-md-right">{{ __('First Name') }}</label>
-                        <div class="col-md-4">
-                            {{Auth::user()->first_name}}
-                        </div>
+                @if(Session::has('message'))
+                    <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show">{{ Session::get('message') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <div class="form-group row mb-3">
-                        <label for="last_name" class="col-md-3 col-form-label text-md-right">{{ __('Last Name') }}</label>
-                        <div class="col-md-4">
-                            {{Auth::user()->last_name}}
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="email" class="col-md-3 col-form-label text-md-right">{{ __('Email Address') }}</label>
-                        <div class="col-md-4">
-                            {{Auth::user()->email}}
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="password" class="col-md-3 col-form-label text-md0tight">{{ __('Password')}}</label>
-                        <a href="{{ route('changePasswordGet') }}"><button type="button" class="btn btn-secondary">Change Password</button></a>
-                    </div>
-
-                    <div class="form-group row mb-3">
-                        <label for="role" class="col-md-3 col-form-label text-md-right">{{ __('User Role') }}</label>
-                        <div class="col-md-4">
-                            {{Auth::user()->role->role}}
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="supervisor" class="col-md-3 col-form-label text-md-right">{{ __('User Supervisor') }}</label>
-                        <div class="col-md-4">
-                            {{Auth::user()->supervisor}}
-                        </div>
-                    </div>         -->
-                    <table class="table table-bordered table-hover align-middle">
+                @endif
+                <form action="{{route('profileUpdate')}}" method="POST">
+                    @csrf
+                <table class="table table-bordered table-hover align-middle mb-3">
                     <tbody>
                         <tr>
                             <th colspan="2" >First Name: </th>
-                            <td colspan="2">{{Auth::user()->first_name}}</td>
+                            <td colspan="2"><input min="1" max="255" type="text" value="{{$user->first_name}}" name="first_name" class="form-control @error('first_name') is-invalid @enderror" required></td>
+                            @error('first_name')
+                                <div class="alert alert-danger">{{$message}}</div>
+                            @enderror
                         </tr>
                         <tr>
                             <th colspan="2" >Last Name:</th>
-                            <td colspan="2">{{Auth::user()->last_name}}</td>
+                            <td colspan="2"><input min="1" max="255" type="text" value="{{$user->last_name}}" name="last_name" class="form-control @error('last_name') is-invalid @enderror" required></td>
+                            @error('last_name')
+                                <div class="alert alert-danger">{{$message}}</div>
+                            @enderror
                         </tr>
+                        <tr>
+                            <th colspan="2" >User Role:</th>
+                            <td colspan="2">
+                                <select onchange="checkGraduate()" name="role_id" id="role_id" class="form-select @error('role_id') is-invalid @enderror" required>
+                                <option value="{{$user->role_id}}">{{$user->role->role}}</option>
+                                    @foreach ($roles as $role)
+                                        @if ($role->role_id != $user->role_id)
+                                            @if ($role->role_id != 1)
+                                                <option value="{{$role->role_id}}">{{$role->role}}</option>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </td>    
+                                @error('role_id')
+                                <div class="alert alert-danger">{{$message}}</div>
+                                @enderror
+                        </tr>
+                        <tr>
+                            <th colspan="2" >User Supervisor:</th>
+                            @if ($user->supervisor != NULL)
+                                <td colspan="2"><input id="supervisor" min="1" max="255" type="text" value="{{$user->supervisor}}" name="supervisor"  class="form-control @error('last_name') is-invalid @enderror" required></td>
+                            @else
+                                <td colspan="2"><input id="supervisor" min="1" max="255" type="text" value="{{$user->supervisor}}" name="supervisor"  class="form-control @error('last_name') is-invalid @enderror" required style="display: none;"></td>
+                            @endif
+                                @error('supervisor')
+                                <div class="alert alert-danger">{{$message}}</div>
+                            @enderror
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success float-end mb-3">Submit</button>
+                </div>
+                </form>
+                <table class="table table-bordered table-hover align-middle mt-3">
+                    <tbody>
                         <tr>
                             <th colspan="2" >Email Address:</th>
                             <td colspan="2">{{Auth::user()->email}}</td>
+                            <td><a href="{{ route('changeEmailGet') }}"><button type="button" class="btn btn-secondary float-end">Change Email</button></a></td>  
                         </tr>
                         <tr>
                             <!-- <th colspan="2" >Password:</th> -->
                             <!-- <a href="{{ route('changePasswordGet') }}"><button type="button" class="btn btn-secondary">Change Password</button></a> -->
-                            <td colspan="2"><a href="{{ route('changePasswordGet') }}"><button type="button" class="btn btn-secondary">Change Password</button></a></td>
-                        </tr>
-                        <tr>
-                            <th colspan="2" >User Role:</th>
-                            <td colspan="2">{{Auth::user()->role->role}}</td>
-                        </tr>
-                        <tr>
-                            <th colspan="2" >User Supervisor:</th>
-                            <td colspan="2">{{Auth::user()->supervisor}}</td>
+                            <th colspan="2" >Password:</th>
+                            <td>********</td>
+                            <td colspan="2"><a href="{{ route('changePasswordGet') }}"><button type="button" class="btn btn-secondary float-end">Change Password</button></a></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            </div>
         </div>
     </div>
 </div>
+
+<script>
+    function checkGraduate(){
+        if ($('#role_id').val()==='4'|$('#role_id').val()==='5'){
+            //if role equal to graduate, display supervisor text
+            // $('#supervisorRow').fadeIn()
+            $('#supervisor').show()
+        }
+        else{
+            //if roles not equal to graduate, check if supervisor text is visible and hide it if true
+            // $('#supervisorRow').fadeOut()
+            $('#supervisor').hide()
+        }
+    }
+</script>
 @endsection

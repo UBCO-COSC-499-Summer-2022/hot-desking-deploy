@@ -439,54 +439,6 @@ class RoutesTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_non_admin_can_not_access_Workspace_Manager_Add_Desk()
-    {
-        $room = Rooms::factory()->create();
-
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('addDesk', $room->id));
-
-        $response->assertStatus(302);
-    }
-
-    public function test_admin_can_access_Workspace_Manager_Add_Desk()
-    {
-        $room = Rooms::factory()->create();
-        
-        $user = User::factory()->create();
-        $user->is_admin = TRUE;
-        $user->save();
-
-        $response = $this->actingAs($user)->get(route('addDesk', $room->id));
-
-        $response->assertStatus(200);
-    }
-
-    public function test_non_admin_can_not_access_Workspace_Manager_Edit_Desk()
-    {
-        $desk = Desks::factory()->create();
-
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('editDesk', $desk->id));
-
-        $response->assertStatus(302);
-    }
-
-    public function test_admin_can_access_Workspace_Manager_Edit_Desk()
-    {
-        $desk = Desks::factory()->create();
-        
-        $user = User::factory()->create();
-        $user->is_admin = TRUE;
-        $user->save();
-
-        $response = $this->actingAs($user)->get(route('editDesk', $desk->id));
-
-        $response->assertStatus(200);
-    }
-
     // Roles Manager Controller
     public function test_non_admin_can_not_access_Role_Manager()
     {

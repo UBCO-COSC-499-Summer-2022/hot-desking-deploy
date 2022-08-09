@@ -24,12 +24,6 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="text-center align-middle">General Booking Statistics</td>
-                                <td class='text-center'>
-                                    <a href="{{route('viewBookingStatistics')}}" class="btn btn-info"><i class="bi bi-eye-fill text-white"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td class="text-center align-middle">Resources Statistics</td>
                                 <td class='text-center'>
                                     <a href="{{route('viewResourcesStatistics')}}" class="btn btn-info"><i class="bi bi-eye-fill text-white"></i></a>
@@ -42,9 +36,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center align-middle">User Faculty Statistics</td>
+                                <td class="text-center align-middle">User Department Statistics</td>
                                 <td class='text-center'>
-                                    <a href="{{route('viewFacultyStatistics')}}" class="btn btn-info"><i class="bi bi-eye-fill text-white"></i></a>
+                                    <a href="{{route('viewDepartmentStatistics')}}" class="btn btn-info"><i class="bi bi-eye-fill text-white"></i></a>
                                 </td>
                             </tr>
                             <tr>

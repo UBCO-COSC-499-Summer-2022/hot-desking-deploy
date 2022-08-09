@@ -29,8 +29,4 @@ class Campuses extends Model
     public function buildings() {
         return $this->hasMany(Buildings::class, 'campus_id');
     }
-
-    public function faculties(){
-        return $this->hasMany(faculty::class, 'id','campus_id');
-    }
 }

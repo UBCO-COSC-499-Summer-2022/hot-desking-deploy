@@ -190,6 +190,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($roles as $role)
+                                    @if($role->role_id != 1)
                                         <tr>
                                             <td class="text-center">{{$role->role}}</td>
                                             <td class="text-center">{{$role->max_booking_window}}</td>
@@ -198,6 +199,7 @@
                                                 <a href="{{route('editRolesBookingPolicy', $role->role_id)}}" class="btn btn-secondary"><i class="bi bi-pencil-square"></i></a>
                                             </td>
                                         </tr>
+                                    @endif
                                     @endforeach
                                 </tbody>
                             </table>

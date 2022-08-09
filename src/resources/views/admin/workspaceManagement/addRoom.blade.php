@@ -77,8 +77,8 @@
                             </div>
                             <div class="mb-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" value='TRUE' name="is_closed" id="is_closed">
-                                    <label class="form-check-label" for="is_closed">Close Room</label>
+                                    <input class="form-check-input" type="checkbox" value='FALSE' name="is_closed" id="is_closed">
+                                    <label class="form-check-label" for="is_closed">Room Available</label>
                                 </div>
                             </div>
                             <div class="row mb-3">
