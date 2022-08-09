@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\FloorController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\DeskController;
 use App\Http\Controllers\Admin\FacultyStatisticsController;
-use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PoliciesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RolesManagerController;
@@ -40,6 +39,9 @@ use App\Http\Controllers\User\CalendarViewController;
 use App\Http\Controllers\User\FilterController;
 use App\Http\Controllers\User\ViewDeskController;
 use App\Http\Controllers\User\ChangePasswordController;
+use App\Http\Controllers\User\ChangeEmailController;
+////////////////////////////////// Shared /////////////////////////////////////////////
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -177,9 +179,8 @@ Route::get('search',function(){
     return view('search');
 });
 
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
-
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::post('/profileUpdate', [ProfileController::class, 'update'])->name('profileUpdate');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
@@ -207,3 +208,7 @@ Route::patch('calendar/update/{id}', [CalendarViewController::class, 'update'])-
 Route::get('/changePassword', [ChangePasswordController::class, 'showChangePasswordGet'])->name('changePasswordGet');
 
 Route::post('/changePassword', [ChangePasswordController::class, 'changePasswordPost'])->name('changePasswordPost');
+
+Route::get('/changeEmail', [ChangeEmailController::class, 'showChangeEmailGet'])->name('changeEmailGet');
+
+Route::post('/changeEmail', [ChangeEmailController::class, 'changeEmailPost'])->name('changeEmailPost');

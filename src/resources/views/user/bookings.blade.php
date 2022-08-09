@@ -26,30 +26,41 @@
                         <table class="table table-bordered table-hover align-middle">
                             <thead class="table-primary">
                                 <tr>
-                                    <th scope="col" colspan="2">Building</th>
-                                    <th scope="col" colspan="2">Room</th>
-                                    <th scope="col" colspan="2">Date</th>
-                                    <th scope="col" colspan="2">Duration</th>
-                                    <th scope="col" colspan="2">Actions</th>
+                                    <th scope="col">Building</th>
+                                    <th scope="col">Room</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Duration</th>
+                                    <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody> 
                                 @foreach ($bookings as $booking) 
                                     <tr>
-                                        <td colspan="2">{{$booking->room->floor->building->name}}</td>
-                                        <td colspan="2">{{$booking->room->name}}</td>
-                                        <td colspan="2">{{date('F d, Y',strtotime($booking->pivot->book_time_start))}}</td>
-                                        <td colspan="2">{{date('g:ia',strtotime($booking->pivot->book_time_start))}} - {{date('g:ia',strtotime($booking->pivot->book_time_end))}}</td>
-                                        <td colspan="2">                           
-                                            <a href="{{route('viewUserBooking', $booking->pivot->id)}}" role="button" class="btn btn-info">
-                                                <i class="bi bi-eye-fill text-white"></i>
-                                            </a>
-                                            <a href="{{route('modify')}}" role="button" class="btn btn-secondary">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <a role="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal{{$booking->pivot->id}}">
-                                                <i class="bi bi-trash3-fill"></i> 
-                                            </a>
+                                        <td >{{$booking->room->floor->building->name}}</td>
+                                        <td >{{$booking->room->name}}</td>
+                                        <td >{{date('F d, Y',strtotime($booking->pivot->book_time_start))}}</td>
+                                        <td >{{date('g:ia',strtotime($booking->pivot->book_time_start))}} - {{date('g:ia',strtotime($booking->pivot->book_time_end))}}</td>
+                                        <td class="col-md-2">
+                                            <div class="d-flex justify-content-start">
+                                                <div>
+                                                    <a href="{{route('viewUserBooking', $booking->pivot->id)}}" role="button" class="btn btn-info">
+                                                        <i class="bi bi-eye-fill text-white"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="mx-2">
+                                                    <form action="{{ route('calendar') }}">
+                                                        <input name='room_id' value='{{$booking->room->id}}' type='hidden' class='form-check-input'>
+                                                        <button type="submit" class="btn btn-secondary">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>        
+                                                    </form>
+                                                </div>
+                                                <div>
+                                                    <a role="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal{{$booking->pivot->id}}">
+                                                        <i class="bi bi-trash3-fill"></i> 
+                                                    </a>
+                                                </div>
+                                            </div>                        
                                         </td>
                                     </tr>
                                     <!-- --Modal  start -- -->
@@ -85,3 +96,4 @@
 
 <script type="text/javascript" src="{{ asset('js/alert.js') }}"></script>
 @endsection
+

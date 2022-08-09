@@ -118,22 +118,25 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
+                                    <a class="dropdown-item" href="{{ route('profile') }}"
+                                        onclick="event.preventDefault();
+                                        document.getElementById('profile-form').submit();">
+                                        {{ __('Profile') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
+                                        document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <form id="profile-form" action="{{ route('profile') }}" method="GET" class="d-none">
+                                        @csrf
+                                    </form>
 
-                                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
-                                    </div>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
                             </li>
                         @endguest
                     </ul>

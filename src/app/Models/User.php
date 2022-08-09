@@ -48,9 +48,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    // public function Desks() {
-    //     return $this->belongsToMany('App\Models\User','bookings','user_id','desk_id')->withPivot('first_name');
-    // }
+    public function desks() {
+        return $this->belongsToMany(Desks::class,'bookings','user_id','desk_id')->withPivot('id', 'book_time_start', 'book_time_end');
+    }
     
     public function role() {
         return $this->belongsTo(Roles::class, 'role_id', 'role_id');

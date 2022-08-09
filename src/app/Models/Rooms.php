@@ -24,7 +24,6 @@ class Rooms extends Model
     protected $fillable = [
         'name',
         'occupancy',
-        'room_image',
         'rows',
         'cols',
         'is_closed',
