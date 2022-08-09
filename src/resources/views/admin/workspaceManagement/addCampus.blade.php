@@ -26,10 +26,10 @@
                             </div>
                             <div class="mb-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" value='TRUE' name="is_closed"
+                                    <input class="form-check-input" type="checkbox" value="FALSE" name="is_closed"
                                         id="flexSwitchCheckDefault">
                                     <label class="form-check-label" for="flexSwitchCheckDefault">Campus
-                                        Availability</label>
+                                        Available</label>
                                 </div>
                             </div>
                             <div class="mb-3">

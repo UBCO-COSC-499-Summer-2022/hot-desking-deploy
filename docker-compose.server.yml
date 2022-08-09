@@ -122,3 +122,13 @@ services:
   #     - 8025:8025
   #   networks:
   #     - laravel
+
+  cron:
+    build:
+      context: ./dockerfiles
+      dockerfile: cron.dockerfile
+    container_name: cron
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - laravel

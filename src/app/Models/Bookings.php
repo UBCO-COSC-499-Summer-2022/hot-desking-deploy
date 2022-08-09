@@ -18,5 +18,6 @@ class Bookings extends Pivot
     protected $fillable = [
         'book_time_start',
         'book_time_end',
+        'desk_id'
     ];
 }

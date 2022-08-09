@@ -16,6 +16,4 @@ docker compose run --rm npm run prod
 docker compose run --rm artisan migrate --force
 docker compose run --rm artisan db:seed --class=ResourceSeeder --force
 docker compose run --rm artisan db:seed --class=UserSeeder --force
-# add a single cron configuration entry to our server that runs the schedule:run command every minute.
-* * * * * docker compose run --rm artisan schedule:run >> /dev/null 2>&1
 echo Server is LIVE

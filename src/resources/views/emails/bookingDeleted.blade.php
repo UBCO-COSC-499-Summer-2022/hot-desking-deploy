@@ -4,12 +4,20 @@
 
 <table class="info" align="center">
     <tr>
-        <th>Booking Id</th>
-        <td>{{ $booking_id }}</td>
+        <th>Campus</th>
+        <td>{{ $campus_name }}</td>
     </tr>
     <tr>
-        <th>Desk Id</th>
-        <td>{{ $desk_id }}</td>
+        <th>Building</th>
+        <td>{{ $building_name }}</td>
+    </tr>
+    <tr>
+        <th>Floor #</th>
+        <td>{{ $floor_num }}</td>
+    </tr>
+    <tr>
+        <th>Room</th>
+        <td>{{ $room_name }}</td>
     </tr>
     <tr>
         <th>Date</th>

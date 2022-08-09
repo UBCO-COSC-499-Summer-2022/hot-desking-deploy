@@ -41,8 +41,8 @@
                             <th colspan="2" >Time:</th>
                             <td colspan="2">{{date('Y, F d',strtotime($booking->pivot->book_time_start))}}: {{date('g:ia',strtotime($booking->pivot->book_time_start))}} - {{date('g:ia',strtotime($booking->pivot->book_time_end))}}</td>  
                         </tr>
-                        </tbody>
-                        </table>
+                    </tbody>
+                </table>
 
                         <div class="alert alert-warning d-flex align-items-center" role="alert">
                             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>

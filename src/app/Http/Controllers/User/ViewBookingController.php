@@ -38,15 +38,18 @@ class ViewBookingController extends Controller
     public function index($booking_id)
     {
         $user = User::find(Auth::id());
-        $booking = $user->desks()->wherePivot("id", $booking_id)->first();
-        return view('user.viewBooking')->with("booking",$booking);
+        
+        // return view('user.viewBooking')->with("booking",$booking);
         // dd($booking);
-        // if(Bookings::where('id', $booking_id)->exists()){
-        //     // $booking=Bookings::find($booking_id);
-        //     return view('user.viewBooking')->with("booking",$booking);
-        // }
-        // Session::flash('message', 'Failed to find booking'); 
-        // Session::flash('alert-class', 'alert-danger');
-        // return redirect()->route('bookings');
+        if(Bookings::where('id', $booking_id)->exists()){
+            // $booking=Bookings::find($booking_id);
+            $booking = $user->desks()->wherePivot("id", $booking_id)->first();
+            if($user->desks()->wherePivot("id", $booking_id)->count()!=0){
+                return view('user.viewBooking')->with("booking",$booking);
+            }    
+        }
+        Session::flash('message', 'Failed to find booking'); 
+        Session::flash('alert-class', 'alert-danger');
+        return redirect()->route('bookings');
     }
 }

@@ -2,9 +2,8 @@
 
 #app\Http\Controllers\HomeController.php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
@@ -40,6 +39,7 @@ class ChangePasswordController extends Controller
         $user->password = hash::make($request->get('new-password'));
         $user->save();
 
-        return redirect()->back()->with("success","Password successfully changed!");
+        #return redirect()->back()->with("success","Password successfully changed!");
+        return view('user.profile');
     }
 }

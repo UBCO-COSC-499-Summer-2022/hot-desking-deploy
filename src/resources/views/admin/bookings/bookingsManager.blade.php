@@ -33,7 +33,12 @@
                                 <tr class="table-primary">
                                     <th>Desk Id</th>
                                     <th>User Id</th>
-                                    <th>Actions</th>
+                                    <th>
+                                        <div class="row">
+                                            <div class="col-md-5"></div>
+                                            <div class="col-md-4"></div>
+                                                Actions</th>
+                                        </div>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,14 +46,14 @@
                                 <tr>
                                     <td>{{$booking->desk_id}}</td>
                                     <td>{{$booking->first_name}}</td>
-                                    <td>
-                                        <a href="{{route('viewBooking',$booking->id)}}" class="btn btn-info"><i
-                                                class="bi bi-eye-fill text-white"></i></a>
-                                        <a href="{{route('editBooking',$booking->id)}}" class="btn btn-secondary"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal{{$booking->id}}"><i
-                                                class="bi bi-trash3-fill"></i></button>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-danger float-end mx-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal{{$booking->id}}">
+                                            <i class="bi bi-trash3-fill"></i></button>
+                                        <a href="{{route('editBooking',$booking->id)}}" class="btn btn-secondary float-end">
+                                            <i class="bi bi-pencil-square"></i></a>
+                                        <a href="{{route('viewBooking',$booking->id)}}" class="btn btn-info float-end mx-1">
+                                            <i class="bi bi-eye-fill text-white"></i></a>
                                     </td>
                                 </tr>
     
@@ -65,8 +70,8 @@
                                             <div class="modal-body">
                                                 <p>
                                                     This Booking is about to be permanently deleted. <br>
-                                                    Click Delete to Confirm <br>
-                                                    Click Cancel to go back
+                                                    Click <button type="submit" class="btn btn-danger mb-1" disabled>Delete</button> to Confirm <br>
+                                                    Click <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" disabled>Cancel</button> to go back
                                                 </p>
                                             </div>
                                             <form method="POST" action="{{route('booking.destroy',$booking->id)}}">

@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <label for="new-password-confirm" class="col-md-4 control-label">Confirm New Password</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <input id="new-password-confirm" type="password" class="form-control" name="new-password_confirmation" required>
                             </div>
                         </div>

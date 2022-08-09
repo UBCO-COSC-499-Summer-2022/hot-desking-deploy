@@ -33,6 +33,12 @@
                             <label for="disabledTextInput" class="form-label">Is Suspended: No</label>
                             @endIf
                         </div>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Faculty: {{$user->department->faculty->faculty}}</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Department: {{$user->department->department}}</label>
+                        </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end"> <a href="{{route('userManager')}}"
                                 class="btn btn-primary" role="button">Go back</a>
                         </div>

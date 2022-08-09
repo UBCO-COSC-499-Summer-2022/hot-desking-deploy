@@ -15,10 +15,7 @@ class Faculty extends Model
 
     protected $guarded = 'faculty_id';
 
-    protected $fillable = ['faculty', 'campus_id'];
+    protected $fillable = ['faculty'];
 
-    public function campus() {
-        return $this->belongsTo(Campus::class, 'campus_id', 'campus_id');
-    }
     
 }
