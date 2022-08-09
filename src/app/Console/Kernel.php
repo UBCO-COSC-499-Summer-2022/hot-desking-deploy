@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ClearOldBookings;
+use App\Console\Commands\MonthlyBookingsUsedReset;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
@@ -9,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        Commands\MonthlyBookingsUsedReset::class
+        MonthlyBookingsUsedReset::class,
+        ClearOldBookings::class,
     ];
 
     /**
@@ -21,7 +24,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('reset:bookings')->monthly()->timezone('America/Los_Angeles');
-        $schedule->command('verify:bookings')->weeklyOn(1, '00:00')->timezone('America/Los_Angeles');
+        // $schedule->command('verify:bookings')->weeklyOn(1, '00:00')->timezone('America/Los_Angeles');
+        $schedule->command('verify:bookings')->everyMinute()->timezone('America/Los_Angeles');
     }
 
     /**

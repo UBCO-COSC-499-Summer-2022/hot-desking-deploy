@@ -34,13 +34,15 @@ steps:
       # # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
       # # - rm -rf hot-desking-deploy
       # # Clone Directory
-      # - git clone -b merge-projects-test https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull4/
+      # - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull5/
       # - ls
       # # change directories 
-      # - cd test-pull4/
+      # - cd test-pull5/
       # # Run Bash File to setup project
       # - chmod 744 setup.sh
       # - sh setup.sh
+
+      # - docker compose run --rm artisan schedule:list
 
       ################################# Pull new changes #################################
       # Terminate all docker containers 
@@ -50,15 +52,22 @@ steps:
       # List all docker containers 
       - docker ps -a
       # change directories
-      - cd test-pull4/
+      - cd test-pull5/
+      - pwd
       # fetch new changes Directory
       - git fetch
       - git pull
       # Run Bash File to setup project
       - chmod 744 run.sh
       - sh run.sh
+
       - docker compose run --rm artisan schedule:list
-      
+
+      - docker compose run --rm artisan verify:bookings
+
+      # # TO REMOVE TEST CRON SCHEDULER
+      # - docker compose run --rm artisan db:seed --class=SchedulerSeeder --force
+
 trigger:
   branch:
   - main
