@@ -40,6 +40,7 @@ use ReflectionClass;
 
 ////////////////////////// USER //////////////////////////
 use App\Http\Controllers\User\UserBookingsController;
+use App\Models\Department;
 
 class DatabaseTest extends TestCase
 {
@@ -109,7 +110,7 @@ class DatabaseTest extends TestCase
     public function test_Role_Does_Delete_Function()
     {
         $roleToBeDeleted = Roles::factory()->create();
-        $roleToBeDeleted->role_id = 5;
+        $roleToBeDeleted->role_id = 6;
         $roleToBeDeleted->save();
 
         $controller = new RoleController();
@@ -123,7 +124,7 @@ class DatabaseTest extends TestCase
     public function test_Role_Does_Not_Delete_Function() 
     {
         $roleToBeDeleted = Roles::factory()->create();
-        $roleToBeDeleted->role_id = 1;
+        $roleToBeDeleted->role_id = 2;
         $roleToBeDeleted->save();
 
         $controller = new RoleController();
@@ -589,7 +590,9 @@ class DatabaseTest extends TestCase
     public function test_User_Store_Function()
     {
         $role_id = Roles::factory()->create()->role_id;
-        $faculty_id = Faculty::factory()->create()->faculty_id;
+        $department = Department::factory()->create();
+        $department_id = $department->department_id;
+        $faculty_id = $department->faculty_id;
 
         $first_name = $this->faker->firstName();
         $last_name = $this->faker->lastName();
@@ -606,7 +609,8 @@ class DatabaseTest extends TestCase
             'is_suspended' => $is_suspended,
             'is_admin' => $is_admin,
             'role_id' => $role_id,
-            'faculty_id' => $faculty_id
+            'faculty_id' => $faculty_id,
+            'department_id' => $department_id
         ]);
 
         $controller = new UserController();
@@ -619,7 +623,7 @@ class DatabaseTest extends TestCase
             'is_suspended' => $is_suspended,
             'is_admin' => $is_admin,
             'role_id' => $role_id,
-            'faculty_id' => $faculty_id
+            'department_id' => $department_id
         ]);
     }
 
@@ -627,7 +631,9 @@ class DatabaseTest extends TestCase
     {
         $userToBeUpdated = User::factory()->create();
         $role_id = Roles::factory()->create()->role_id;
-        $faculty_id = Faculty::factory()->create()->faculty_id;
+        $department = Department::factory()->create();
+        $department_id = $department->department_id;
+        $faculty_id = $department->faculty_id;
 
         $first_name = $this->faker->firstName();
         $last_name = $this->faker->lastName();
@@ -643,6 +649,7 @@ class DatabaseTest extends TestCase
             'is_admin' => $is_admin,
             'role_id' => $role_id,
             'faculty_id' => $faculty_id,
+            'department_id' => $department_id,
         ]);
 
         $controller = new UserController();
@@ -655,7 +662,90 @@ class DatabaseTest extends TestCase
             'is_suspended' => $is_suspended,
             'is_admin' => $is_admin,
             'role_id' => $role_id,
-            'faculty_id' => $faculty_id
+            'department_id' => $department_id
+        ]);
+    }
+
+    public function test_User_Suspended_Update_Function()
+    {
+        $userToBeUpdated = User::factory()->create();
+        $userToBeUpdated->is_suspended = false;
+        $userToBeUpdated->save();
+
+        $role_id = Roles::factory()->create()->role_id;
+        $department = Department::factory()->create();
+        $department_id = $department->department_id;
+        $faculty_id = $department->faculty_id;
+
+        $first_name = $this->faker->firstName();
+        $last_name = $this->faker->lastName();
+        $email = $this->faker->email();
+        $is_suspended = true;
+        $is_admin = $this->faker->boolean(50);
+
+        $request = Request::create(route('userUpdate', $userToBeUpdated->id), 'POST', [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'is_suspended' => $is_suspended,
+            'is_admin' => $is_admin,
+            'role_id' => $role_id,
+            'faculty_id' => $faculty_id,
+            'department_id' => $department_id,
+        ]);
+
+        $controller = new UserController();
+        $controller->update($request, $userToBeUpdated->id);
+
+        $this->assertDatabaseHas('users', [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'is_suspended' => $is_suspended,
+            'is_admin' => $is_admin,
+            'role_id' => $role_id,
+            'department_id' => $department_id
+        ]);
+    }
+
+    public function test_User_UnSuspended_Update_Function()
+    {
+        $userToBeUpdated = User::factory()->create();
+        $userToBeUpdated->is_suspended = true;
+        $userToBeUpdated->save();
+
+        $role_id = Roles::factory()->create()->role_id;
+        $department = Department::factory()->create();
+        $department_id = $department->department_id;
+        $faculty_id = $department->faculty_id;
+
+        $first_name = $this->faker->firstName();
+        $last_name = $this->faker->lastName();
+        $email = $this->faker->email();
+        $is_suspended = false;
+        $is_admin = $this->faker->boolean(50);
+
+        $request = Request::create(route('userUpdate', $userToBeUpdated->id), 'POST', [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'is_admin' => $is_admin,
+            'role_id' => $role_id,
+            'faculty_id' => $faculty_id,
+            'department_id' => $department_id,
+        ]);
+
+        $controller = new UserController();
+        $controller->update($request, $userToBeUpdated->id);
+
+        $this->assertDatabaseHas('users', [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'is_suspended' => $is_suspended,
+            'is_admin' => $is_admin,
+            'role_id' => $role_id,
+            'department_id' => $department_id
         ]);
     }
 
@@ -869,7 +959,7 @@ class DatabaseTest extends TestCase
     public function test_Registration_Create_Function()
     {
         $role_id = Roles::factory()->create()->role_id;
-        $faculty_id = Faculty::factory()->create()->faculty_id;
+        $department_id = Department::factory()->create()->faculty_id;
 
         $array = [
             'first_name' => $this->faker->firstName(),
@@ -877,7 +967,7 @@ class DatabaseTest extends TestCase
             'email' => $this->faker->safeEmail(),
             'password' => $this->faker->password(8),
             'role_id' => $role_id,
-            'faculty_id' => $faculty_id,
+            'department_id' => $department_id,
         ];
 
         $controller = new RegisterController();
@@ -1106,12 +1196,12 @@ class DatabaseTest extends TestCase
     public function test_User_Role_Default_On_Delete_Function()
     {
         $roleDefault = Roles::factory()->create();
-        $roleDefault->role_id = 0;
+        $roleDefault->role_id = 1;
         $roleDefault->save();
 
         $user = User::factory()->create();
         $role = Roles::find($user->role_id);
-        $role->role_id = 5;
+        $role->role_id = 6;
         $role->save();
 
         $controller = new RoleController();
@@ -1124,6 +1214,209 @@ class DatabaseTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'role_id' => $roleDefault->role_id,
+        ]);
+    }
+
+    
+    public function test_Booking_Effected_By_Desk_Deletion()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $desk = Desks::find($bookingToBeDeleted->desk_id);
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new DeskController();
+        $controller->destroy($desk->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Desk_Closure()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $desk = Desks::find($bookingToBeDeleted->desk_id);
+
+        $request = Request::create(route('deskUpdate'), 'POST', [
+            'id' => $desk->id,
+            'room_id' => $desk->room_id,
+            'pos_x' => 1,
+            'pos_y' => 2,
+            'is_closed' => true,
+        ]);
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new DeskController();
+        $controller->update($request);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Room_Deletion()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $room = Desks::find($bookingToBeDeleted->desk_id)->room;
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new RoomController();
+        $controller->destroy($room->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Room_Closure()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $room = Desks::find($bookingToBeDeleted->desk_id)->room;
+
+        $request = Request::create(route('roomUpdate', $room->id), 'POST', [
+            'floor_id' => $room->floor_id,
+            'name' => $room->name,
+            'occupancy' => $room->occupancy,
+            'is_closed' => true,
+        ]);
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new RoomController();
+        $controller->update($request, $room->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Floor_Deletion()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $floor = Desks::find($bookingToBeDeleted->desk_id)->room->floor;
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new FloorController();
+        $controller->destroy($floor->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Floor_Closure()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $floor = Desks::find($bookingToBeDeleted->desk_id)->room->floor;
+
+        $request = Request::create(route('floorUpdate', $floor->id), 'POST', [
+            'building_id' => $floor->building_id,
+            'floor_num' => $floor->floor_num,
+            'is_closed' => true,
+        ]);
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new FloorController();
+        $controller->update($request, $floor->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Building_Deletion()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $building = Desks::find($bookingToBeDeleted->desk_id)->room->floor->building;
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new BuildingController();
+        $controller->destroy($building->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Building_Closure()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $building = Desks::find($bookingToBeDeleted->desk_id)->room->floor->building;
+
+        $request = Request::create(route('buildingUpdate', $building->id), 'POST', [
+            'name' => $building->name,
+            'campus_id' => $building->campus_id,
+            'is_closed' => true,
+        ]);
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new BuildingController();
+        $controller->update($request, $building->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Campus_Deletion()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $campus = Desks::find($bookingToBeDeleted->desk_id)->room->floor->building->campus;
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new CampusController();
+        $controller->destroy($campus->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+    }
+
+    public function test_Booking_Effected_By_Campus_Closure()
+    {
+        $bookingToBeDeleted = Bookings::factory()->create();
+        $campus = Desks::find($bookingToBeDeleted->desk_id)->room->floor->building->campus;
+
+        $request = Request::create(route('campusUpdate', $campus->id), 'POST', [
+            'name' => $campus->name,
+            'is_closed' => true,
+        ]);
+
+        $this->assertDatabaseHas('bookings', [
+            'id' => $bookingToBeDeleted->id,
+        ]);
+
+        $controller = new CampusController();
+        $controller->update($request, $campus->id);
+
+        $this->assertDatabaseMissing('bookings', [
+            'id' => $bookingToBeDeleted->id,
         ]);
     }
 

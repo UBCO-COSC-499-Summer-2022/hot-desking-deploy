@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
+use App\Models\Faculty;
 use App\Models\Roles;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
