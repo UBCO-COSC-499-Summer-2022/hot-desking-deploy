@@ -3,19 +3,18 @@
 namespace Tests\Unit;
 
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\DeskController;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\CampusController;
+use App\Http\Controllers\Admin\DeskController;
+use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\BuildingController;
+use App\Http\Controllers\Admin\CampusController;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\FloorController;
-use App\Http\Controllers\PoliciesController;
-use App\Http\Controllers\ResourceController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Admin\FloorController;
+use App\Http\Controllers\Admin\PoliciesController;
+use App\Http\Controllers\Admin\ResourceController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Models\Bookings;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\User\UserBookingsController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\UserController;
 use App\Models\Buildings;
 use App\Models\Campuses;
 use App\Models\Desks;
@@ -38,6 +37,9 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Boolean;
 use ReflectionClass;
+
+////////////////////////// USER //////////////////////////
+use App\Http\Controllers\User\UserBookingsController;
 
 class DatabaseTest extends TestCase
 {

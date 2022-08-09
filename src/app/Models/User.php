@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'role_id',
-        'faculty_id'
+        'department_id'
     ];
 
     /**
@@ -56,7 +56,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Roles::class, 'role_id', 'role_id');
     }
 
-    public function desks() {
-        return $this->belongsToMany(Desks::class,'bookings','user_id','desk_id')->withPivot('id', 'book_time_start', 'book_time_end');
+    public function department() {
+        return $this->belongsTo(Department::class, 'department_id', 'department_id');
     }
+    
 }

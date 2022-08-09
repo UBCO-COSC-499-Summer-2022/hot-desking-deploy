@@ -27,15 +27,15 @@
                             <div class="mb-3">
                                 <div class="form-check form-switch">
                                     @if($campus->is_closed)
-                                    <input class="form-check-input" type="checkbox" value='TRUE' name="is_closed"
-                                        id="flexSwitchCheckDefault" checked>
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Campus
-                                        Availability</label>
-                                    @else
-                                    <input class="form-check-input" type="checkbox" value='TRUE' name="is_closed"
+                                    <input class="form-check-input" type="checkbox" value='FALSE' name="is_closed"
                                         id="flexSwitchCheckDefault">
                                     <label class="form-check-label" for="flexSwitchCheckDefault">Campus
-                                        Availability</label>
+                                        Available</label>
+                                    @else
+                                    <input class="form-check-input" type="checkbox" value='FALSE' name="is_closed"
+                                        id="flexSwitchCheckDefault" checked>
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Campus
+                                        Available</label>
                                     @endif
                                 </div>
                             </div>

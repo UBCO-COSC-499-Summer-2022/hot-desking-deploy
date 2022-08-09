@@ -75,6 +75,9 @@
                                 <a class="dropdown-item" href="{{ route('usageStatistics') }}">
                                     Usage Statistics
                                 </a>
+                                <a class="dropdown-item" href="{{ route('emailLogs') }}">
+                                    Download Logs <i class="bi bi-download mx-2"></i>
+                                </a>
 
                             </div>
                         </li>

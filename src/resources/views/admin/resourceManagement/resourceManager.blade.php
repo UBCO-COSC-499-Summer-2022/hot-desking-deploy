@@ -32,8 +32,7 @@
                                     <th>Icon</th>
                                     <th>
                                         <div class="row">
-                                            <div class="col-md-3"></div>
-                                            <div class="col-md-2"></div>
+                                            <div class="col text-end">
                                             Actions
                                         </div>
                                     </th>
@@ -67,8 +66,8 @@
                                             <div class="modal-body">
                                                 <p>
                                                     This Resource is about to be permanently deleted. <br>
-                                                    Click Delete to Confirm <br>
-                                                    Click Cancel to go back
+                                                    Click <button type="submit" class="btn btn-danger mb-1" disabled>Delete</button> to Confirm <br>
+                                                    Click <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" disabled>Cancel</button> to go back
                                                 </p>
                                             </div>
                                             <form action="{{route('resource.destroy', $resource->resource_id)}}" method="POST">

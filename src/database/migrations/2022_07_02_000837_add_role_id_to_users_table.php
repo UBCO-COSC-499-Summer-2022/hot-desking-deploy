@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->bigInteger('role_id')->default(0);
+            $table->bigInteger('role_id')->default(1);
             $table->foreign('role_id')->references('role_id')->on('roles')->onDelete('set default')->onUpdate('set default');
         });
     }

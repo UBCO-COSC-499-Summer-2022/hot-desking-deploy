@@ -45,9 +45,9 @@
                         <tr>
                             <td class="text-center align-middle">{{$campus->name}}</td>
                             @if($campus->is_closed == TRUE)
-                            <td class="text-center align-middle">Open</td>
-                            @else
                             <td class="text-center align-middle">Closed</td>
+                            @else
+                            <td class="text-center align-middle">Open</td>
                             @endif
                             <td>
                                 <a role="button" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#deleteModal{{$campus->id}}">
@@ -72,8 +72,8 @@
                                     <div class="modal-body">
                                         <p>
                                             This Campus is about to be permanently deleted. <br>
-                                            Click Delete to Confirm <br>
-                                            Click Cancel to go back
+                                            Click <button type="submit" class="btn btn-danger mb-1" disabled>Delete</button> to Confirm <br>
+                                            Click  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" disabled>Cancel</button> to go back
                                         </p>
                                     </div>
                                     <form method="POST" action="{{route('campus.destroy',$campus->id)}}">

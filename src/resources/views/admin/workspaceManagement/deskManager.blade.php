@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="container">
     <div class="row justify-content-left">
         <div class="col-md-8">
@@ -28,7 +27,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
-
                 @if($room->rows == 0 || $room->cols == 0)
                 <div id="dimensionsForm">
                     <h3>Define Room Dimensions</h3>
@@ -59,16 +57,21 @@
                         </div>
                         </fieldset>
                     </form>
-                </div>
-                    
+                </div>     
                 @else
                 <div class="row">
                     <div class="col-md-4 scrollable">
                         @if(count($desks) < 1) 
                         <div class="alert alert-warning wizard">
-                            <i class="bi bi-exclamation-circle-fill"></i> There are no desks to display.
+                            <i class="bi bi-exclamation-circle-fill"></i> 
+                                There are no desks to display.<br>
+                                Add a desk by selecting an open space on the right.
                         </div>
                         @else
+                        <div class="alert alert-info wizard">
+                            <i class="bi bi-exclamation-circle-fill"></i> 
+                                Add a desk by selecting an open space on the right.
+                        </div>
                         <table class="table table-light table-bordered table-responsive">
                             <thead>
                                 <tr class="table-primary">
@@ -81,10 +84,10 @@
                                 @foreach($desks as $desk)
                                 <tr>
                                     <td class="text-center align-middle">{{$desk->id}}</td>
-                                    @if($desk->is_closed == FALSE)
-                                    <td class="text-center align-middle">Open</td>
-                                    @else
+                                    @if($desk->is_closed == TRUE)
                                     <td class="text-center align-middle">Closed</td>
+                                    @else
+                                    <td class="text-center align-middle">Open</td>
                                     @endif
                                     <td class="text-center">
                                         <button type="button" onclick="editDesk({{$desk->id}},{{$desk->pos_x}},{{$desk->pos_y}},{{$desk->room_id}},{{$desk->is_closed}})" class="btn btn-secondary">
@@ -104,8 +107,8 @@
                                             <div class="modal-body">
                                                 <p>
                                                     This Desk is about to be permanently deleted. <br>
-                                                    Click Delete to Confirm <br>
-                                                    Click Cancel to go back
+                                                    Click <button type="submit" class="btn btn-danger mb-1" disabled>Delete</button> to Confirm <br>
+                                                    Click <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" disabled>Cancel</button> to go back
                                                 </p>
                                             </div>
                                             <form action="{{route('desk.destroy',$desk->id)}}" method="POST">
@@ -202,8 +205,8 @@
                     <fieldset>
                         <div class="mb-3">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" value='TRUE' name="is_closed" id="is_closed">
-                                <label class="form-check-label" for="is_closed">Close Desk</label>
+                                <input class="form-check-input" type="checkbox" value='FALSE' name="is_closed" id="is_closed">
+                                <label class="form-check-label" for="is_closed">Desk Available</label>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -246,7 +249,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="editDeskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -275,8 +277,8 @@
                         </div>
                         <div class="mb-3">
                             <div class="isClosedSwitch form-check form-switch">
-                                <input class="form-check-input" type="checkbox" value='TRUE' name="is_closed" id="is_closedEdit">
-                                <label class="form-check-label" for="is_closed">Close Desk</label>
+                                <input class="form-check-input" type="checkbox" value='FALSE' name="is_closed" id="is_closedEdit">
+                                <label class="form-check-label" for="is_closed">Desk Available</label>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -318,7 +320,7 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
+<!-- Validate Dimension Update Modal -->
 <div class="modal fade" id="validateDimUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -350,7 +352,7 @@
   </div>
 </div>
 
-<!-- <script type="text/javascript" src="{{ asset('js/alert.js') }}"></script> -->
+<script type="text/javascript" src="{{ asset('js/alert.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/select-desk.js') }}"></script>
 <script type="text/javascript">
 $(window).on('load', function(){
@@ -373,19 +375,8 @@ $(window).on('load', function(){
             data: {data: desk.id},
             success: function (data) {
                 $('#r'+desk.pos_x+'c'+desk.pos_y).append(data);
-            }
-            
+            }   
         });
-
-        // if (desk.is_closed){
-        //     $('#r'+desk.pos_x+'c'+desk.pos_y).append(`<div class="editClosedDesk w-100 h-100 text-center" id="${desk.id}" onclick="editDesk(${desk.id},${desk.pos_x},${desk.pos_y},${desk.room_id},${desk.is_closed})">Desk #${desk.id} CLOSED
-            
-        //     </div>`);
-        // }
-        // else{
-        //     $('#r'+desk.pos_x+'c'+desk.pos_y).append(`<div class="editDeskButton w-100 h-100 text-center" id="${desk.id}" onclick="editDesk(${desk.id},${desk.pos_x},${desk.pos_y},${desk.room_id},${desk.is_closed})">Desk #${desk.id}                
-        //     </div>`);
-        // }
     });
 });
 
@@ -429,26 +420,6 @@ $("#updateRoomDimension").submit(function(event) {
             $("#dimUpdateModalSubmitBtn").removeClass("btn-danger").addClass("btn-success");
         }
     }
-    // event.preventDefault();
-    // $.ajax({
-    //     url: route,
-    //     type: "POST",
-    //     data: { data: jQuery("#roomId").val()
-    //     },
-    //     success: function(result) {    
-    //         if(result.errors){
-    //             $("#validateDimUpdateModal").modal("show");
-    //             jQuery.each(result.errors, function(key, value){
-    //                 $("#listDeletedDesks").append(value);
-
-    //             });
-    //         } else {
-    //             $("#validateDimUpdateModal").modal("show");
-    //             $("#listDeletedDesks").append(result);
-    //         }
-            
-    //     }
-    // })
 });
 
 </script>

@@ -44,7 +44,9 @@ class RegisterController extends Controller
 
     public function index() {
         $roles = Roles::all();
-        return view('auth.register')->with('roles', $roles);
+        $faculties = Faculty::all();
+        $departments = Department::all();
+        return view('auth.register')->with('roles', $roles)->with('faculties',$faculties)->with('departments', $departments);
     }
 
     /**
@@ -61,7 +63,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role_id' => ['required', 'integer', 'exists:roles,role_id'],
-            'faculty_id' => ['required', 'integer', 'exists:faculties,faculty_id'],
+            'department_id' => ['required', 'integer', 'exists:departments,department_id'],
         ]);
     }
     public function testCreateFunction (array $data) {
@@ -81,7 +83,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role_id' => $data['role_id'],
-            'faculty_id' => $data['faculty_id'],
+            'department_id' => $data['department_id'],
         ]);
     }
 }

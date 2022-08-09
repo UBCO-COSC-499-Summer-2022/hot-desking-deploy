@@ -37,7 +37,9 @@
                     <select name="role_ids[]" class="form-select text-md-start">
                         <option disabled selected value="NULL">Please Select a Role</option>
                         @foreach ($roles as $eachRole)
+                            @if($eachRole->role_id != 1)
                             <option value="{{$eachRole->role_id}}">{{$eachRole->role}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </td>
@@ -99,7 +101,9 @@
                                                         <option value="{{$role->role_id}}">{{$role->role}}</option>
                                                         @foreach ($roles as $eachRole)
                                                             @if ($role->role_id != $eachRole->role_id)
+                                                                @if($eachRole->role_id != 1)
                                                                 <option value="{{$eachRole->role_id}}">{{$eachRole->role}}</option>
+                                                                @endif
                                                             @endif
                                                         @endforeach
                                                     </select>

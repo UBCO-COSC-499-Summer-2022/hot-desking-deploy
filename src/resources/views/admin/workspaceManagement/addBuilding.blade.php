@@ -25,10 +25,10 @@
                                 @enderror
                             </div>
                             <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" value='TRUE' name="is_closed"
+                                    <input class="form-check-input" type="checkbox" value='FALSE' name="is_closed"
                                         id="flexSwitchCheckDefault">
                                     <label class="form-check-label" for="flexSwitchCheckDefault">Building
-                                        Availability</label>
+                                        Available</label>
                             <div class="mb-3">
                                 <input name='campus_id' value='{{$campus_id}}' type='hidden' class='form-check-input'>
                                 <button class="btn btn-success float-end" role="button">Submit</button>

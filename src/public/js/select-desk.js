@@ -35,11 +35,11 @@ function editDesk(id, row, col, roomId, isClosed) {
     $("#editDeskModal").modal("show");
     var deskClosedSwitch = document.getElementById("is_closed");
     console.log(isClosed);
-    
+
     if(isClosed) {
-        $("#is_closedEdit").prop('checked', true);
-    } else {
         $("#is_closedEdit").prop('checked', false);
+    } else {
+        $("#is_closedEdit").prop('checked', true);
     }
     
     $("#pos_x").val(row); 

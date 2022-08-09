@@ -38,7 +38,7 @@
                             <tbody>
                                 @foreach($roles as $role)
                                 <!-- Run if role_id != 0 -->
-                                @if($role->role_id != 0)
+                                @if($role->role_id != 1)
                                 <tr>
                                     <td>{{$role->role}}</td>
                                     <td>{{$role->num_monthly_bookings}}</td>
@@ -49,11 +49,12 @@
                                                 class="bi bi-eye-fill text-white"></i></a>
                                         <a href="{{route('editRole',$role->role_id)}}" class="btn btn-secondary">
                                         <i class="bi bi-pencil-square"></i></a>
-                                        @if($role->role_id > 4)
+                                        @if($role->role_id > 5)
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#deleteModal{{$role->role_id}}">
                                             <i class="bi bi-trash3-fill"></i>
                                         </button>
+                                        @else
                                         @endif
                                     </td>
                                 </tr>
