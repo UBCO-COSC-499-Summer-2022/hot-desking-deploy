@@ -23,7 +23,6 @@ steps:
     script:
       ################################# Test #################################
       - ls
-      - cd hot-desk
       - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*”
       - ls
       - cd ..
