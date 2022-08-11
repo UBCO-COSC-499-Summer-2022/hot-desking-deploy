@@ -22,12 +22,7 @@ steps:
     envs: [ PASS, USER ]
     script:
       ################################# Test #################################
-      - ls
       - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*”
-      - ls
-      - cd ..
-      - ls
-
       ################################# Pull fresh github #################################
       # - ls
       # # Set permission to directory used to remove files
