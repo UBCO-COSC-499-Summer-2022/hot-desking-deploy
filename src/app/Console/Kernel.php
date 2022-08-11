@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('reset:bookings')->monthly()->timezone('America/Los_Angeles');
-        // $schedule->command('verify:bookings')->weeklyOn(1, '00:00')->timezone('America/Los_Angeles');
-        $schedule->command('verify:bookings')->everyMinute()->timezone('America/Los_Angeles');
+        $schedule->command('verify:bookings')->weeklyOn(1, '00:00')->timezone('America/Los_Angeles');
+        // $schedule->command('verify:bookings')->everyMinute()->timezone('America/Los_Angeles');
     }
 
     /**
