@@ -14,6 +14,5 @@ docker compose run --rm npm install
 docker compose run --rm npm run prod
 # TODO REMOVE FORCE FLAG
 docker compose run --rm artisan migrate --force
-docker compose run --rm artisan db:seed --class=ResourceSeeder --force
-docker compose run --rm artisan db:seed --class=UserSeeder --force
-echo Server is LIVE
+docker compose run --rm artisan db:seed --class=DBSeeder --force
+docker compose up -d --build cron

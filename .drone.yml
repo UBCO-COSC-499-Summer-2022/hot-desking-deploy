@@ -21,28 +21,29 @@ steps:
     command_timeout: 5m
     envs: [ PASS, USER ]
     script:
+      ################################# Test #################################
+      # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*”
+      # - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-runner.git runner
+
       ################################# Pull fresh github #################################
       - ls
-      # Set permission to directory used to remove files
-      # - sudo chown deploy hot-desking-deploy
       # Terminate all docker containers 
       - docker kill $(docker ps -q)
       # Remove all non-running containers
       - docker system prune -f
       # List all docker containers 
       - docker ps -a
-      # TODO CLEAR DIRECTORY TO START FRESH TODO NEED HELP FROM REECE PERMISSION ISSUE WHEN TRYING TO DELETE LEFT OVER FILES FROM NODE MODULES
-      # - rm -rf hot-desking-deploy
       # Clone Directory
-      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull6/
+      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull8/
       - ls
       # change directories 
-      - cd test-pull6/
+      - cd test-pull8/
       # Run Bash File to setup project
       - chmod 744 setup.sh
       - sh setup.sh
 
       - docker compose run --rm artisan schedule:list
+      - echo Server is LIVE
 
       # ################################# Pull new changes #################################
       # # Terminate all docker containers 
@@ -52,7 +53,7 @@ steps:
       # # List all docker containers 
       # - docker ps -a
       # # change directories
-      # - cd test-pull5/
+      # - cd test-pull8/
       # - pwd
       # # fetch new changes Directory
       # - git fetch
@@ -62,6 +63,7 @@ steps:
       # - sh run.sh
 
       # - docker compose run --rm artisan schedule:list
+      # - echo Server is LIVE
 
 trigger:
   branch:
