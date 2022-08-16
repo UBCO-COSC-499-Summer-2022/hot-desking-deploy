@@ -165,7 +165,7 @@ overflow-x: scroll;
                         </div>
                     </div>
                     <hr>
-                    <div id="calendar_container" class="container mt-6" style="max-width: 700px">
+                    <div id="calendar_container" class="container mt-6" style="max-width: 1000px">
                         <div id='bookings_event'></div>
                         <div class="container">
                             <div class="row justify-content-start">
