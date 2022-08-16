@@ -50,17 +50,31 @@
                                 <div class="alert alert-danger">{{$message}}</div>
                                 @enderror
                         </tr>
-                        <tr>
-                            <th colspan="2" >User Supervisor:</th>
-                            @if ($user->supervisor != NULL)
-                                <td colspan="2"><input id="supervisor" min="1" max="255" type="text" value="{{$user->supervisor}}" name="supervisor"  class="form-control @error('last_name') is-invalid @enderror" required></td>
-                            @else
-                                <td colspan="2"><input id="supervisor" min="1" max="255" type="text" value="{{$user->supervisor}}" name="supervisor"  class="form-control @error('last_name') is-invalid @enderror" required style="display: none;"></td>
-                            @endif
-                                @error('supervisor')
+                    @if ($user->role_id==4|$user->role_id==5)       
+                        <tr id="supervisorRow">
+                            <th colspan="2">User Supervisor:</th>
+                                @if ($user->role_id==4)
+                                    <td colspan="2"><input id="supervisor" min="1" max="255" type="text" value="{{$user->supervisor}}" name="supervisor"  class="form-control @error('last_name') is-invalid @enderror" required></td>
+                                @else
+                                    <td colspan="2"><input id="supervisor" min="1" max="255" type="text" value="{{$user->supervisor}}" name="supervisor"  class="form-control @error('last_name') is-invalid @enderror"></td>
+                                @endif
+                            @error('supervisor')
                                 <div class="alert alert-danger">{{$message}}</div>
                             @enderror
                         </tr>
+                    @else
+                        <tr id="supervisorRow" style="display:none;">
+                            <th colspan="2">User Supervisor:</th>
+                                @if ($user->role_id==4)
+                                    <td colspan="2"><input id="supervisor" min="1" max="255" type="text" value="{{$user->supervisor}}" name="supervisor"  class="form-control @error('last_name') is-invalid @enderror" required></td>
+                                @else
+                                    <td colspan="2"><input id="supervisor" min="1" max="255" type="text" value="{{$user->supervisor}}" name="supervisor"  class="form-control @error('last_name') is-invalid @enderror"></td>
+                                @endif
+                            @error('supervisor')
+                                <div class="alert alert-danger">{{$message}}</div>
+                            @enderror
+                        </tr>
+                    @endif
                     </tbody>
                 </table>
                 <div class="mb-3">
@@ -92,13 +106,18 @@
     function checkGraduate(){
         if ($('#role_id').val()==='4'|$('#role_id').val()==='5'){
             //if role equal to graduate, display supervisor text
-            // $('#supervisorRow').fadeIn()
-            $('#supervisor').show()
+            if ($('#role_id').val()==='4'){
+                $('#supervisor').prop('required',true)
+            }else{
+                $('#supervisor').removeAttr('required')
+            }
+            $('#supervisorRow').show()
         }
         else{
             //if roles not equal to graduate, check if supervisor text is visible and hide it if true
-            // $('#supervisorRow').fadeOut()
-            $('#supervisor').hide()
+            $('#supervisor').removeAttr('required')
+            $('#supervisorRow').hide()
+            
         }
     }
 </script>

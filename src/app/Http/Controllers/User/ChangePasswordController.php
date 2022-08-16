@@ -2,9 +2,10 @@
 
 #app\Http\Controllers\HomeController.php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Models\Users;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +13,16 @@ use App\User;
 
 class ChangePasswordController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth','verified']);
+    }
+
     public function showChangePasswordGet() {
         return view('user.changePassword');
     }
@@ -40,6 +51,7 @@ class ChangePasswordController extends Controller
         $user->save();
 
         #return redirect()->back()->with("success","Password successfully changed!");
-        return view('user.profile');
+        #return view('user.profile');
+        return redirect()->route('profile');
     }
 }

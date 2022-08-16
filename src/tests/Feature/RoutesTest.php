@@ -19,11 +19,6 @@ use Tests\TestCase;
 class RoutesTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     public function test_example()
     {
         $response = $this->get('/');
@@ -717,28 +712,410 @@ class RoutesTest extends TestCase
         $response->assertStatus(302);
     }
 
-    //////////////////////////// User-Side ////////////////////////////////
-
-    // Bookings Controller
-    public function test_guest_user_can_not_view_their_bookings()
+    public function test_admin_can_access_Downlaod_Logs()
     {
-        $response = $this->get('bookings');
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+        $response = $this->actingAs($user)->get(route('emailLogs'));
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Downlaod_Logs()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('emailLogs'));
         $response->assertStatus(302);
     }
 
-    public function test_unverified_user_can_not_view_their_bookings()
+    public function test_admin_can_access_Download_Log_Function()
     {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('downloadLogs'));
+        $response->assertDownload();
+    }
+
+    public function test_non_admin_can_not_access_Download_Log_Function()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('downloadLogs'));
+        $response->assertStatus(302);
+    }
+    
+    public function test_admin_can_access_Booking_Time_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('viewBookingTimeStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Booking_Time_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewBookingTimeStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Department_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+        
+        $response = $this->actingAs($user)->get(route('viewDepartmentStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Department_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewDepartmentStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Resource_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('viewResourcesStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Resource_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewResourcesStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Role_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('viewRolesStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Role_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewRolesStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Usage_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('usageStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Usage_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('usageStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    //////////////////////////// User-Side ////////////////////////////////
+
+    // =========================BookingsController=========================
+
+    /**
+     * A basic route test to check that an unverified user can't access the 'My Bookings' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_my_bookings_page() {
+        // Create an unverified user
         $user = User::factory()->unverified()->create();
 
         $response = $this->actingAs($user)->get(route('bookings'));
         $response->assertStatus(302);
     }
 
-    public function test_verified_user_can_view_their_bookings()
+    /**
+     * A basic route test to check that a verified user can access the 'My Bookings' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_my_bookings_page()
     {
+        // Create a verified user
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('bookings'));
+
+        $response->assertStatus(200);
+    }
+
+    // =========================ProfileController=========================
+
+        /**
+     * A basic route test to check that an unverified user can't access the 'Profile' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_profile_page() {
+        // Create an unverified user
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get(route('profile'));
+        $response->assertStatus(302);
+    }
+
+    /**
+     * A basic route test to check that a verified user can access the 'Profile' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_profile_page()
+    {
+        // Create a verified user
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('profile'));
+
+        $response->assertStatus(200);
+    }
+    
+    // =========================HomeController=========================
+
+        /**
+     * A basic route test to check that an unverified user can't access the 'Dashboard' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_dashboard_page() {
+        // Create an unverified user
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get(route('home'));
+        $response->assertStatus(302);
+    }
+
+    /**
+     * A basic route test to check that a verified user can access the 'Dashboard' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_dashboard_page()
+    {
+        // Create a verified user
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertStatus(200);
+    }
+
+    // =========================SearchController=========================
+
+        /**
+     * A basic route test to check that an unverified user can't access the 'Search Available Bookings' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_search_available_bookings_page() {
+        // Create an unverified user
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get(route('search'));
+        $response->assertStatus(302);
+    }
+
+    /**
+     * A basic route test to check that a verified user can access the 'Dashboard' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_search_available_bookings_page()
+    {
+        // Create a verified user
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('search'));
+
+        $response->assertStatus(200);
+    }
+    
+    // =========================ModifyController=========================
+
+        /**
+     * A basic route test to check that an unverified user can't access the 'Modify' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_modify_page() {
+        // Create an unverified user
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get(route('modify'));
+        $response->assertStatus(302);
+    }
+
+    /**
+     * A basic route test to check that a verified user can access the 'Dashboard' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_modify_page()
+    {
+        // Create a verified user
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('modify'));
+
+        $response->assertStatus(200);
+    }
+
+    // =========================ViewDeskController=========================
+
+    /**
+     * A basic route test to check that an unverified user can't access the 'View Desk' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_view_desk_page() {
+        // Create an unverified user
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get(route('viewDesk'));
+        $response->assertStatus(302);
+    }
+
+    /**
+     * A basic route test to check that a verified user can access the 'View Desk' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_view_desk_page()
+    {
+        // Create a verified user
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewDesk'));
+
+        $response->assertStatus(200);
+    }
+
+    // =========================FilterController=========================
+
+    /**
+     * A basic route test to check that an unverified user can't access the 'Filter' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_filter_page() {
+        // Create an unverified user
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get(route('indicateBuilding'));
+        $response->assertStatus(302);
+    }
+
+    /**
+     * A basic route test to check that a verified user can access the 'Filter' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_filter_page()
+    {
+        // Create a verified user
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('indicateBuilding'));
+
+        $response->assertStatus(200);
+    }
+
+    // =========================ChangePasswordController=========================
+
+    /**
+     * A basic route test to check that an unverified user can't access the 'Change Password' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_change_password_page() {
+        // Create an unverified user
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get(route('changePasswordGet'));
+        $response->assertStatus(302);
+    }
+
+    /**
+     * A basic route test to check that a verified user can access the 'Change Password' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_change_password_page()
+    {
+        // Create a verified user
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('changePasswordGet'));
+
+        $response->assertStatus(200);
+    }
+    
+     // =========================ChangeEmailController=========================
+
+    /**
+     * A basic route test to check that an unverified user can't access the 'Change Email' page. 
+     *
+     * @return void
+     */
+    public function test_unverified_user_can_not_access_change_email_page() {
+        // Create an unverified user
+        $user = User::factory()->unverified()->create();
+
+        $response = $this->actingAs($user)->get(route('changeEmailGet'));
+        $response->assertStatus(302);
+    }
+
+    /**
+     * A basic route test to check that a verified user can access the 'Change Email' page. 
+     *
+     * @return void
+     */
+    public function test_verified_user_can_access_change_email_page()
+    {
+        // Create a verified user
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('changeEmailGet'));
+
         $response->assertStatus(200);
     }
 }

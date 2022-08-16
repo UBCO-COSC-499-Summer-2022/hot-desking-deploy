@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Events\UserIsSuspended;
 use App\Events\UserIsUnSuspended;
+use App\Http\Controllers\Controller;
 use App\Models\Users;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -110,7 +110,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        // ddd($request->all());
         $this->validate($request,[
             'first_name' => 'required|max:255', 
             'last_name' => 'required|max:255', 
@@ -139,7 +140,9 @@ class UserController extends Controller
 
         if($request->has('is_suspended') && ($request->input('is_suspended') == TRUE)) {
             $user->is_suspended=TRUE;
-        }else {
+        }elseif($request->has('is_suspended') && ($request->input('is_suspended') == FALSE)) {
+            $user->is_suspended=FALSE;
+        } else {
             $user->is_suspended=FALSE;
         }
 

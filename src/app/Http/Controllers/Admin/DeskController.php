@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Events\WorkSpaceDeletedOrClosed;
+use App\Http\Controllers\Controller;
 use App\Models\Desks;
 use App\Models\Resources;
 use App\Models\Resources_Desks;

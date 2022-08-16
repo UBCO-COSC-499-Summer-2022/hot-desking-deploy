@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Session;
 class DepartmentStatisticsController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified', 'isAdmin', 'isSuspended']);
+    }
+
     public function index() {
 
 

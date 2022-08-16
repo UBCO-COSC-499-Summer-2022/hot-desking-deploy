@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
 
                 <div class="card-header h2 text-center">
@@ -31,8 +31,8 @@
                         <table class="table table-light">
                             <thead>
                                 <tr class="table-primary">
-                                    <th>Desk Id</th>
-                                    <th>User Id</th>
+                                    <th>Desk ID</th>
+                                    <th>First Name</th>
                                     <th>
                                         <div class="row">
                                             <div class="col-md-5"></div>
@@ -100,5 +100,5 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('js/test.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/alert.js') }}"></script>
 @endsection

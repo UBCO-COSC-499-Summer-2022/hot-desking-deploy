@@ -162,8 +162,9 @@
 
         var floorId = parseInt($('#floor').find(':selected').attr('value'));
         var filteredRooms = rooms.filter(item => {
-                if (!item.is_closed)
+                if (!item.is_closed) {
                     return item.floor_id === floorId;
+                }
             });
         
         // Check if filteredRooms.length > 1

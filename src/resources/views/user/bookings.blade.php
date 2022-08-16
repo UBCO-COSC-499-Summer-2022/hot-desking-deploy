@@ -50,20 +50,35 @@
                                                 <div class="mx-2">
                                                     <form action="{{ route('calendar') }}">
                                                         <input name='room_id' value='{{$booking->room->id}}' type='hidden' class='form-check-input'>
+
+                                                        @if( date('Y-m-d H:i:s', strtotime('35 minutes')) > $booking->pivot->book_time_start )
+
+                                                        <a role="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#display">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                        </a>
+                                                        @else
                                                         <button type="submit" class="btn btn-secondary">
                                                             <i class="bi bi-pencil-square"></i>
-                                                        </button>        
+                                                        </button>
+                                                        @endif        
                                                     </form>
+
                                                 </div>
                                                 <div>
+
+                                                @if( date('Y-m-d H:i:s', strtotime('30 minutes') )> $booking->pivot->book_time_start)
+
+                                                    <a role="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#display">
+                                                @else
                                                     <a role="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal{{$booking->pivot->id}}">
+                                                @endif
                                                         <i class="bi bi-trash3-fill"></i> 
                                                     </a>
                                                 </div>
                                             </div>                        
                                         </td>
                                     </tr>
-                                    <!-- --Modal  start -- -->
+                                    <!-- --cancel booking Modal  start -- -->
                                     <div class="modal fade" id="cancelModal{{$booking->pivot->id}}" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -84,6 +99,29 @@
                                         </div>
                                     </div>
                                     <!-- --Modal  finish -- -->
+
+
+                                    <!-- --displayInfo Modal  start -- -->
+                                    <div class="modal fade" id="display" tabindex="-1" aria-labelledby="display" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+
+                                                    <h5 class="modal-title" id="cancelModalLabel">Error</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    Past event cannot be deleted or modified
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- --Modal  finish -- -->
                                 @endforeach    
                             </tbody>
                         </table>
@@ -93,7 +131,6 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript" src="{{ asset('js/alert.js') }}"></script>
 @endsection
 
