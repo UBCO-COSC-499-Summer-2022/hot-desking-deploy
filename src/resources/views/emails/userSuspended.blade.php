@@ -2,6 +2,6 @@
 
 # Your account has been suspended
 
-To learn more, or appeal the suspension please contact ...
+You will no longer be able to make booking using the hot desking website
 
 @endcomponent

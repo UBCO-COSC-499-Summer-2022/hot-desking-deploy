@@ -19,11 +19,6 @@ use Tests\TestCase;
 class RoutesTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     public function test_example()
     {
         $response = $this->get('/');
@@ -713,6 +708,141 @@ class RoutesTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('editResource', $resource->resource_id));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Downlaod_Logs()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+        $response = $this->actingAs($user)->get(route('emailLogs'));
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Downlaod_Logs()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('emailLogs'));
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Download_Log_Function()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('downloadLogs'));
+        $response->assertDownload();
+    }
+
+    public function test_non_admin_can_not_access_Download_Log_Function()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('downloadLogs'));
+        $response->assertStatus(302);
+    }
+    
+    public function test_admin_can_access_Booking_Time_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('viewBookingTimeStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Booking_Time_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewBookingTimeStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Department_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+        
+        $response = $this->actingAs($user)->get(route('viewDepartmentStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Department_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewDepartmentStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Resource_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('viewResourcesStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Resource_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewResourcesStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Role_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('viewRolesStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Role_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('viewRolesStatistics'));
+
+        $response->assertStatus(302);
+    }
+
+    public function test_admin_can_access_Usage_Statistics()
+    {
+        $user = User::factory()->create();
+        $user->is_admin = TRUE;
+        $user->save();
+
+        $response = $this->actingAs($user)->get(route('usageStatistics'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_can_not_access_Usage_Statistics()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('usageStatistics'));
 
         $response->assertStatus(302);
     }

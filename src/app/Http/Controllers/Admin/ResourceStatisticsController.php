@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class ResourceStatisticsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified', 'isAdmin', 'isSuspended']);
+    }
 
     public function index()
     {

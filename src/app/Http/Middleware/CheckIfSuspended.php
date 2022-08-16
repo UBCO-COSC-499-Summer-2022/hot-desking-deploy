@@ -19,7 +19,7 @@ class CheckIfSuspended
     public function handle(Request $request, Closure $next)
     {
         if ($this->checkIfUserIsSuspended(User::find(Auth::id()))) {
-            return redirect()->route('welcome');
+            return redirect()->route('suspended');
         }
         return $next($request);
     }

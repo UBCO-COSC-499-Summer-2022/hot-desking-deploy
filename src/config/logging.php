@@ -51,10 +51,17 @@ return [
     */
 
     'channels' => [
+
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['email-notif-channel',],
             'ignore_exceptions' => false,
+        ],
+
+        'email-notif-channel' => [
+            'driver' => 'single',
+            'level' => 'notice',
+            'path' => storage_path('logs/emailLogs.log'),
         ],
 
         'single' => [

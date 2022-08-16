@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
 
                 <div class="card-header text-center h2">
@@ -20,7 +20,7 @@
                     <nav id="stats-views">
                         <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="nav-restrictions-tab" data-bs-toggle="tab" data-bs-target="#nav-restrictions" type="button" role="tab" aria-controls="nav-restrictions" aria-selected="true">Room Restrictions Policy</button>
-                            <button class="nav-link" id="nav-occupation-tab" data-bs-toggle="tab" data-bs-target="#nav-occupation" type="button" role="tab" aria-controls="nav-occupation" aria-selected="false">Room Occupation Policy</button>
+                            <button class="nav-link" id="nav-occupation-tab" data-bs-toggle="tab" data-bs-target="#nav-occupation" type="button" role="tab" aria-controls="nav-occupation" aria-selected="false">Room Occupancy Policy</button>
                             <button class="nav-link" id="nav-booking-tab" data-bs-toggle="tab" data-bs-target="#nav-booking" type="button" role="tab" aria-controls="nav-booking" aria-selected="true">Booking Policy</button>
                         </div>
                     </nav>
@@ -108,14 +108,14 @@
                                     <p class="my-2 bi bi-info-circle-fill fs-3"></p>
                                 </div>
                                 <div class="col col-md-11">
-                                    <p class="my-2">This is where the room occupation policy is displayed and adjusted. This policy is applied to all room's maximum occupation in the event that the maximum occupation needs to be reduced due to external factors such as COVID-19.</p>
+                                    <p class="my-2">This is where the room occupancy policy is displayed and adjusted. This policy is applied to all room's maximum occupancy in the event that the maximum occupancy needs to be reduced due to external factors such as COVID-19.</p>
                                 </div>
                             </div>
                             @if (isset($occupation))
                             <form action="{{ route('editOccupationPolicy', 1) }}" method="POST">
                                 @csrf
                                 <div class="row m-3">
-                                    <label for="percentage" class="col-md-5 col-form-label text-md-end">Policy Occupation Percentage</label>
+                                    <label for="percentage" class="col-md-5 col-form-label text-md-end">Policy Occupancy Percentage</label>
                                     <div class="col-md-4">
                                         <input id="percentage" type="number" step="1" min="0" max="100" class="form-control @error('percentage')is-invalid @enderror" name="percentage" value="{{ $occupation->percentage }}"></input>
                                         @error('percentage')
@@ -126,7 +126,7 @@
                                 </div>
 
                                 <div class="row mb-0">
-                                    <div class="col-md-8 offset-md-10">
+                                    <div class="col-md-10 offset-md-10">
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmOccupationLimitModal">Submit</button>
                                     </div>
@@ -137,11 +137,11 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Confirm Occupation Limit Policy Changes</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirm Occupancy Limit Policy Changes</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                         <div class="modal-body">
-                                            Are you sure you would like to update the occupation limit? These changes will apply all rooms. 
+                                            Are you sure you would like to update the occupancy limit? These changes will apply all rooms. 
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -153,7 +153,7 @@
                             </form>
                             @else
                                 <div class="alert alert-danger m-2 text-center">
-                                    <p class="align-middle"><i class="bi bi-exclamation-octagon-fill fs-3"></i> ERROR: POLICY OCCUPATION LIMIT NOT FOUND <i class="bi bi-exclamation-octagon-fill fs-3"></i></p>
+                                    <p class="align-middle"><i class="bi bi-exclamation-octagon-fill fs-3"></i> ERROR: POLICY OCCUPANCY LIMIT NOT FOUND <i class="bi bi-exclamation-octagon-fill fs-3"></i></p>
                                     <form action="{{ route('restoreOccupationPolicy') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-success">Restore</button>

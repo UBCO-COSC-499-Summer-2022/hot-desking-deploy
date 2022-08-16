@@ -58,6 +58,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/suspended', function () {
+    return view('suspended');
+})->name('suspended');
+
 Auth::routes(['verify' => true]);
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 
@@ -144,7 +148,7 @@ Route::get('/editRolesBookingPolicy/{roleId}', [PolicyManagerController::class, 
 Route::post('/editRolesBookingPolicies/{roomId}', [PoliciesController::class, 'editRolesBookingPolicies'])->name('editRolesBookingPolicies');
 Route::get('/cancelRolesBookingPolicies', [PoliciesController::class, 'cancelRolesBookingPolicies'])->name('cancelRolesBookingPolicies');
 // Route for AJAX call to load filtered rooms table
-Route::get('/get-filteredRooms', [PolicyManagerController::class, 'getFilteredRooms']);
+Route::get('/get-filteredRooms', [PolicyManagerController::class, 'getFilteredRooms'])->name('get-filteredRooms');
 
 Route::get('/usageStatistics', [UsageStatisticsController::class, 'index'])->name('usageStatistics');
 
@@ -161,7 +165,6 @@ Route::get('/viewUser/{user_id}', [UserManagerController::class, 'viewUser'])->n
 Route::get('/editUser/{user_id}', [UserManagerController::class, 'editUser'])->name('editUser');
 Route::get('/addUser', [UserManagerController::class, 'addUser'])->name('addUser');
 
-Route::get('/getYear/{year}', [BookingStatisticsController::class, 'getAjaxRequest']);
 Route::get('/viewResourcesStatistics', [ResourceStatisticsController::class, 'index'])->name('viewResourcesStatistics');
 Route::get('/getFilterResources', [ResourceStatisticsController::class, 'getFilterResources']);
 Route::get('/viewDepartmentStatistics', [DepartmentStatisticsController::class, 'index'])->name('viewDepartmentStatistics');
@@ -171,7 +174,8 @@ Route::get('/getFilterRoles', [RolesStatisticsController::class, 'getFilterRoles
 Route::get('/viewBookingTimeStatistics', [BookingTimeStatisticsController::class, 'index'])->name('viewBookingTimeStatistics');
 Route::get('/getFilterBookingTimes', [BookingTimeStatisticsController::class, 'getFilterBookingTimes']);
 
-Route::get('/emailLogs', [EmailLogsController::class, 'download'])->name('emailLogs');
+Route::get('/emailLogs', [EmailLogsController::class, 'index'])->name('emailLogs');
+Route::get('/downloadLogs', [EmailLogsController::class, 'downloadLogs'])->name('downloadLogs');
 
 /////////////////////////////////// User-Side ////////////////////////////////////////
 

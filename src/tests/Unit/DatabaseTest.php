@@ -5,13 +5,17 @@ namespace Tests\Unit;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DeskController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\BookingTimeStatisticsController;
 use App\Http\Controllers\Admin\BuildingController;
 use App\Http\Controllers\Admin\CampusController;
+use App\Http\Controllers\Admin\DepartmentStatisticsController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\FloorController;
 use App\Http\Controllers\Admin\PoliciesController;
 use App\Http\Controllers\Admin\ResourceController;
+use App\Http\Controllers\Admin\ResourceStatisticsController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\RolesStatisticsController;
 use App\Models\Bookings;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\UserController;
@@ -38,9 +42,13 @@ use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Boolean;
 use ReflectionClass;
 
-////////////////////////// USER //////////////////////////
+////////////////////////// Admin //////////////////////////
 use App\Http\Controllers\User\UserBookingsController;
+use App\Models\BookingHistory;
 use App\Models\Department;
+use App\Models\Resources_Desks;
+use App\Models\Resources_Rooms;
+use DateTime;
 
 class DatabaseTest extends TestCase
 {
@@ -1215,6 +1223,780 @@ class DatabaseTest extends TestCase
             'id' => $user->id,
             'role_id' => $roleDefault->role_id,
         ]);
+    }
+
+    public function test_Get_Filter_Resources_Desks_Positive_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $user = User::factory()->create();
+        $desk = Desks::factory()->create();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $resource = Resources::factory()->create();
+        $deskResource = new Resources_Desks;
+        $deskResource->desk_id = $desk->id;
+        $deskResource->resource_id = $resource->resource_id;
+        $deskResource->save();
+
+        $date1 = new DateTime(Carbon::now()->subMonth());
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->addMonth());
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+        ]);
+
+        $controller = new ResourceStatisticsController();
+        $response = $controller->getFilterResources($request);
+
+        $this->assertSame(json_encode([[['name' => $resource->resource_type,'y' => 100,]], []]),$response->getContent());
+    }
+
+    public function test_Get_Filter_Resources_Desks_Negative_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $user = User::factory()->create();
+        $desk = Desks::factory()->create();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $resource = Resources::factory()->create();
+        $deskResource = new Resources_Desks;
+        $deskResource->desk_id = $desk->id;
+        $deskResource->resource_id = $resource->resource_id;
+        $deskResource->save();
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+        ]);
+
+        $controller = new ResourceStatisticsController();
+        $response = $controller->getFilterResources($request);
+
+        $this->assertSame(json_encode([[],[]]),$response->getContent());
+    }
+
+    public function test_Get_Filter_Resources_Rooms_Positive_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $user = User::factory()->create();
+        $room = Rooms::factory()->create();
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $resource = Resources::factory()->create();
+        $roomResource = new Resources_Rooms;
+        $roomResource->room_id = $room->id;
+        $roomResource->resource_id = $resource->resource_id;
+        $roomResource->save();
+
+        $date1 = new DateTime(Carbon::now()->subMonth());
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->addMonth());
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+        ]);
+
+        $controller = new ResourceStatisticsController();
+        $response = $controller->getFilterResources($request);
+
+        $this->assertSame(json_encode([ [], [['name' => $resource->resource_type,'y' => 100]]]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Resources_Rooms_Negative_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $user = User::factory()->create();
+        $room = Rooms::factory()->create();
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $resource = Resources::factory()->create();
+        $roomResource = new Resources_Rooms;
+        $roomResource->room_id = $room->id;
+        $roomResource->resource_id = $resource->resource_id;
+        $roomResource->save();
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+        ]);
+
+        $controller = new ResourceStatisticsController();
+        $response = $controller->getFilterResources($request);
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Resources_Desks_Rooms_Positive_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $user = User::factory()->create();
+        $room = Rooms::factory()->create();
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $resource = Resources::factory()->create();
+        $roomResource = new Resources_Rooms;
+        $roomResource->room_id = $room->id;
+        $roomResource->resource_id = $resource->resource_id;
+        $roomResource->save();
+
+        $resource2 = Resources::factory()->create();
+        $deskResource = new Resources_Desks;
+        $deskResource->desk_id = $desk->id;
+        $deskResource->resource_id = $resource2->resource_id;
+        $deskResource->save();
+
+        $date1 = new DateTime(Carbon::now()->subMonth());
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->addMonth());
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+        ]);
+
+        $controller = new ResourceStatisticsController();
+        $response = $controller->getFilterResources($request);
+
+        $this->assertSame(json_encode([[['name' => $resource2->resource_type,'y' => 100,]], [['name' => $resource->resource_type,'y' => 100]]]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Resources_Desks_Rooms_Negative_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $user = User::factory()->create();
+        $room = Rooms::factory()->create();
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $resource = Resources::factory()->create();
+        $roomResource = new Resources_Rooms;
+        $roomResource->room_id = $room->id;
+        $roomResource->resource_id = $resource->resource_id;
+        $roomResource->save();
+
+        $resource2 = Resources::factory()->create();
+        $deskResource = new Resources_Desks;
+        $deskResource->desk_id = $desk->id;
+        $deskResource->resource_id = $resource2->resource_id;
+        $deskResource->save();
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+        ]);
+
+        $controller = new ResourceStatisticsController();
+        $response = $controller->getFilterResources($request);
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+
+    public function test_Get_Filter_Roles_Positive_Function() {
+        $role = Roles::factory()->create();
+
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->role_id = $role->role_id;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+        $roomId = $room->id;
+
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth());
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->addMonth());
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId
+        ]);
+
+        $controller = new RolesStatisticsController();
+        $response = $controller->getFilterRoles($request);
+
+
+
+        $this->assertSame(json_encode([[1], [$role->role]]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Roles_Negative_Date_Function() {
+        $role = Roles::factory()->create();
+
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->role_id = $role->role_id;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+        $roomId = $room->id;
+
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId
+        ]);
+
+        $controller = new RolesStatisticsController();
+        $response = $controller->getFilterRoles($request);
+
+
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Roles_Negative_RoomId_Function() {
+        $role = Roles::factory()->create();
+
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->role_id = $role->role_id;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+
+        $room2 = Rooms::factory()->create();
+        $roomId2 = $room2->id;
+
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth());
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->addMonth());
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId2
+        ]);
+
+        $controller = new RolesStatisticsController();
+        $response = $controller->getFilterRoles($request);
+
+
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Roles_Negative_Date_RoomId_Function() {
+        $role = Roles::factory()->create();
+
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->role_id = $role->role_id;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+
+        $room2 = Rooms::factory()->create();
+        $roomId2 = $room2->id;
+
+        $desk = Desks::factory()->create();
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId2
+        ]);
+
+        $controller = new RolesStatisticsController();
+        $response = $controller->getFilterRoles($request);
+
+
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Departments_Positive_Function() {
+        $department = Department::factory()->create();
+
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->department_id = $department->department_id;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+        $roomId = $room->id;
+
+        $desk = Desks::factory()->create();
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth());
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->addMonth());
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId
+        ]);
+
+        $controller = new DepartmentStatisticsController();
+        $response = $controller->getFilterDepartments($request);
+
+
+
+        $this->assertSame(json_encode([[1], [$department->department]]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Departments_Negative_Date_Function() {
+        $department = Department::factory()->create();
+
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->department_id = $department->department_id;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+        $roomId = $room->id;
+
+        $desk = Desks::factory()->create();
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId
+        ]);
+
+        $controller = new DepartmentStatisticsController();
+        $response = $controller->getFilterDepartments($request);
+
+
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_Departments_Negative_Date_RoomId_Function() {
+        $department = Department::factory()->create();
+
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->department_id = $department->department_id;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+
+        $room2 = Rooms::factory()->create();
+        $roomId2 = $room2->id;
+
+        $desk = Desks::factory()->create();
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId2
+        ]);
+
+        $controller = new DepartmentStatisticsController();
+        $response = $controller->getFilterDepartments($request);
+
+
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_BookingTimes_Positive_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+        $roomId = $room->id;
+
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth());
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->addMonth());
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId
+        ]);
+
+        $controller = new BookingTimeStatisticsController();
+        $response = $controller->getFilterBookingTimes($request);
+
+        $book_time_start_formatted = $booking_time_start->format('h:ia');
+
+
+        $this->assertSame(json_encode([[1], [$book_time_start_formatted]]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_BookingTimes_Date_Negative_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+        $roomId = $room->id;
+
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId
+        ]);
+
+        $controller = new BookingTimeStatisticsController();
+        $response = $controller->getFilterBookingTimes($request);
+
+
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_BookingTime_RoomId_Negative_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+
+        $room2 = Rooms::factory()->create();
+        $roomId2 = $room2->id;
+
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth());
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->addMonth());
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId2
+        ]);
+
+        $controller = new BookingTimeStatisticsController();
+        $response = $controller->getFilterBookingTimes($request);
+
+
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
+    }
+
+    public function test_Get_Filter_BookingTime_Date_RoomId_Negative_Function() {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+
+        $room = Rooms::factory()->create();
+
+        $room2 = Rooms::factory()->create();
+        $roomId2 = $room2->id;
+
+        $desk = Desks::factory()->create();
+
+        $desk->room_id = $room->id;
+        $desk->save();
+
+        $booking_history = new BookingHistory;
+        $booking_time_start = Carbon::yesterday();
+        $booking_time_end =  Carbon::now('GMT-7');
+        $booking_history->user_id = $user->id;
+        $booking_history->desk_id = $desk->id;
+        $booking_history->book_time_start = $booking_time_start;
+        $booking_history->book_time_end = $booking_time_end;
+        $booking_history->save(); 
+
+        $date1 = new DateTime(Carbon::now()->subMonth(3));
+        $result1 = $date1->format('Y-m-d H:i:s');
+        $date2 = new DateTime(Carbon::now()->subMonth(2));
+        $result2 = $date2->format('Y-m-d H:i:s');
+
+        $dateRange = $result1 .' - '. $result2;
+
+        $request = Request::create('', '', [
+            'dateRange' => $dateRange,
+            'roomId' => $roomId2
+        ]);
+
+        $controller = new BookingTimeStatisticsController();
+        $response = $controller->getFilterBookingTimes($request);
+
+
+
+        $this->assertSame(json_encode([[], []]),$response->getContent());
+
     }
 
     
