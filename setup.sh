@@ -8,6 +8,8 @@ ls
 cd ..
 ls
 docker compose down
+docker compose build --no-cache
+docker compose down
 docker compose up -d --build site
 docker compose run --rm composer update
 docker compose run --rm npm install
