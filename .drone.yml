@@ -37,10 +37,10 @@ steps:
       # List all docker containers 
       - docker ps -a
       # Clone Directory
-      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull11/
+      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull12/
       - ls
       # change directories 
-      - cd test-pull11/
+      - cd test-pull12/
       # Run Bash File to setup project
       - chmod 744 setup.sh
       - sh setup.sh
