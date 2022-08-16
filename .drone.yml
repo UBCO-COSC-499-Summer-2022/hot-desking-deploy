@@ -23,30 +23,30 @@ steps:
     script:
       ################################# Test #################################
       # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*”
-      - ls
-      - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /hot-desk/* && rm -rf /hot-desk/.*”
-      - ls
+      # - ls
+      # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /hot-desk/* && rm -rf /hot-desk/.*”
+      # - ls
       # - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-runner.git runner
 
       ################################# Pull fresh github #################################
-      # - ls
-      # # Terminate all docker containers 
-      # - docker kill $(docker ps -q)
-      # # Remove all non-running containers
-      # - docker system prune -f
-      # # List all docker containers 
-      # - docker ps -a
-      # # Clone Directory
-      # - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull9/
-      # - ls
-      # # change directories 
-      # - cd test-pull9/
-      # # Run Bash File to setup project
-      # - chmod 744 setup.sh
-      # - sh setup.sh
+      - ls
+      # Terminate all docker containers 
+      - docker kill $(docker ps -q)
+      # Remove all non-running containers
+      - docker system prune -f
+      # List all docker containers 
+      - docker ps -a
+      # Clone Directory
+      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull10/
+      - ls
+      # change directories 
+      - cd test-pull10/
+      # Run Bash File to setup project
+      - chmod 744 setup.sh
+      - sh setup.sh
 
-      # - docker compose run --rm artisan schedule:list
-      # - echo Server is LIVE
+      - docker compose run --rm artisan schedule:list
+      - echo Server is LIVE
 
       # ################################# Pull new changes #################################
       # # Terminate all docker containers 
