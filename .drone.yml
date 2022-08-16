@@ -23,9 +23,9 @@ steps:
     script:
       ################################# Test #################################
       # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*”
-      - ls
-      - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /hot-desk/* && rm -rf /hot-desk/.*”
-      - ls
+      #  - ls
+      #  - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /hot-desk/* && rm -rf /hot-desk/.*”
+      #  - ls
       # - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-runner.git runner
 
       ################################# Pull fresh github #################################
@@ -49,24 +49,24 @@ steps:
       # - echo Server is LIVE
 
       # ################################# Pull new changes #################################
-      # # Terminate all docker containers 
-      # - docker kill $(docker ps -q)
-      # # Remove all non-running containers
-      # - docker system prune -f
-      # # List all docker containers 
-      # - docker ps -a
-      # # change directories
-      # - cd test-pull8/
-      # - pwd
-      # # fetch new changes Directory
-      # - git fetch
-      # - git pull
-      # # Run Bash File to setup project
-      # - chmod 744 run.sh
-      # - sh run.sh
+      # Terminate all docker containers 
+      - docker kill $(docker ps -q)
+      # Remove all non-running containers
+      - docker system prune -f
+      # List all docker containers 
+      - docker ps -a
+      # change directories
+      - cd test-pull8/
+      - pwd
+      # fetch new changes Directory
+      - git fetch
+      - git pull
+      # Run Bash File to setup project
+      - chmod 744 run.sh
+      - sh run.sh
 
-      # - docker compose run --rm artisan schedule:list
-      # - echo Server is LIVE
+      - docker compose run --rm artisan schedule:list
+      - echo Server is LIVE
 
 trigger:
   branch:
