@@ -78,10 +78,10 @@
                         <div class="row mb-3">
                             <label for="role_id" class="col-md-4 col-form-label text-md-end">Role</label>
                             <div class="col-md-6">
-                                <select name="role_id" id="role_id" class="form-select @error('role_id') is-invalid @enderror" required>
+                                <select onchange="checkGraduate()" name="role_id" id="role_id" class="form-select @error('role_id') is-invalid @enderror" required>
                                     <option disabled selected value="">Select a role</option>
                                     @foreach ($roles as $role)
-                                        @if($role->role_id != 1)
+                                        @if ($role->role_id != 1)
                                         <option value="{{$role->role_id}}">{{$role->role}}</option>
                                         @endif
                                     @endforeach
@@ -89,6 +89,13 @@
                                 @error('role_id')
                                 <div class="alert alert-danger">{{$message}}</div>
                                 @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label id="supervisorLabel" for="supervisor" class="col-md-4 col-form-label text-md-end" style="display: none;">Supervisor</label>
+                            <div class="col-md-6">
+                                <input class="form-control" type="text" name="supervisor"id="supervisor" placeholder="Enter Supervisor Name"style="display: none;">
                             </div>
                         </div>
 
@@ -163,6 +170,21 @@ $("#department_id").change( function() {
     var departmentId = parseInt($('#department_id').find(':selected').attr('value'));
     console.log("departmendID: ", departmentId);
 })
+
+</script>
+<script>
+    function checkGraduate(){
+        if ($('#role_id').val()==='4'|$('#role_id').val()==='5'){
+            //if role equal to graduate, display supervisor text
+            $('#supervisor').show()
+            $('#supervisorLabel').show()
+        }
+        else{
+            //if roles not equal to graduate, check if supervisor text is visible and hide it if true
+            $('#supervisor').hide()
+            $('#supervisorLabel').hide()
+        }
+    }
 
 </script>
 @endsection

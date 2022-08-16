@@ -41,6 +41,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
+                                <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
                                 <button type="submit" class="btn btn-primary">
                                     Change Email
                                 </button>

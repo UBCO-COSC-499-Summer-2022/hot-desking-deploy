@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Models\Roles;
 use App\Models\User;
+use App\Models\Roles;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+
 
 class ProfileController extends Controller
 {
@@ -40,6 +41,7 @@ class ProfileController extends Controller
             'first_name' => 'required|string|min:1|max:255',
             'last_name' => 'required|string|min:1|max:255',
             'role_id' => 'required|integer',
+            'supervisor' => 'nullable','string', 'max:255',
         ]);
         $user = User::find(Auth::id());
         $user->first_name = $request->input('first_name');
@@ -55,10 +57,11 @@ class ProfileController extends Controller
             Session::flash('message', 'Successfully updated profile'); 
             Session::flash('alert-class', 'alert-success');
             return redirect()->route('profile');
-        }
+        }else {
         //if save failed
-        Session::flash('message', 'Failed to update profile'); 
-        Session::flash('alert-class', 'alert-danger');
-        return redirect()->route('profile');
+            Session::flash('message', 'Failed to update profile'); 
+            Session::flash('alert-class', 'alert-danger');
+            return redirect()->route('profile');
+        }
     }
 }

@@ -66,6 +66,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role_id' => ['required', 'integer', 'exists:roles,role_id'],
             'department_id' => ['required', 'integer', 'exists:departments,department_id'],
+            'supervisor' => ['nullable','string', 'max:255'],
         ]);
     }
     public function testCreateFunction (array $data) {
@@ -79,13 +80,27 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role_id' => $data['role_id'],
-            'department_id' => $data['department_id'],
-        ]);
+        if($data['role_id']==4|$data['role_id']==5){
+            return User::create([
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'role_id' => $data['role_id'],
+                'department_id' => $data['department_id'],
+                'supervisor' => $data['supervisor'],
+            ]);
+        }else{
+            return User::create([
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'role_id' => $data['role_id'],
+                'department_id' => $data['department_id'],
+                'supervisor' => null,
+            ]);
+            
+        }
     }
 }

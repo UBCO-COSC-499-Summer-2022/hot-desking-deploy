@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\BookingConfirmation;
 use App\Events\UserIsSuspended;
 use App\Events\UserIsUnSuspended;
 use App\Events\WorkSpaceDeletedOrClosed;
 use App\Listeners\EmailSuspendedUser;
 use App\Listeners\EmailUnSuspendedUser;
+use App\Listeners\EmailUserEffectedByBookingConfirmation;
 use App\Listeners\EmailUsersEffectedByWorkspaceDeletionOrClosure;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -32,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserIsUnSuspended::class => [
             EmailUnSuspendedUser::class
+        ],
+        BookingConfirmation::class => [
+            EmailUserEffectedByBookingConfirmation::class,
         ],
     ];
 

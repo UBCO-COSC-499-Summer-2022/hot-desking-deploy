@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Models\Bookings;
+use App\Http\Controllers\Controller;
 use App\Models\Desks;
 use App\Models\User;
 use Database\Factories\BookingsFactory;
@@ -15,6 +15,9 @@ use App\Models\Rooms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendEmail;
+use App\Mail\SendMail;
 
 class UserBookingsController extends Controller
 {
@@ -36,11 +39,16 @@ class UserBookingsController extends Controller
      */
 
     public function index()
-    {
+    {  
         //$bookings = Bookings::where('user_id',Auth::id())->get();
         $user = User::find(Auth::id());
-        $bookings = $user->desks;
-        return view('user.bookings')->with("bookings",$bookings);
+        $bookings = $user->desks;//->sortBy(strtotime("pivot_book_time_start"),SORT_NUMERIC);
+        $bookingsSorted= $bookings->sortBy(function($col) {
+            // dd(strtotime($col->pivot->book_time_start));
+            return strtotime($col->pivot->book_time_start);
+        })->values()->all();
+        // dd( $bookings);
+        return view('user.bookings')->with("bookings",$bookingsSorted);
     }
     
     public function cancel($booking_id)
@@ -60,5 +68,6 @@ class UserBookingsController extends Controller
         Session::flash('alert-class', 'alert-danger');
         return redirect()->route('bookings')->with("bookings",$bookings);
     }
+
 
 }

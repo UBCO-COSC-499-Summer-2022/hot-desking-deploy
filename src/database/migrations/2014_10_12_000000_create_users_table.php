@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('password');
             $table->string('email')->unique();
+            $table->string('supervisor')->nullable();
             $table->boolean('is_suspended')->default(FALSE);
             $table->boolean('is_admin')->default(FALSE);
             $table->integer('bookings_used')->default(0);

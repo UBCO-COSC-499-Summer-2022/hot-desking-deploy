@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\Bookings;
 use App\Models\Buildings;
 use App\Models\Campuses;
 use App\Models\Desks;
 use App\Models\Floors;
 use App\Models\RoleRoom;
 use App\Models\Rooms;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

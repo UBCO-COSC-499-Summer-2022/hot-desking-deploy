@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@1.10.4/dist/scheduler.min.css' rel='stylesheet' />
     <style>
+
 /* calender style */
 #bookings_event_{
-    max-width: 1000px;
-    margin: 40px auto;
+    max-width: 900px;
+    margin: 20px auto;
 }
 
 /* the block below the calender page */
@@ -36,35 +36,38 @@ overflow-x: scroll;
 }
 .fc-axis {
     position: sticky;
-    background:#87CEFA;
+    /* background:#87CEFA; */
+    background: #e6f3ff;
 }  
 .fc-resource-cell
 {
     position: sticky;
     left: 0;
-    background:#87CEFA;
+    background: #e6f3ff;
 } 
 .fc .fc-agendaDay-view .fc-bg tr > td{
     background-color: white;
 } 
+
 </style>
 </head>
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     {{ __('Calendar View') }}
                 </div> 
                 <div class="card-body">
+                    <div id="alert_container" style="display:none"></div>
                     <!-- Search Modal -->
                     <form action="{{ route('calendar') }}" class="row g-2" >
                         @csrf
                         <!-- Campus Selection -->
                         <div class="col-2">
                             <label for="campus" class="label label-default">Campus</label>
-                            <select id="campus" class="form-select @error('campus_id')is-invalid @enderror" name="campus_id">
+                            <select id="campus" class="form-select @error('campus_id')is-invalid @enderror" name="campus_id" required>
                                 <option disabled hidden selected></option>
                                 @foreach ($campuses as $campus)
                                     <option value="{{$campus->id}}">{{$campus->name}} Campus</option>
@@ -78,7 +81,7 @@ overflow-x: scroll;
                         <!-- Building Selection -->
                         <div class="col-2">
                             <label for="building" class="label label-default">Building</label>
-                            <select id="building" class="form-select @error('building_id')is-invalid @enderror" name="building_id" disabled>
+                            <select id="building" class="form-select @error('building_id')is-invalid @enderror" name="building_id" disabled required>
                                 <option disabled selected hidden></option>
                             </select>
                             @error('building_id')
@@ -89,7 +92,7 @@ overflow-x: scroll;
                         <!-- Floor Selection -->
                         <div class="col-2 ">
                             <label for="floor" class="label label-default">Floor</label>
-                            <select id="floor" class="form-select @error('floor_id')is-invalid @enderror" name="floor_id" disabled>
+                            <select id="floor" class="form-select @error('floor_id')is-invalid @enderror" name="floor_id" disabled required>
                                 <option disabled selected hidden></option>
                             </select>
                             @error('floor_id')
@@ -100,7 +103,7 @@ overflow-x: scroll;
                         <!-- Room Selection -->
                         <div class="col-2 ">
                             <label for="room" class="label label-default">Room</label>
-                            <select id="room" class="form-select @error('room_id')is-invalid @enderror" name="room_id" disabled>
+                            <select id="room" class="form-select @error('room_id')is-invalid @enderror" name="room_id" disabled required>
                                 <option disabled selected hidden></option>
                             </select>
                             @error('room_id')
@@ -115,29 +118,54 @@ overflow-x: scroll;
                         </div> 
                     </form>
                     <hr/>
-                    <div class="alert alert-warning d-flex align-items-center" role="alert">
-                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                        Note: You cannot create bookings for past dates and times. 
+                    <div class="row">
+                        <div class="container accordion accordion-flush " id="accordionFlushExample">
+                            <div class="row border">
+                                <div class="col accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            Instructions
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"  style="background-color:#e6f3ff;">
+                                        <div class="accordion-body">
+                                            Note: 
+                                            <ul>
+                                            <li>You cannot create bookings for past dates and times. </li>
+                                            <li> You can modify bookings up until half an hour before they start.</li>
+                                            </ul>
+                                            <hr/>
+                                            Steps:
+                                                <ul>
+                                                <li> Click and drag an empty cell to make a new booking.</li>
+                                                <li> To delete a booking, click on it and confirm.</li>
+                                                <li> To modify a booking, drag to change the duration or hold down click to move.</li>
+                                                <li> To make a booking a repeated booking, click on it and confirm.</li>
+                                                </ul>
+                                                <hr/>
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <p>Your user role is  <span class="badge bg-info  text-dark">{{ strtolower($role_info->role)}}</span>. You have a maximum booking window of <span class="badge bg-info  text-dark">{{$role_info->max_booking_window }}</span> days 
+                                                    and maximum booking duration of <span class="badge bg-info  text-dark">{{($role_info->max_booking_duration)*60}}</span> minutes.</p>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                        <div class="row">
-                            <div class="col-auto">
-                                <p>Your user role is  <span class="badge bg-info  text-dark">{{ strtolower($role_info->role)}}</span>. You have a maximum booking window of <span class="badge bg-info  text-dark">{{$role_info->max_booking_window }}</span> days 
-                                and maximum booking duration of <span class="badge bg-info  text-dark">{{($role_info->max_booking_duration)*60}}</span> minutes.</p>
-                            </div>
+                    <br>
+                    <div class="row ">
+                        <div class="col-auto"> 
+                            <p>Monthly bookings used: <span  class="badge bg-info  text-dark">{{ $userMonthlyBookingCount}}  / {{($role_info->num_monthly_bookings)}}</span>.</p> 
                         </div>
-                        <div class="row ">
-                            <!-- <div class="col-auto">
-                                <p>Your maximum booking window is <span class="badge bg-info  text-dark">{{$role_info->max_booking_window }}</span> days.</p>
-                            </div>
-                            <div class="col-auto">
-                                <p>Your maximum booking duration is <span class="badge bg-info  text-dark">{{($role_info->max_booking_duration)*60}}</span> mins.</p>
-                            </div>   -->
-                            <div class="col-auto"> 
-                                <p>Monthly bookings used: <span  class="badge bg-info  text-dark">{{ $userMonthlyBookingCount}}  / {{($role_info->num_monthly_bookings)}}</span>.</p> 
-                            </div>
+                        <div class="col-auto"> 
+                            <p>Maximum Room Occupancy: <span  class="badge bg-info  text-dark">{{ $maxRoomOccupancy }}</span>.</p> 
                         </div>
+                    </div>
                     <hr>
-                    <div class="container mt-6" style="max-width: 1200px">
+                    <div id="calendar_container" class="container mt-6" style="max-width: 700px">
                         <div id='bookings_event'></div>
                         <div class="container">
                             <div class="row justify-content-start">
@@ -145,7 +173,7 @@ overflow-x: scroll;
                                     <b>Room Resources</b>
                                     @foreach($resources_array as $resource)
                                     <div class="row justify-content-start"  data-toggle="tooltip" title="{{$resource->pivot->description}}">
-                                    <div class="col col-sm-5 " >
+                                        <div class="col col-sm-5 " >
                                             {{ $resource->resource_type }}
                                         </div>
                                         <div class="col col-sm-1"  style="color:{{$resource->colour}}" >
@@ -164,29 +192,57 @@ overflow-x: scroll;
                             </div>
                         </div>
                     </div>
-                    <!-- --option Modal  start -- -->
-                    <div class="modal fade" id="optionModal" tabindex="-1" aria-labelledby="optionModal" aria-hidden="true">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- --option Modal start -- -->
+<div class="modal fade" id="optionModal" tabindex="-1" aria-labelledby="optionModal" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="optionModal">Modification Options</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row justify-content-between">
-                                        <div class="col-6 ">
-                                            <button type="button" class="btn btn-info "  id= "repeatedBooking">Repeat this booking</button>
-                                        </div>
-                                        <div class="col-2 ">
-                                            <button type="button" class="btn btn-danger offset-md-1 p-2" id= "deleteShow">Delete</button>
-                                        </div>
-                                    </div>
+                                    1. Make a repeated booking: Repeat this booking every week for the current month.
+                                    <hr>
+                                    2. Delete this booking.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-info "  id= "repeatedBookingShow">Repeat</button>
+                                    <button type="button" class="btn btn-danger" id= "deleteShow">Delete</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- --Modal  finish -- -->
 
-                    <!-- --cancel Modal  start -- -->
+                    <!-- --repeatedBooking Modal start -- -->
+                    <div class="modal fade" id="repeatedBooking" tabindex="-1" aria-labelledby="repeatedBooking" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="optionModal">Repeated Booking Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Are you sure want to repeat this booking every week within your valid booking window? -->
+                                    You have {{($role_info->num_monthly_bookings) - $userMonthlyBookingCount}} remaining bookings for this month. You will be using up a booking for each week of the repeated booking.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-info"  id= "repeatedBookingConfirm">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- --Modal  finish -- -->
+
+                    <!-- --delete Modal  start -- -->
                     <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -195,38 +251,37 @@ overflow-x: scroll;
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                Are you sure to delete the bookings?
+                                Are you sure you want to delete this booking?
                                 </div>
-                            
-                                    <div class="modal-footer">
-                                        <!-- <button type="button" class="btn btn-secondary" id= "remove">Close</button> -->
-                                        <button type="submit" class="btn btn-danger"  id= "deleteConfirm">Confirm</button>
-                                    </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger"  id= "deleteConfirm">Delete</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <!-- --Modal  finish -- -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src=" https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@1.10.4/dist/scheduler.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.js'></script>
+<script type="text/javascript" src="{{ asset('js/test.js') }}"></script>
 <script>
     $(document).ready(function () {
+
+        getColumn();
         // tooltip code
         $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
 
         // Encode the current room the user searched for into JSON
         var currentRoom = <?php
 
 use App\Http\Controllers\User\CalendarViewController;
+use Illuminate\Support\Facades\Log;
 
 echo json_encode($currentRoom)?>;
         var display= <?php echo json_encode($allBooking)?>;   // this one will get all the booking from the booking table
@@ -237,12 +292,16 @@ echo json_encode($currentRoom)?>;
         var max_booking_duration=<?php echo json_encode($role_info->max_booking_duration)?> *60;  //how long can the user make the booking for a day
         var userMonthlyBookingCount=<?php echo json_encode(  $userMonthlyBookingCount)?>; 
         var max_monthly_bookings=<?php echo json_encode($role_info->num_monthly_bookings)?>;  
-
         var message = <?php echo json_encode($message)?>;
 
         var site_url = "{{ url('/') }}";
 
         var clickerCounter=1; 
+
+        // to do: remove it before the cutoff
+        var buttonClickCount =0;
+        var buttonHelper=0;
+
 
         // Grab all desks, then filter them down to the ones that belong to the current room
         // We won't display closed desks to users
@@ -252,8 +311,14 @@ echo json_encode($currentRoom)?>;
             if(!item.is_closed)
                 return item.room_id === currentRoom.id;
         });
+        // Hide the calendar timeslot if there are no available desks to display to the user
+        if (filteredDesks.length < 1) {
+            $('#alert_container').empty();
+            $('#alert_container').append('<div class="alert alert-danger alert-dismissible fade show">This room currently has no open desks</div>');
+            $('#alert_container').show();
+            $('#calendar_container').hide();
+        } 
         var desksResources = <?php echo json_encode($desks_resources)?>;
-        // console.log(desksResources);
         var resourceIconHtml = [];
         for (i = 0; i < desksResources.length; i++) {
             html_output = '';
@@ -271,6 +336,7 @@ echo json_encode($currentRoom)?>;
 
         var resourceContent=  [];  // how many resources you have, or how many desks
         var distinctDeskNumber=filteredDesks.length;//the number of desk inside the room 
+    
 
         for (let i = 0; i < distinctDeskNumber; i++) {
                 resourceContent.push(resourceHolder[i]);
@@ -293,16 +359,72 @@ echo json_encode($currentRoom)?>;
 
         displayStoreMessage();
         displayMaxCapacityMessage();
+        displayBookingCollisionMessage();
+        partialCompleted();
 
+        localStorage.userMonthlyBookingCountCopy = Number(userMonthlyBookingCount);  // this one will store the message in the browser long period of time
+
+        sessionStorage.clear();
+        
         //full calender js code 
         var calendar = $('#bookings_event').fullCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         //the header of the full calender
         header:{
-            left:'title',
-            center:'prev,today,next',
-            right:'agendaDay, timelineWeek',  // timeline week place the resource under week view
+            // left:'prev,next,nextWeek, today',
+            left:'prev,next, today',
+            center:'title',
+            right:'agendaDay,timelineWeek',  // timeline week place the resource under week view
         },
+// to do: remove it before the cutoff
+        // customButtons: {
+    // preWeek: {
+    // icon: 'bi bi-chevron-double-left',   
+    // click: function() {
+    //     if ( buttonHelper==0 &&  buttonClickCount==1){
+    //         $("#bookings_event").fullCalendar('gotoDate', moment());
+    //     buttonHelper==1;
+    //     buttonClickCount--;
+    //     }
+    //     else if ( buttonHelper==0 &&  buttonClickCount==0){
+    //             $("#bookings_event").fullCalendar('gotoDate', moment().add(7, 'days'));
+    //             buttonHelper==1;
+    //         }
+    //     else if (buttonHelper==1&& buttonClickCount==0){
+    //         $("#bookings_event").fullCalendar('gotoDate', moment()); }
+    //     else if (buttonHelper==0){
+    //         $("#bookings_event").fullCalendar('gotoDate', moment());
+    //         buttonHelper==0;}
+            
+    //     }
+    // },
+
+        // nextWeek: {
+        //     icon: 'bi bi-chevron-double-right',   
+        //     click: function() {
+        //         if (buttonClickCount==0){
+        //         $("#bookings_event").fullCalendar('gotoDate', moment().add(7, 'days'));
+        //         buttonClickCount=1;}
+        //         else if (buttonClickCount==1){
+        //             $("#bookings_event").fullCalendar('gotoDate', moment().add(14, 'days'));
+        //             buttonClickCount =0;
+        //         }
+        //     }
+        // },
+        // next: {
+        //     icon: 'bi bi-chevron-right',
+        //     click: function() {
+        //         $("#bookings_event").fullCalendar('next');
+        //     }
+        //     },
+        //     prev: {
+        //     icon: 'bi bi-chevron-left',
+        //     click: function() {
+        //         $("#bookings_event").fullCalendar('prev');
+        //     }
+        // },
+        // },
+
         footer:true,
         defaultView: 'agendaDay',
         resourceLabelText: 'Rooms',
@@ -311,8 +433,6 @@ echo json_encode($currentRoom)?>;
         timeFormat: 'H(:mm)', // 24 hours period 
         slotDuration: '00:15:00', //  15 minutes
         // slotLabelFormat:'H(:mm)',
-        // minTime: "08:00:00",
-        // maxTime: "23:00:00",
     
         displayEventTime: true,
         allDaySlot:false,
@@ -323,13 +443,14 @@ echo json_encode($currentRoom)?>;
         selectOverlap:false,
         resourceAreaWidth: '15%',
         stickyFooterScrollbar:true,
+
         selectAllow: function(selectInfo) {
             return moment().diff(selectInfo.start) <= 0
         },
 
         //selectable window 
         validRange: function(nowDate) {
-            endString=getTime((nowDate.clone().add(max_booking_window, 'days'))._d);
+            endString=getTime((nowDate.clone().add(max_booking_window+1, 'days'))._d);
             startString =getTime(nowDate._d );
             return { 
             start:  startString,
@@ -354,7 +475,7 @@ echo json_encode($currentRoom)?>;
         // this function create the hover effect of the column header
         resourceRender: function(resourceObj, $th) {
             if(resourceObj.resourceIcon.length==0){
-                resourceObj.resourceIcon="undefine";
+                resourceObj.resourceIcon="nothing";
             }
             $th.append(
                 $($th).popover({
@@ -373,7 +494,10 @@ echo json_encode($currentRoom)?>;
         //start of select function
         select: function (book_time_start, book_time_end,  jsEvent, view, resource) {
            var desks_id= Number(resource.id);  // this code making the user could select the column to pass the desk id
-            if( userMonthlyBookingCount<max_monthly_bookings){
+
+            var doubleCheck=Math.max( Number(localStorage.userMonthlyBookingCountCopy),userMonthlyBookingCount);
+
+            if( doubleCheck<max_monthly_bookings){
                 if (desks_id){
                         var book_time_start = $.fullCalendar.formatDate(book_time_start, "Y-MM-DD HH:mm");  // generate the date time and store into variable
                         var book_time_end = $.fullCalendar.formatDate(book_time_end, "Y-MM-DD HH:mm");
@@ -405,20 +529,31 @@ echo json_encode($currentRoom)?>;
                                         color:'#3CB371',
                                         room_id:currentRoom_id
                                         }, true);
-                                        sessionStorage.message = "booking successful updated";
-                                        timeout(1); 
-                                        calendar.fullCalendar('unselect');               
-                                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                                        sessionStorage.message = "Booking successfully created.";
+                                        calendar.fullCalendar('unselect');   
+                                        
+                                        localStorage.userMonthlyBookingCountCopy=1+ Number(localStorage.userMonthlyBookingCountCopy);
+                                        timeout(1);             
+                                    }).fail(function(data) {
                                         calendar.fullCalendar('unselect');  
-                                        sessionStorage.status = "Booking Failed, Room at Max Capacity";
+        
+                                        if (data.status) {
+
+                                        if (data.responseText === '{"error":"Booking failed, a booking collision was detected."}') {
+                                            sessionStorage.collisionDetected = "Booking failed: A booking collision was detected.";
+                                        } else {
+                                            sessionStorage.status = "Booking Failed: Room at maximum capacity.";
+                                        }
+                                    }
+                                    
                                         timeout(1); 
                                     });
                         } } else { 
-                            displayAlertMessage("Booking failed to created you can only " + max_booking_duration + " minutes per booking.");
+                            displayAlertMessage("Booking attempt failed: You exceeded your maximum booking duration of " + max_booking_duration + " minutes per booking.");
                             calendar.fullCalendar('unselect');  
                     }
                 }
-            }else{  displayAlertMessage("Booking failed to created. you use all of your bookings this month.");   
+            }else{  displayAlertMessage("Booking attempt failed: You have no remaining bookings for this month.");   
                         calendar.fullCalendar('unselect');  }    
         },
         //end of event select function
@@ -427,16 +562,35 @@ echo json_encode($currentRoom)?>;
         // the function call when the user change change the time of the event within the same day
         eventResize: function(event, delta, revertFunc, jsEvent, ui, view) {
             var modifyConfirm = changeApprove(event.start._i);
+            var deadlineConfirm= deadline(event.start._i);
             if(modifyConfirm){
-                eventResizeAndDrop(event, delta, revertFunc, jsEvent, ui, view) }
+                if(deadlineConfirm){eventResizeAndDrop(event, delta, revertFunc, jsEvent, ui, view); }
+                else {
+                    if (event.user_id == user_id){   
+                    displayAlertMessage("Booking modification failed: You passed the deadline to resize your booking.");
+                    revertFunc();
+                    }
+                    else{
+                    displayErrorMessage("Booking modification failed: You cannot resize another user's booking.");
+                    revertFunc();}
+                }
+            }
             else { 
-                displayErrorMessage("Past bookings cannot be modify");
-                revertFunc();}
+                if (event.user_id == user_id){   
+                    displayAlertMessage("Booking modification failed: You cannot change the duration of your past booking.");
+                    revertFunc();
+                }
+                else{
+                displayErrorMessage("Booking modification failed: You cannot change the duration of another user's booking.");
+                revertFunc();
+                }
+            }
             } ,
         //  end of event resize function
         //  start of drop function
         // this is the function handle the situation that users move the event to difference place
-        eventDrop: function( event, delta, revertFunc, jsEvent, ui, view) {
+        // this function need to consider the booking time before and after the move, 
+        eventDrop: function( event, delta, revertFunc, jsEvent, ui, view) { 
             var originalStart='';
             var  originalEnd='';
             display.forEach(object => {
@@ -445,82 +599,279 @@ echo json_encode($currentRoom)?>;
                     originalEnd=object.end;
                 } 
             }) ;
-            var  originalStart = changeApprove( originalStart);
-            var difference = changeApproveHelper(originalStart,event.start._i);
-            var modifyConfirm = changeApprove( event.start._i);
-
-            if( originalStart){
-                if(!modifyConfirm){
-                    if (event.user_id == user_id){
-                    displayInfoMessage("Booking failed to updated, invalid start time.");}
-                    else {
-                    displayErrorMessage("Past Bookings cannot be modify.");
-                    displayErrorMessage("You cannot modify other booking");}
-                    revertFunc();
-                    }
-                    else 
-                eventResizeAndDrop(event, delta, revertFunc, jsEvent, ui, view); }  
-                else {
-                        displayErrorMessage("Past Bookings cannot be modify.");
-                        revertFunc();
+            
+            var  originalStartCopy = changeApprove( originalStart);
+            var deadlineConfirm= deadline(originalStart);
+            // check if new updated booking time is before current
+            var current = moment().format('Y-MM-DD HH:mm');
+            var new_booked_time = moment(event.start._i).format('Y-MM-DD HH:mm');
+            var modifyFail = moment(new_booked_time).isBefore(current); 
+            // var difference = changeApproveHelper(originalStart,event.start._i);
+            if( originalStartCopy){
+                if(deadlineConfirm){
+                    if(modifyFail){
+                            if (event.user_id == user_id){
+                            displayInfoMessage("Booking modification failed: You chose an invalid booking start time."); 
+                            revertFunc();
+                            }
+                            else {displayErrorMessage("Booking modification failed: You cannot change the duration of another user's booking.");
+                            revertFunc();
+                            }
+                        }
+                        else {
+                        eventResizeAndDrop(event, delta, revertFunc, jsEvent, ui, view); 
+                    } 
                 }
+                    else {  
+                        if (event.user_id == user_id){   
+                            displayInfoMessage("Booking modification failed: You are past the deadline to modify your booking.");
+                                revertFunc();
+                        }
+                        else{
+                        displayErrorMessage("Booking modification failed: You cannot modify another user's booking.");
+                                revertFunc();    }          
+                    }       
+            }  
+                else {
+                    if (event.user_id == user_id){   
+                            displayAlertMessage("Booking modification failed: You cannot modify your past booking.");
+                                revertFunc();
+                        }
+                    else
+                        {displayErrorMessage("Booking modification failed: You cannot modify another user's past booking.");
+                        revertFunc(); } }
         },
         //end of event drop function
         // delete the event 
-        eventClick: function (event, delta, revertFunc, jsEvent, ui, view) {   
-            // $('#optionModal').modal("show");// delete and make the repeated booking
+        eventClick: function (event, delta, revertFunc, jsEvent, ui, view) {  
+            
+            $('#optionModal').modal("show");// delete and make the repeated booking
 
-            // // click the delete
-            // $('#deleteShow').on("click", function () {  
+                // repeated booking option 
+            $('#repeatedBookingShow').on("click", function () {  
+                $('#optionModal').modal("hide");
+            // are you sure you want to cancel model show up
+                $('#repeatedBooking').modal("show");
+                $('#repeatedBookingConfirm').on("click", function (){   
 
+                    sessionStorage.clear();
+                    sessionStorage.counterFail=Number('0');
+                    sessionStorage.counterSuccess=Number('0');
+                    sessionStorage.collision=Number('0');
+
+                    var  listOfFutureBooking = [];
+
+                    // only make the repeated booking with current month
+                    var endOfMonth= moment(event.start._i).endOf('month');
+                    var current = moment(event.start._i);
+
+                    // checking how many day left fot this month
+                    var dayLeftForThisMonth = endOfMonth.diff(current, 'days');
+
+                    // take the minimum between booking window and dayLeftForThisMonth 
+                    var valid_max_booking_window= Math.min(dayLeftForThisMonth, max_booking_window);
+
+                    // use the valid_max_booking_window to calculate how many repeated booking the user can make for this month
+                    var numberRepeatBookingRemain=Math.floor( valid_max_booking_window/7);  
+
+                    var doubleCheck2=Math.max( Number(localStorage.userMonthlyBookingCountCopy),userMonthlyBookingCount);
+
+                    var bookingCountLeaveMonthly = max_monthly_bookings-doubleCheck2;  
+
+
+                    var validRepeatBookingRemain = Math.min(numberRepeatBookingRemain, bookingCountLeaveMonthly);
+                    var same_desk_id=Number(event.desk_id);
+
+                    var deadlineConfirm= deadline(event.start._i);
+
+                    if (event.user_id == user_id){ // if id is equal, which is true can delete
+
+                        if (bookingCountLeaveMonthly==0){ 
+
+                            if (dayLeftForThisMonth<8){
+                            displayAlertMessage("Repeated booking attempt cancelled: The date is less than a week until the end of the month."); 
+                            }else{
+                            displayAlertMessage("Repeated booking attempt cancelled: You have no remaining bookings for this month.");  }
+                            
+                        }else {
+
+                            if (validRepeatBookingRemain==0){
+                                if (dayLeftForThisMonth<8){
+                                    displayAlertMessage("Repeated booking attempt cancelled: The date is less than a week until the end of the month."); 
+                                }else{
+                                    displayAlertMessage("Repeated booking attempt cancelled: You have no remaining bookings for this month."); }  
+                            }else {
+
+                                // if(deadlineConfirm){
+                                function failCallback(response){
+                                    result = response; 
+                                    // the ajax response will only have status when have a failure
+                                    if (result.status) { 
+                                        if (result.responseText === '{"error":"Booking failed, a booking collision was detected."}') {
+                                            sessionStorage.collision = Number(sessionStorage.collision) + 1;
+                                        } else {
+                                            sessionStorage.counterFail = Number(sessionStorage.counterFail) + 1;
+                                        }
+                                    }
+                                    if ( Number(sessionStorage.counterFail) == validRepeatBookingRemain ) {
+                                        sessionStorage.allFail= "Repeat booking failed: No space available due to the maximum room occupancy.";
+                                        sessionStorage.removeItem('partialA');
+                                        sessionStorage.removeItem('counterFail');
+                                        timeout(1);
+
+                                    } else if (Number(sessionStorage.collision) == validRepeatBookingRemain) {
+                                        sessionStorage.counterCollision = "Repeat booking failed: No space available due to conflicting bookings.";
+                                        sessionStorage.removeItem('partialA');
+                                        sessionStorage.removeItem('collision');
+                                        timeout(1);
+                                    } else {
+                                        
+                                        var actualResult= validRepeatBookingRemain - Number(sessionStorage.counterFail) - Number(sessionStorage.collision);
+
+                                        if ( actualResult <=0)  
+                                        { actualResult=0  
+                                            sessionStorage.partialA =" Repeat booking failed: No space available due to conflicting bookings and maximum room occupancy."; 
+                                        } else{  
+                            
+                                            sessionStorage.partialA ="Created " + Number(actualResult)+ " out of "
+                                        + validRepeatBookingRemain+" possible bookings. Check the 'My Bookings' page for more information."; 
+                                        }
+                
+                                    }    
+                                }
+
+
+                                function successCallback(response){
+                                    data= response; 
+                                    if (data.status===undefined) {
+                                        sessionStorage.counterSuccess = Number(sessionStorage.counterSuccess) + 1; 
+                                        localStorage.userMonthlyBookingCountCopy= 1+ Number(localStorage.userMonthlyBookingCountCopy);
+                                    
+                                    }
+                                    if( Number(sessionStorage.counterSuccess) == validRepeatBookingRemain){
+                                        sessionStorage.success = "Repeated booking successfully created "+ validRepeatBookingRemain+" bookings. View the 'My Booking' page for more information.";
+                                        sessionStorage.removeItem('partialB');
+                                        sessionStorage.removeItem('counterSuccess');
+                                        timeout(1);
+                                    }
+                                    else {
+                                        sessionStorage.partialB = "Repeated booking partially successful: Created "+  Number(sessionStorage.counterSuccess) + " out of "
+                                        + validRepeatBookingRemain+" bookings. View the 'My Booking' page for more information."; 
+                                    }    
+                                    }  
+
+                                for (var i = 0; i<validRepeatBookingRemain; i++){
+                                    listOfFutureBooking[0]=moment(event.start._i).add(7*(i+1), 'days').format('Y-MM-DD HH:mm');
+                                    listOfFutureBooking[1]= moment(event.end._i).add(7*(i+1), 'days').format('Y-MM-DD HH:mm');
+
+                                    if (Number(localStorage.userMonthlyBookingCountCopy)< max_monthly_bookings){
+
+                                        $.ajax({
+                                        url:  site_url+"/bookings-ajax",   
+                                        data: { // a list of data will be send to the serve
+                                            user_id:event.user_id,
+                                            room_id:currentRoom_id,
+                                            desk_id: same_desk_id,
+                                            book_time_start:listOfFutureBooking[0],
+                                            book_time_end:  listOfFutureBooking[1],
+                                            type: 'create',
+                                            },
+                                            type: "POST",
+                                            success: successCallback,
+                                            //  success:function (data) {
+                                            // calendar.fullCalendar('refetchEvents');// updated the color of the booking
+                                            // calendar.fullCalendar('renderEvent', { // making the event stick on the full calender 
+                                            // id: data.id,
+                                            // desk_id: same_desk_id,
+                                            // start:  book_time_start,
+                                            // end: book_time_end,
+                                            // resourceId: event.resourceId, // made the calender display the resource Synchronize
+                                            // color:'#3CB371',
+                                            // room_id:currentRoom_id
+                                            // }, true);
+                                            // calendar.fullCalendar('unselect'); }, 
+                                            error:failCallback,
+                                        }); 
+                                    }
+                                    // timeout(1);
+                                }
+                                        // } else{   displayInfoMessage("Booking cancellation failed, You are past the deadline to cancel your booking.");
+                                        // }
+                                timeout(1);
+                            }
+                        }
+                    }else{  displayErrorMessage("Repeated booking attempt failed: You cannot make a repeated booking for another user's booking.");  }
+                    $('#repeatedBooking').modal("hide");
+                });
+            });
+
+            // delete option 
+            $('#deleteShow').on("click", function () {  
+                $('#optionModal').modal("hide");
             // are you sure you want to cancel model show up
                 $('#cancelModal').modal("show");
-
                 $('#deleteConfirm').on("click", function (){   
+                    sessionStorage.clear();
+
                     eventDelete=true;
                     var deleteConfirm=null;
                     var deleteConfirm = changeApprove(event.start._i);
+                    var deadlineConfirm= deadline(event.start._i);
                         if (event.user_id == user_id){ // if id is equal, which is true can delete
                             if(deleteConfirm){
-                                if ( eventDelete) {
-                                    $.ajax({
-                                        type: "POST",
-                                        url:  site_url+'/bookings-ajax',
-                                        data: {
-                                            id: event.id,
-                                            type: 'delete'
-                                            },
-                                        success: function (response) {
-                                            calendar.fullCalendar('removeEvents', event.id);
-                                            sessionStorage.message = "Booking cancel successfully";
-                                            timeout(1);  //1 minute (60,000 milliseconds)
-                                            modalInfo();
-                                            },
-                                        error:function(error)
-                                            {
-                                            displayInfoMessage("my error is "+ error)
-                                            },
+                                if(deadlineConfirm){
+                                    if ( eventDelete) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url:  site_url+'/bookings-ajax',
+                                            data: {
+                                                id: event.id,
+                                                user_id: user_id,
+                                                type: 'delete'
+                                                },
+                                            success: function (response) {
+                                                calendar.fullCalendar('removeEvents', event.id);
+                                                sessionStorage.message = "Booking successfully cancelled.";
+                                                // sessionStorage.removeItem('counterFail');
+                                                // sessionStorage.removeItem('counterSuccess');
+                                                // sessionStorage.removeItem('partialA');
+                                                // sessionStorage.removeItem('partialB');
+                                                localStorage.userMonthlyBookingCountCopy= Number(localStorage.userMonthlyBookingCountCopy) -1;
+                                                timeout(1);  //1 minute (60,000 milliseconds)
+                                                },
+                                            error:function(error)
+                                                {
+                                                console.log("my error is "+ error);
+                                                },
                                         });
-                                }else { 
-                                    displayErrorMessage("Booking failed to cancel"); 
-                                    modalInfo();}  
+                                    
+                                    }
+                                }  
+                                else{
+                                    displayInfoMessage("Booking cancellation failed: You are past the deadline to cancel your booking.");
+                                }
                             }else{ 
-                                displayErrorMessage("You cannot cancel the past booking");
-                                modalInfo();}
+                                displayAlertMessage("Booking cancellation failed: You cannot cancel a past booking.");
+                                }
                         }else{ 
-                            displayErrorMessage("You cannot cancel other booking");
-                            modalInfo(); }
+                            displayErrorMessage("Booking cancellation failed: You cannot cancel another user's booking.");
+                            }  
+                    $('#cancelModal').modal("hide");
                 });
-            // });
-        },
             });
+        },
+});
         //end of event click function
         //end of full calendar component1
-        
-        function modalInfo(){
-            $('#cancelModal').modal("hide");
-            $('#optionModal').modal("hide");
+
+        // determined whether the user pass the deadline to cancel or modify
+        function deadline(startTime){
+            var deadline = moment(startTime).subtract(0.5, 'hours').format('Y-MM-DD HH:mm');
+            var current = moment().format('Y-MM-DD HH:mm');
+            var confirm = moment(current).isBefore(deadline); 
+            return confirm;
         }
+
 
         function changeApprove(time){
             var book_time_start = moment(time).format('Y-MM-DD HH:mm');
@@ -573,54 +924,138 @@ echo json_encode($currentRoom)?>;
                             dataType:'json',
                             data:{ book_time_start, book_time_end, updated_desk_id},
                                 success:function(response){
-                                displayMessage("Booking updated successfully");
-                                },
-
-                                error:function(error){
-                                displayInfoMessage("My error is "+ error)
+                                displaySuccessMessage("Booking successfully updated.");
+                                // sessionStorage.message = "Booking successfully updated.";
+                                // timeout(1);
                                 },
                                 });
                         }else { 
-                        displayAlertMessage("Booking failed to updated. \n You can only select " + max_booking_duration + " minutes per booking.");
+                        displayInfoMessage("Booking modification failed: You can only select " + max_booking_duration + " minutes per booking.");
                         revertFunc();  }  
                 }else {
-                    displayErrorMessage("You cannot modify others bookings");
+                    displayErrorMessage("Booking modification failed: You cannot modify another user's booking.");
                     revertFunc();}
             }
 
              //print out the message      
-        function displayMessage(message) {toastr.success(message); } 
+        function displaySuccessMessage(message) {
+            $('#alert_container').empty();
+            $('#alert_container').append('<div class="alert alert-success alert-dismissible fade show">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+            $('#alert_container').show();
+            // $('#floor').append($('<option disabled selected hidden></option>'));
+        } 
 
-        function displayErrorMessage(message) {toastr.error(message);} 
+        function displayErrorMessage(message)  {
+            $('#alert_container').empty();
+            $('#alert_container').append('<div class="alert alert-danger alert-dismissible fade show">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+            $('#alert_container').show();
+            // $('#floor').append($('<option disabled selected hidden></option>'));
+        } 
 
-        function displayAlertMessage(message) {toastr.warning(message);} 
+        function displayAlertMessage(message) { 
+            $('#alert_container').empty();
+            $('#alert_container').append('<div class="alert alert-warning alert-dismissible fade show">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+            $('#alert_container').show();
+            // $('#floor').append($('<option disabled selected hidden></option>'));
+        } 
 
-        function displayInfoMessage(message) {toastr.info(message);} 
+        function displayInfoMessage(message) {
+            $('#alert_container').empty();
+            $('#alert_container').append('<div class="alert alert-info alert-dismissible fade show">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+            $('#alert_container').show();
+            // $('#floor').append($('<option disabled selected hidden></option>'));
+        } 
 
         function  timeout(time){  setTimeout(location.reload.bind(location), time);}
+
+        
 
         // this one is using the html api to storage the message and it will display it after the page reload
         function displayStoreMessage() {
             if (typeof(Storage) !== "undefined") {
                 if (sessionStorage.message) {
-                displayMessage(sessionStorage.message);
-                sessionStorage.clear();}
+                displaySuccessMessage(sessionStorage.message);
+                // sessionStorage.clear();
+                sessionStorage.removeItem('message');
+                sessionStorage.clear();
+            }
             }else
-                {console.log ("Sorry, your browser does not support web storage..."); 
-                    displayMessage("Your request had been updated");    }
+                {console.log ("Sorry, your browser does not support web storage."); 
+                    displaySuccessMessage("Your request had been updated.");    }
             }
 
 
         function displayMaxCapacityMessage() {
             if (typeof(Storage) !== "undefined") {
                 if (sessionStorage.status) {
-                    displayErrorMessage(sessionStorage.status);
-                    sessionStorage.clear();}
+                    displayInfoMessage(sessionStorage.status);
+                    sessionStorage.clear();
+                    // sessionStorage.removeItem('status');
+                    // sessionStorage.removeItem('counterFail'); 
+                    // sessionStorage.removeItem('allFail'); 
+                    // sessionStorage.removeItem('partialA');
+                    // sessionStorage.removeItem('counterSuccess'); 
+                    // sessionStorage.removeItem('counterCollision'); 
+                    // sessionStorage.removeItem('collision'); 
+            
+                    }
             } else {
-                console.log ("Sorry, your browser does not support web storage..."); 
-                displayErrorMessage("Booking Failed, Room at Max Capacity");    
+                console.log ("Sorry, your browser does not support web storage."); 
+                displayInfoMessage("Booking attempt failed: Room is at maximum capacity.");    
+            }
+        
+        }
+
+                function displayBookingCollisionMessage() {
+            if (typeof(Storage) !== "undefined") {
+                if (sessionStorage.collisionDetected) {
+                    displayInfoMessage(sessionStorage.collisionDetected);
+                    sessionStorage.clear();
+                    // sessionStorage.removeItem('collisionDetected');
+                    // sessionStorage.removeItem('counterFail'); 
+                    // sessionStorage.removeItem('allFail'); 
+                    // sessionStorage.removeItem('partialA');
+                    // sessionStorage.removeItem('counterSuccess'); 
+                    // sessionStorage.removeItem('counterCollision'); 
+                    // sessionStorage.removeItem('collision'); 
+                }
+            } else {
+                console.log ("Sorry, your browser does not support web storage."); 
+                displayInfoMessage("Booking failed: A booking collision was detected.");    
             }
         }
+
+        function partialCompleted() {
+            if (typeof(Storage) !== "undefined") {
+                if (sessionStorage.allFail) {
+                    displayAlertMessage(sessionStorage.allFail);
+                    sessionStorage.removeItem('allFail'); 
+                }else if 
+                (sessionStorage.partialA) {
+                    displayAlertMessage(sessionStorage.partialA);
+                    sessionStorage.removeItem('partialA');
+                }
+                else if 
+                (sessionStorage.success) {
+                    displaySuccessMessage(sessionStorage.success);
+                    sessionStorage.removeItem('success');
+                }
+                else if 
+                (sessionStorage.partialB) {
+                    displayAlertMessage(sessionStorage.partialB);
+                    sessionStorage.removeItem('partialB');
+                }
+                else if
+                (sessionStorage.counterCollision) {
+                    displayAlertMessage(sessionStorage.counterCollision);
+                    sessionStorage.removeItem('counterCollision')
+                }
+            } else {
+                console.log ("Sorry, your browser does not support web storage."); 
+            }
+            sessionStorage.clear();
+        }
+
 
         // changing the column width base on different case 
         function getColumn(){
@@ -635,9 +1070,11 @@ echo json_encode($currentRoom)?>;
                 setColumnWidth(100);
             }
 
+        // function of changing calender day view css
         function setColumnWidth(number){
             $('.fc-agendaDay-view').css('width', number  + '%'); 
         }
+        
 });
 </script>
 
@@ -646,6 +1083,7 @@ echo json_encode($currentRoom)?>;
     var buildings = <?php echo json_encode($buildings)?>;
     var floors = <?php echo json_encode($floors)?>;
     var rooms = <?php echo json_encode($rooms)?>;
+    var desks = <?php echo json_encode($desks)?>;
 
     $('#campus').change( function() {
         // Clear the building dropdown 
@@ -682,7 +1120,9 @@ echo json_encode($currentRoom)?>;
         // disable the room field
         $('#room').empty();
         $('#room').append($('<option disabled selected hidden></option>'));
-        $('#room').prop('disabled', true);      
+        $('#room').prop('disabled', true);  
+        // Disable the search button
+        $('#b1').prop('disabled', true);    
     });
 
     $('#building').change( function() {
@@ -716,6 +1156,8 @@ echo json_encode($currentRoom)?>;
         $('#room').empty();
         $('#room').append($('<option disabled selected hidden></option>'));
         $('#room').prop('disabled', true);
+        // Disable the search button
+        $('#b1').prop('disabled', true);
     });
 
     $('#floor').change( function() {
@@ -724,8 +1166,16 @@ echo json_encode($currentRoom)?>;
 
         var floorId = parseInt($('#floor').find(':selected').attr('value'));
         var filteredRooms = rooms.filter(item => {
-                if (!item.is_closed)
-                    return item.floor_id === floorId;
+                if (!item.is_closed) {
+                    // Check the number of open desks for the current room
+                    roomId = item.id; 
+                    openDesks = desks.filter(item => {
+                        if (!item.is_closed)
+                            return item.room_id === roomId;
+                    });
+                    if (openDesks.length !== 0)
+                        return item.floor_id === floorId;
+                }
             });
         
         // Check if filteredRooms.length > 1
@@ -743,6 +1193,14 @@ echo json_encode($currentRoom)?>;
 
             // enable the floor select field
             $('#room').prop('disabled', false);
+        }
+        // Disable the search button
+        $('#b1').prop('disabled', true);
+    });
+
+    $('#room').change( function() {
+        if ($('#room').val() !== null) {
+            $('#b1').prop('disabled', false);
         }
     });
 
