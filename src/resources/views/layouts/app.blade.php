@@ -29,13 +29,13 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm bg-ubc">
+        <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-ubc">
             <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/') }}">
                     <img width="29" height="40" src="{{ asset('img/ubc-logo-2018-crest-white-rgb72.png') }}" alt="UBC crest logo" style="margin-right: 25px">
                     {{ config('app.name', 'Hot-Desk') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
