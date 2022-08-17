@@ -16,7 +16,7 @@ services:
       - "443:443"
     volumes:
       - ./src:/var/www/html:delegated
-      - /etc/pki/tls/certs:etc/nginx/certs
+      - /etc/pki/tls/certs:/etc/nginx/certs
     depends_on:
       - php
       - redis
