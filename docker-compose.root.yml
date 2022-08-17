@@ -4,35 +4,6 @@ networks:
   laravel:
 
 services:
-  nginx:
-    image: jwilder/nginx-proxy
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - certs:/etc/nginx/certs:ro
-      - vhostd:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-    labels:
-      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
-    networks:
-      - laravel
-
-    letsencrypt:
-      image: jrcs/letsencrypt-nginx-proxy-companion
-      restart: always
-      environment:
-        - NGINX_PROXY_CONTAINER=nginx-proxy
-      volumes:
-        - certs:/etc/nginx/certs:rw
-        - vhostd:/etc/nginx/vhost.d
-        - html:/usr/share/nginx/html
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-      networks:
-        - laravel
-
   site:
     build:
       context: ./dockerfiles
@@ -45,7 +16,6 @@ services:
       - "443:443"
     volumes:
       - ./src:/var/www/html:delegated
-      # - ./nginx/ssl:/etc/nginx/ssl
     depends_on:
       - php
       - redis
@@ -53,8 +23,6 @@ services:
       # - mailhog
     networks:
       - laravel
-    environment:
-      - VIRTUAL_HOST=hotdesking.ok.ubc.ca,www.hotdesking.ok.ubc.ca
 
   pgsql:
     image: postgres:14.3
