@@ -3,3 +3,5 @@
 /tempFile
 /postgres-data
 docker-compose.yml
+/certs/*
+!/certs/.empty

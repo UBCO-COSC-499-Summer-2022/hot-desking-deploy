@@ -5,23 +5,23 @@ networks:
 
 services:
   site:
-    build:
-      context: ./dockerfiles
-      dockerfile: nginx.root.dockerfile
-    container_name: nginx
+    image: jonasal/nginx-certbot
+    container_name: reverse_proxy
+    volumes:
+      - ./nginx/configs:/etc/nginx/user_conf.d
+      - ./nginx/logs:/etc/nginx/logs
+      - ./certs:/etc/letsencrypt
+      - ./src:/var/www/html:delegated
     ports:
       - 80:80
-      # Port for xdebug (ensure this matches the remote_port in the xdebug.ini)
-      - "9001:9001"
-      - "443:443"
-    volumes:
-      - ./src:/var/www/html:delegated
-      - /etc/pki/tls/certs:/etc/nginx/certs
+      - 443:443
     depends_on:
       - php
       - redis
       - pgsql
       # - mailhog
+    environment:
+      - CERTBOT_EMAIL=noreply@ubc.ca
     networks:
       - laravel
 

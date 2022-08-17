@@ -22,9 +22,9 @@ steps:
     envs: [ PASS, USER ]
     script:
       ################################# Test #################################
-      # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*”
+      # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*"
       # - ls
-      # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /hot-desk/* && rm -rf /hot-desk/.*”
+      # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /hot-desk/* && rm -rf /hot-desk/.*"
       # - ls
       # - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-runner.git runner
 
@@ -37,10 +37,10 @@ steps:
       # List all docker containers 
       - docker ps -a
       # Clone Directory
-      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull2/
+      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-deploy.git test-pull3/
       - ls
       # change directories 
-      - cd test-pull2/
+      - cd test-pull3/
       # Run Bash File to setup project
       - chmod 744 setup.sh
       - sh setup.sh
