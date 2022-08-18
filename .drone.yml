@@ -31,9 +31,11 @@ steps:
       - sh runner.sh $${USER} $${PASS}
 
       # check files in dir
-      - echo listing test-pull5
+      - cd ..
+      - echo listing root
       - ls
-      - cd test-pull5
+      - echo listing test-pull6
+      - cd test-pull6
       - ls
 
       ################################# Test #################################
