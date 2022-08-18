@@ -22,7 +22,7 @@ steps:
     envs: [ PASS, USER ]
     script:
       # TODO: REMOVE clone
-      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desking-runner.git runner
+      - git clone -b main https://$${USER}:$${PASS}@github.com/UBCO-COSC-499-Summer-2022/hot-desk-runner.git runner
       # run the runner bash script
       - cd runner
       - ls
