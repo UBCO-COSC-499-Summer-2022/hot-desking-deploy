@@ -23,6 +23,7 @@ steps:
     script:
       # Pull latest changes to the runner
       - cd runner
+      - git stash
       - git fetch
       - git pull
       # # run the runner bash script
