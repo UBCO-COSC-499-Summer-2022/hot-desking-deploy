@@ -21,17 +21,17 @@ steps:
     command_timeout: 5m
     envs: [ PASS, USER ]
     script:
-      # # Pull latest changes to the runner
-      # - cd runner
-      # - git fetch
-      # - git pull
-      # # run the runner bash script
-      # - chmod 744 runner.sh
-      # - sh runner.sh $${USER} $${PASS}
+      # Pull latest changes to the runner
+      - cd runner
+      - git fetch
+      - git pull
+      # run the runner bash script
+      - chmod 744 runner.sh
+      - sh runner.sh $${USER} $${PASS}
 
-      - ls
-      - cd test-pull4
-      - ls
+      # - ls
+      # - cd test-pull4
+      # - ls
 
       ################################# Test #################################
       # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*"
