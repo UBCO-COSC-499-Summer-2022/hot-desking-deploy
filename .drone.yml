@@ -30,6 +30,7 @@ steps:
       - chmod 744 runner.sh
       - sh runner.sh $${USER} $${PASS}
 
+
       ################################# Test #################################
       # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*"
       # - ls
