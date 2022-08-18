@@ -22,9 +22,9 @@ steps:
     envs: [ PASS, USER ]
     script:
       # Pull latest changes to the runner
-      # - cd runner
-      # - git fetch
-      # - git pull
+      - cd runner
+      - git fetch
+      - git pull
       # # run the runner bash script
       # - chmod 744 runner.sh
       # - sh runner.sh $${USER} $${PASS}
