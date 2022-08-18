@@ -30,14 +30,6 @@ steps:
       - chmod 744 runner.sh
       - sh runner.sh $${USER} $${PASS}
 
-      # check files in dir
-      - cd ..
-      - echo listing root
-      - ls
-      - echo listing test-pull6
-      - cd test-pull6
-      - ls
-
       ################################# Test #################################
       # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*"
       # - ls
