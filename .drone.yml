@@ -26,16 +26,15 @@ steps:
       - git stash
       - git fetch
       - git pull
-      # # run the runner bash script
-      # - chmod 744 runner.sh
-      # - sh runner.sh $${USER} $${PASS}
+      # run the runner bash script
+      - chmod 744 runner.sh
+      - sh runner.sh $${USER} $${PASS}
 
-      - cd runner
+      # check files in dir
+      - echo listing test-pull5
       - ls
-
-      # - ls
-      # - cd test-pull4
-      # - ls
+      - cd test-pull5
+      - ls
 
       ################################# Test #################################
       # - docker run -v "$(pwd):/src" -it alpine /bin/sh -c "rm -rf /src/* && rm -rf /src/.*"
